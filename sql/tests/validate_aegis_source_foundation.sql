@@ -452,6 +452,183 @@ SELECT
     END,
     N'Expected foreign key: FK_pas_ConsultantEpisode_TreatmentSpecialty';
 
+-- Additional PAS admitted-patient tables
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.Diagnosis exists',
+    CASE
+        WHEN OBJECT_ID(N'pas.Diagnosis', N'U') IS NOT NULL THEN 1
+        ELSE 0
+    END,
+    N'Expected table: pas.Diagnosis';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.Procedure exists',
+    CASE
+        WHEN OBJECT_ID(N'pas.Procedure', N'U') IS NOT NULL THEN 1
+        ELSE 0
+    END,
+    N'Expected table: pas.Procedure';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.WardStay exists',
+    CASE
+        WHEN OBJECT_ID(N'pas.WardStay', N'U') IS NOT NULL THEN 1
+        ELSE 0
+    END,
+    N'Expected table: pas.WardStay';
+
+-- Additional PAS foreign keys
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.Diagnosis links to pas.ConsultantEpisode',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.foreign_keys
+            WHERE name = N'FK_pas_Diagnosis_ConsultantEpisode'
+              AND parent_object_id = OBJECT_ID(N'pas.Diagnosis')
+              AND referenced_object_id = OBJECT_ID(N'pas.ConsultantEpisode')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected foreign key: FK_pas_Diagnosis_ConsultantEpisode';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.Procedure links to pas.ConsultantEpisode',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.foreign_keys
+            WHERE name = N'FK_pas_Procedure_ConsultantEpisode'
+              AND parent_object_id = OBJECT_ID(N'pas.Procedure')
+              AND referenced_object_id = OBJECT_ID(N'pas.ConsultantEpisode')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected foreign key: FK_pas_Procedure_ConsultantEpisode';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.Procedure links to ref.Consultant',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.foreign_keys
+            WHERE name = N'FK_pas_Procedure_Consultant'
+              AND parent_object_id = OBJECT_ID(N'pas.Procedure')
+              AND referenced_object_id = OBJECT_ID(N'ref.Consultant')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected foreign key: FK_pas_Procedure_Consultant';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.Procedure links to ref.Site',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.foreign_keys
+            WHERE name = N'FK_pas_Procedure_Site'
+              AND parent_object_id = OBJECT_ID(N'pas.Procedure')
+              AND referenced_object_id = OBJECT_ID(N'ref.Site')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected foreign key: FK_pas_Procedure_Site';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.WardStay links to pas.Admission',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.foreign_keys
+            WHERE name = N'FK_pas_WardStay_Admission'
+              AND parent_object_id = OBJECT_ID(N'pas.WardStay')
+              AND referenced_object_id = OBJECT_ID(N'pas.Admission')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected foreign key: FK_pas_WardStay_Admission';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.WardStay links to ref.Ward',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.foreign_keys
+            WHERE name = N'FK_pas_WardStay_Ward'
+              AND parent_object_id = OBJECT_ID(N'pas.WardStay')
+              AND referenced_object_id = OBJECT_ID(N'ref.Ward')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected foreign key: FK_pas_WardStay_Ward';
 
 -- Results
 
