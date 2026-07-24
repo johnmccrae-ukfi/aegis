@@ -427,3 +427,15 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Aegis private and source-reference data
+data/private/
+data/pseudonymised/
+data/raw-private/
+data/reference-source/
+
+# Private SQL Server and BI artefacts
+*.bak
+*.trn
+*.abf
+*.snk
