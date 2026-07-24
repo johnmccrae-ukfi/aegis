@@ -80,12 +80,13 @@ Pseudonymised or real-derived source data must remain outside source control and
 
 ## Immediate next steps
 
-1. Complete repository foundation documentation.
-2. Confirm local SQL Server feature installation.
-3. Define named-instance topology.
-4. Create the first SQL database project.
-5. Review candidate source data structures.
-6. Define the synthetic patient and encounter model.
+1. Commit this updated environment architecture.
+2. Create the first SQL database project.
+3. Create the `Aegis_Source` database schema.
+4. Deploy the database project to the local default instance.
+5. Define the synthetic legacy PAS source model.
+6. Confirm source-data domains and initial table grain.
+7. Add deployment validation scripts.
 
 ## Working conventions
 
