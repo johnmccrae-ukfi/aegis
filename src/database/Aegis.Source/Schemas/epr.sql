@@ -1,0 +1,2 @@
+CREATE SCHEMA [epr]
+    AUTHORIZATION [dbo];
