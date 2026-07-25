@@ -105,3 +105,4 @@ See:
 Aegis complements [Atlas](https://github.com/johnmccrae-ukfi/atlas), a Microsoft Fabric enterprise AI intelligence platform.
 
 Atlas demonstrates modern cloud-native data engineering and AI architecture, while Aegis demonstrates enterprise SQL Server, clinical migration, reporting and operational resilience.
+
