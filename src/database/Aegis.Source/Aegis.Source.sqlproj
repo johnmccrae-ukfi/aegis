@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build">
+  <Sdk Name="Microsoft.Build.Sql" Version="2.1.0" />
+  <PropertyGroup>
+    <Name>aegis.source</Name>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <ModelCollation>1033, CI</ModelCollation>
+    <ProjectGuid>da2e5021-97bf-4785-b8e2-56d5aa5898c3</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+    <Folder Include="Security\" />
+    <Folder Include="Stored Procedures\" />
+    <Folder Include="Tables\epr\" />
+    <Folder Include="Tables\ref\" />
+    <Folder Include="Tables\pas\" />
+    <Folder Include="Views\" />
+    <Folder Include="Schemas\" />
+  </ItemGroup>
+</Project>

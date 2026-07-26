@@ -427,3 +427,37 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Aegis private and source-reference data
+data/private/
+data/pseudonymised/
+data/raw-private/
+data/reference-source/
+
+# Private SQL Server and BI artefacts
+*.bak
+*.trn
+*.abf
+*.snk
+
+# Aegis Python environment and tooling
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environment configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Generated synthetic data not intended for source control
+data/generated/
+
+# SQL database project build artefacts
+**/[Bb]in/
+**/[Oo]bj/
+*.dacpac
