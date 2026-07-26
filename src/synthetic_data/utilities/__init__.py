@@ -1,0 +1,1 @@
+"""Aegis synthetic-data generation package."""

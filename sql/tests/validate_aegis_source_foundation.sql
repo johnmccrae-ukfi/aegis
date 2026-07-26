@@ -630,6 +630,530 @@ SELECT
     END,
     N'Expected foreign key: FK_pas_WardStay_Ward';
 
+-- Patient identity tables
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier exists',
+    CASE
+        WHEN OBJECT_ID(N'pas.PatientIdentifier', N'U') IS NOT NULL THEN 1
+        ELSE 0
+    END,
+    N'Expected table: pas.PatientIdentifier';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge exists',
+    CASE
+        WHEN OBJECT_ID(N'pas.PatientMerge', N'U') IS NOT NULL THEN 1
+        ELSE 0
+    END,
+    N'Expected table: pas.PatientMerge';
+
+-- PatientIdentifier columns
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier.PatientId is INT NOT NULL',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.columns AS c
+            INNER JOIN sys.types AS ty
+                ON ty.user_type_id = c.user_type_id
+            WHERE c.object_id = OBJECT_ID(N'pas.PatientIdentifier')
+              AND c.name = N'PatientId'
+              AND ty.name = N'int'
+              AND c.is_nullable = 0
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected column: pas.PatientIdentifier.PatientId INT NOT NULL';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier.IdentifierValue is NVARCHAR(100) NOT NULL',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.columns AS c
+            INNER JOIN sys.types AS ty
+                ON ty.user_type_id = c.user_type_id
+            WHERE c.object_id = OBJECT_ID(N'pas.PatientIdentifier')
+              AND c.name = N'IdentifierValue'
+              AND ty.name = N'nvarchar'
+              AND c.max_length = 200
+              AND c.is_nullable = 0
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected column: pas.PatientIdentifier.IdentifierValue NVARCHAR(100) NOT NULL';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier.IdentifierTypeCode is VARCHAR(30) NOT NULL',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.columns AS c
+            INNER JOIN sys.types AS ty
+                ON ty.user_type_id = c.user_type_id
+            WHERE c.object_id = OBJECT_ID(N'pas.PatientIdentifier')
+              AND c.name = N'IdentifierTypeCode'
+              AND ty.name = N'varchar'
+              AND c.max_length = 30
+              AND c.is_nullable = 0
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected column: pas.PatientIdentifier.IdentifierTypeCode VARCHAR(30) NOT NULL';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier.IsCurrent is nullable BIT',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.columns AS c
+            INNER JOIN sys.types AS ty
+                ON ty.user_type_id = c.user_type_id
+            WHERE c.object_id = OBJECT_ID(N'pas.PatientIdentifier')
+              AND c.name = N'IsCurrent'
+              AND ty.name = N'bit'
+              AND c.is_nullable = 1
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected column: pas.PatientIdentifier.IsCurrent BIT NULL';
+
+-- PatientMerge columns
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge.SurvivingPatientId is INT NOT NULL',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.columns AS c
+            INNER JOIN sys.types AS ty
+                ON ty.user_type_id = c.user_type_id
+            WHERE c.object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND c.name = N'SurvivingPatientId'
+              AND ty.name = N'int'
+              AND c.is_nullable = 0
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected column: pas.PatientMerge.SurvivingPatientId INT NOT NULL';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge.SupersededPatientId is INT NOT NULL',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.columns AS c
+            INNER JOIN sys.types AS ty
+                ON ty.user_type_id = c.user_type_id
+            WHERE c.object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND c.name = N'SupersededPatientId'
+              AND ty.name = N'int'
+              AND c.is_nullable = 0
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected column: pas.PatientMerge.SupersededPatientId INT NOT NULL';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge.MergeDateTime is DATETIME2(0) NOT NULL',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.columns AS c
+            INNER JOIN sys.types AS ty
+                ON ty.user_type_id = c.user_type_id
+            WHERE c.object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND c.name = N'MergeDateTime'
+              AND ty.name = N'datetime2'
+              AND c.scale = 0
+              AND c.is_nullable = 0
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected column: pas.PatientMerge.MergeDateTime DATETIME2(0) NOT NULL';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge.SourceMessageControlId is nullable VARCHAR(100)',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.columns AS c
+            INNER JOIN sys.types AS ty
+                ON ty.user_type_id = c.user_type_id
+            WHERE c.object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND c.name = N'SourceMessageControlId'
+              AND ty.name = N'varchar'
+              AND c.max_length = 100
+              AND c.is_nullable = 1
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected column: pas.PatientMerge.SourceMessageControlId VARCHAR(100) NULL';
+
+-- Patient identity primary keys
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier primary key exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.key_constraints
+            WHERE name = N'PK_pas_PatientIdentifier'
+              AND parent_object_id = OBJECT_ID(N'pas.PatientIdentifier')
+              AND type = N'PK'
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected primary key: PK_pas_PatientIdentifier';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge primary key exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.key_constraints
+            WHERE name = N'PK_pas_PatientMerge'
+              AND parent_object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND type = N'PK'
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected primary key: PK_pas_PatientMerge';
+
+-- Patient identity foreign keys
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier links to pas.Patient',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.foreign_keys
+            WHERE name = N'FK_pas_PatientIdentifier_Patient'
+              AND parent_object_id = OBJECT_ID(N'pas.PatientIdentifier')
+              AND referenced_object_id = OBJECT_ID(N'pas.Patient')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected foreign key: FK_pas_PatientIdentifier_Patient';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge surviving patient links to pas.Patient',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.foreign_keys
+            WHERE name = N'FK_pas_PatientMerge_SurvivingPatient'
+              AND parent_object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND referenced_object_id = OBJECT_ID(N'pas.Patient')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected foreign key: FK_pas_PatientMerge_SurvivingPatient';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge superseded patient links to pas.Patient',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.foreign_keys
+            WHERE name = N'FK_pas_PatientMerge_SupersededPatient'
+              AND parent_object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND referenced_object_id = OBJECT_ID(N'pas.Patient')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected foreign key: FK_pas_PatientMerge_SupersededPatient';
+
+-- Patient identity indexes
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier PatientId index exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.indexes
+            WHERE object_id = OBJECT_ID(N'pas.PatientIdentifier')
+              AND name = N'IX_pas_PatientIdentifier_PatientId'
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected index: IX_pas_PatientIdentifier_PatientId';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier identifier-value index exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.indexes
+            WHERE object_id = OBJECT_ID(N'pas.PatientIdentifier')
+              AND name = N'IX_pas_PatientIdentifier_IdentifierValue'
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected index: IX_pas_PatientIdentifier_IdentifierValue';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge surviving-patient index exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.indexes
+            WHERE object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND name = N'IX_pas_PatientMerge_SurvivingPatientId'
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected index: IX_pas_PatientMerge_SurvivingPatientId';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge superseded-patient index exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.indexes
+            WHERE object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND name = N'IX_pas_PatientMerge_SupersededPatientId'
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected index: IX_pas_PatientMerge_SupersededPatientId';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge merge-date index exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.indexes
+            WHERE object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND name = N'IX_pas_PatientMerge_MergeDateTime'
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected index: IX_pas_PatientMerge_MergeDateTime';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge message-control index exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.indexes
+            WHERE object_id = OBJECT_ID(N'pas.PatientMerge')
+              AND name = N'IX_pas_PatientMerge_SourceMessageControlId'
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected index: IX_pas_PatientMerge_SourceMessageControlId';
+
+-- Patient identity defaults
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientIdentifier CreatedAtUtc default exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.default_constraints
+            WHERE name = N'DF_pas_PatientIdentifier_CreatedAtUtc'
+              AND parent_object_id = OBJECT_ID(N'pas.PatientIdentifier')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected default constraint: DF_pas_PatientIdentifier_CreatedAtUtc';
+
+INSERT INTO @ValidationResults
+(
+    CheckName,
+    Passed,
+    Detail
+)
+SELECT
+    'pas.PatientMerge CreatedAtUtc default exists',
+    CASE
+        WHEN EXISTS
+        (
+            SELECT 1
+            FROM sys.default_constraints
+            WHERE name = N'DF_pas_PatientMerge_CreatedAtUtc'
+              AND parent_object_id = OBJECT_ID(N'pas.PatientMerge')
+        )
+        THEN 1
+        ELSE 0
+    END,
+    N'Expected default constraint: DF_pas_PatientMerge_CreatedAtUtc';
+
 -- Results
 
 SELECT
