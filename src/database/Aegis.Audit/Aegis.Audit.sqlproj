@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build">
+  <Sdk Name="Microsoft.Build.Sql" Version="2.1.0" />
+  <PropertyGroup>
+    <Name>aegis.audit</Name>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <ModelCollation>1033, CI</ModelCollation>
+    <ProjectGuid>fd3a575b-9ed4-4506-9545-38dfcc3b4d73</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <Build Remove="Post-Deployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Security\" />
+    <Folder Include="Stored Procedures\" />
+    <Folder Include="Views\" />
+    <Folder Include="Schemas\" />
+    <Folder Include="Tables\audit\" />
+    <Folder Include="Tables\dq\" />
+    <Folder Include="Tables\replay\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Post-Deployment.sql" />
+  </ItemGroup>
+</Project>

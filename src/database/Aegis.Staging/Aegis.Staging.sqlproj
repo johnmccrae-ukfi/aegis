@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build">
+  <Sdk Name="Microsoft.Build.Sql" Version="2.1.0" />
+  <PropertyGroup>
+    <Name>aegis.staging</Name>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <ModelCollation>1033, CI</ModelCollation>
+    <ProjectGuid>8fbe0bce-8c0d-4dcd-ac4a-78606c303025</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Security\" />
+    <Folder Include="Stored Procedures\" />
+    <Folder Include="Tables\curated\" />
+    <Folder Include="Views\" />
+    <Folder Include="Schemas\" />
+    <Folder Include="Tables\landing\" />
+    <Folder Include="Tables\quarantine\" />
+    <Folder Include="Tables\stg\" />
+  </ItemGroup>
+</Project>

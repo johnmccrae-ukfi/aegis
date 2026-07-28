@@ -1,0 +1,2342 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="7/26/2026 3:07:52 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-N58JDOH"
+  DTS:CreatorName="DESKTOP-N58JDOH\johnm"
+  DTS:DTSID="{4790265E-E2A6-4229-AD15-9BDA7A6A455D}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="2057"
+  DTS:ObjectName="PKG_Load_Admissions"
+  DTS:PackageType="5"
+  DTS:VersionBuild="26"
+  DTS:VersionGUID="{4D6C5E98-BF57-427D-AC7C-CA1C1A78D149}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{32C64791-92CF-4622-8413-3E81D2B5646E}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="AcceptedRowCount">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{AE53454E-2F27-4270-B10A-1DA2ABBB0D41}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="BatchId">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{905796B6-681B-447F-85AE-C060F7B6D41E}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="DuplicateRowCount">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{EF6F5ED9-47A7-4E75-BE23-CC887D47860C}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="FailureAuditWritten">
+      <DTS:VariableValue
+        DTS:DataType="11">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{74149383-FFFD-40FF-8B40-10213E4FC10B}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="InterfaceCode">
+      <DTS:VariableValue
+        DTS:DataType="8">PAS_ADMISSION_EXTRACT</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{981E3B5A-18C0-44E4-BF48-6F7210F55892}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LandedRowCount">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5719E6A8-BB24-42AC-9600-38DE762B2B5C}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="PackageExecutionId">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{93EA29D5-5B1A-409E-A721-B33E3DFB06FD}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="PackageName">
+      <DTS:VariableValue
+        DTS:DataType="8">PKG_Load_Admissions.dtsx</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{00EAEF11-487E-434D-A326-D5F0061D59FF}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="QuarantinedRowCount">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7931D740-B7FA-495C-9C38-9D5652A82B06}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RejectedRowCount">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A8E4DA4E-6A55-48F6-A336-B28F2CDCC514}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceRowCount">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{19DF0395-85F7-4B58-9510-30A9704D6D18}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="WarningRowCount">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DFT_Land_Admissions"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{EAA905E8-3C23-4A66-B373-0C6A38670EBD}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DFT_Land_Admissions"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\DFT_Land_Admissions\CNT_Landed_Admissions"
+              componentClassID="Microsoft.RowCount"
+              contactInfo="Row Count;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Counts rows as they pass through a data flow. For example, use the number of rows processed to determine whether or not to perform cleanup operations, or update text in an e-mail message to communicate processing status."
+              name="CNT_Landed_Admissions">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable to hold the row count."
+                  name="VariableName">User::LandedRowCount</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\DFT_Land_Admissions\CNT_Landed_Admissions.Inputs[Row Count Input 1]"
+                  hasSideEffects="true"
+                  name="Row Count Input 1">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_Land_Admissions\CNT_Landed_Admissions.Outputs[Row Count Output 1]"
+                  name="Row Count Output 1"
+                  synchronousInputId="Package\DFT_Land_Admissions\CNT_Landed_Admissions.Inputs[Row Count Input 1]">
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="DRV_Add_Admission_Provenance"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output].Columns[BatchId]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output].Columns[BatchId]"
+                      name="BatchId"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">@[User::BatchId]</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">@[User::BatchId]</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output].Columns[PackageExecutionId]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output].Columns[PackageExecutionId]"
+                      name="PackageExecutionId"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">@[User::PackageExecutionId]</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">@[User::PackageExecutionId]</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output].Columns[SourceSystemCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output].Columns[SourceSystemCode]"
+                      name="SourceSystemCode"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"LEGACY_PAS"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"LEGACY_PAS"</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="DST_Aegis_Staging_Landing_Admission"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[landing].[Admission]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS,ROWS_PER_BATCH = 1600</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Connections[OleDbConnection]"
+                  connectionManagerID="{F6208311-4AF5-4F7F-9F74-B83868D8B68C}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[CM_Aegis_Staging]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[AdmissionId]"
+                      cachedDataType="i4"
+                      cachedName="AdmissionId"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionId]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionId]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[PatientId]"
+                      cachedDataType="i4"
+                      cachedName="PatientId"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[PatientId]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[PatientId]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[OrganisationId]"
+                      cachedDataType="i4"
+                      cachedName="OrganisationId"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[OrganisationId]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[OrganisationId]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[SiteId]"
+                      cachedDataType="i4"
+                      cachedName="SiteId"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SiteId]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[SiteId]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[AdmissionNumber]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="AdmissionNumber"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionNumber]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionNumber]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[PatientPathwayId]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="30"
+                      cachedName="PatientPathwayId"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[PatientPathwayId]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[PatientPathwayId]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[AdmissionDateTime]"
+                      cachedDataType="dbTimeStamp2"
+                      cachedName="AdmissionDateTime"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionDateTime]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionDateTime]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[DischargeDateTime]"
+                      cachedDataType="dbTimeStamp2"
+                      cachedName="DischargeDateTime"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[DischargeDateTime]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[DischargeDateTime]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[AdmissionMethodCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="AdmissionMethodCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionMethodCode]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionMethodCode]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[AdmissionSourceCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="AdmissionSourceCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionSourceCode]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionSourceCode]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[PatientClassificationCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="PatientClassificationCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[PatientClassificationCode]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[PatientClassificationCode]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[IntendedManagementCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="IntendedManagementCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[IntendedManagementCode]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[IntendedManagementCode]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[DischargeMethodCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="DischargeMethodCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[DischargeMethodCode]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[DischargeMethodCode]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[DischargeDestinationCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="DischargeDestinationCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[DischargeDestinationCode]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[DischargeDestinationCode]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[AdministrativeCategoryCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="AdministrativeCategoryCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdministrativeCategoryCode]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdministrativeCategoryCode]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[LegalStatusCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="LegalStatusCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[LegalStatusCode]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[LegalStatusCode]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[AdmissionStatusCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="AdmissionStatusCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionStatusCode]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionStatusCode]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[RecordCreatedAt]"
+                      cachedDataType="dbTimeStamp2"
+                      cachedName="RecordCreatedAt"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[RecordCreatedAt]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[RecordCreatedAt]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[RecordUpdatedAt]"
+                      cachedDataType="dbTimeStamp2"
+                      cachedName="RecordUpdatedAt"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[RecordUpdatedAt]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[RecordUpdatedAt]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[IsDeleted]"
+                      cachedDataType="bool"
+                      cachedName="IsDeleted"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[IsDeleted]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[IsDeleted]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[SourceRowNumber]"
+                      cachedDataType="i8"
+                      cachedName="SourceRowNumber"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SourceRowNumber]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[SourceRowNumber]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[SourceRecordIdentifier]"
+                      cachedDataType="wstr"
+                      cachedLength="200"
+                      cachedName="SourceRecordIdentifier"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SourceRecordIdentifier]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[SourceRecordIdentifier]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[ExtractedAt]"
+                      cachedDataType="dbTimeStamp2"
+                      cachedName="ExtractedAt"
+                      cachedScale="7"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[ExtractedAt]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[ExtractedAt]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[BatchId]"
+                      cachedDataType="i8"
+                      cachedName="BatchId"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[BatchId]"
+                      lineageId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output].Columns[BatchId]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[PackageExecutionId]"
+                      cachedDataType="i8"
+                      cachedName="PackageExecutionId"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[PackageExecutionId]"
+                      lineageId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output].Columns[PackageExecutionId]" />
+                    <inputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].Columns[SourceSystemCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="SourceSystemCode"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SourceSystemCode]"
+                      lineageId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output].Columns[SourceSystemCode]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[LandingAdmissionId]"
+                      dataType="i8"
+                      name="LandingAdmissionId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[BatchId]"
+                      dataType="i8"
+                      name="BatchId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[PackageExecutionId]"
+                      dataType="i8"
+                      name="PackageExecutionId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SourceSystemCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="SourceSystemCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SourceFileName]"
+                      dataType="wstr"
+                      length="260"
+                      name="SourceFileName" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SourceRowNumber]"
+                      dataType="i8"
+                      name="SourceRowNumber" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SourceRecordIdentifier]"
+                      dataType="wstr"
+                      length="200"
+                      name="SourceRecordIdentifier" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionId]"
+                      dataType="i4"
+                      name="AdmissionId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[PatientId]"
+                      dataType="i4"
+                      name="PatientId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[OrganisationId]"
+                      dataType="i4"
+                      name="OrganisationId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SiteId]"
+                      dataType="i4"
+                      name="SiteId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="AdmissionNumber" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[PatientPathwayId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="PatientPathwayId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionDateTime]"
+                      dataType="dbTimeStamp2"
+                      name="AdmissionDateTime" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[DischargeDateTime]"
+                      dataType="dbTimeStamp2"
+                      name="DischargeDateTime" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionMethodCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="AdmissionMethodCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionSourceCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="AdmissionSourceCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[PatientClassificationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="PatientClassificationCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[IntendedManagementCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="IntendedManagementCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[DischargeMethodCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="DischargeMethodCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[DischargeDestinationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="DischargeDestinationCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdministrativeCategoryCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="AdministrativeCategoryCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[LegalStatusCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="LegalStatusCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[AdmissionStatusCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="AdmissionStatusCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[RecordCreatedAt]"
+                      dataType="dbTimeStamp2"
+                      name="RecordCreatedAt" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[RecordUpdatedAt]"
+                      dataType="dbTimeStamp2"
+                      name="RecordUpdatedAt" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[IsDeleted]"
+                      dataType="bool"
+                      name="IsDeleted" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[ExtractedAt]"
+                      dataType="dbTimeStamp2"
+                      name="ExtractedAt"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[ReceivedAt]"
+                      dataType="dbTimeStamp2"
+                      name="ReceivedAt"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[LandedAt]"
+                      dataType="dbTimeStamp2"
+                      name="LandedAt"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input].ExternalColumns[SourceRowHash]"
+                      dataType="bytes"
+                      length="32"
+                      name="SourceRowHash" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="SRC_Aegis_Source_Admissions"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+    [AdmissionId],
+    [PatientId],
+    [OrganisationId],
+    [SiteId],
+    [AdmissionNumber],
+    [PatientPathwayId],
+    [AdmissionDateTime],
+    [DischargeDateTime],
+    [AdmissionMethodCode],
+    [AdmissionSourceCode],
+    [PatientClassificationCode],
+    [IntendedManagementCode],
+    [DischargeMethodCode],
+    [DischargeDestinationCode],
+    [AdministrativeCategoryCode],
+    [LegalStatusCode],
+    [AdmissionStatusCode],
+    [RecordCreatedAt],
+    [RecordUpdatedAt],
+    [IsDeleted],
+    CONVERT
+    (
+        BIGINT,
+        ROW_NUMBER() OVER
+        (
+            ORDER BY [AdmissionId]
+        )
+    ) AS [SourceRowNumber],
+    CONVERT
+    (
+        NVARCHAR(200),
+        [AdmissionId]
+    ) AS [SourceRecordIdentifier],
+    CONVERT(DATETIME2(3), SYSUTCDATETIME()) AS [ExtractedAt]
+FROM [pas].[Admission]
+ORDER BY [AdmissionId];</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Connections[OleDbConnection]"
+                  connectionManagerID="{B9E92EF9-C613-46C5-8464-F17F2BA29FA9}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[CM_Aegis_Source]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionId]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionId]"
+                      name="AdmissionId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[PatientId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[PatientId]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[PatientId]"
+                      name="PatientId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[OrganisationId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[OrganisationId]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[OrganisationId]"
+                      name="OrganisationId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[SiteId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[SiteId]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[SiteId]"
+                      name="SiteId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionNumber]"
+                      length="30"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionNumber]"
+                      name="AdmissionNumber"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[PatientPathwayId]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[PatientPathwayId]"
+                      length="30"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[PatientPathwayId]"
+                      name="PatientPathwayId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionDateTime]"
+                      dataType="dbTimeStamp2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionDateTime]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionDateTime]"
+                      name="AdmissionDateTime"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[DischargeDateTime]"
+                      dataType="dbTimeStamp2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[DischargeDateTime]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[DischargeDateTime]"
+                      name="DischargeDateTime"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionMethodCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionMethodCode]"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionMethodCode]"
+                      name="AdmissionMethodCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionSourceCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionSourceCode]"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionSourceCode]"
+                      name="AdmissionSourceCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[PatientClassificationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[PatientClassificationCode]"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[PatientClassificationCode]"
+                      name="PatientClassificationCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[IntendedManagementCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[IntendedManagementCode]"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[IntendedManagementCode]"
+                      name="IntendedManagementCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[DischargeMethodCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[DischargeMethodCode]"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[DischargeMethodCode]"
+                      name="DischargeMethodCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[DischargeDestinationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[DischargeDestinationCode]"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[DischargeDestinationCode]"
+                      name="DischargeDestinationCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdministrativeCategoryCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdministrativeCategoryCode]"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdministrativeCategoryCode]"
+                      name="AdministrativeCategoryCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[LegalStatusCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[LegalStatusCode]"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[LegalStatusCode]"
+                      name="LegalStatusCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionStatusCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionStatusCode]"
+                      length="20"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[AdmissionStatusCode]"
+                      name="AdmissionStatusCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[RecordCreatedAt]"
+                      dataType="dbTimeStamp2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[RecordCreatedAt]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[RecordCreatedAt]"
+                      name="RecordCreatedAt"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[RecordUpdatedAt]"
+                      dataType="dbTimeStamp2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[RecordUpdatedAt]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[RecordUpdatedAt]"
+                      name="RecordUpdatedAt"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[IsDeleted]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[IsDeleted]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[IsDeleted]"
+                      name="IsDeleted"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[SourceRowNumber]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[SourceRowNumber]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[SourceRowNumber]"
+                      name="SourceRowNumber"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[SourceRecordIdentifier]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[SourceRecordIdentifier]"
+                      length="200"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[SourceRecordIdentifier]"
+                      name="SourceRecordIdentifier"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[ExtractedAt]"
+                      dataType="dbTimeStamp2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[ExtractedAt]"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].Columns[ExtractedAt]"
+                      name="ExtractedAt"
+                      scale="7"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionId]"
+                      dataType="i4"
+                      name="AdmissionId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[PatientId]"
+                      dataType="i4"
+                      name="PatientId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[OrganisationId]"
+                      dataType="i4"
+                      name="OrganisationId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[SiteId]"
+                      dataType="i4"
+                      name="SiteId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="AdmissionNumber" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[PatientPathwayId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      name="PatientPathwayId" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionDateTime]"
+                      dataType="dbTimeStamp2"
+                      name="AdmissionDateTime" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[DischargeDateTime]"
+                      dataType="dbTimeStamp2"
+                      name="DischargeDateTime" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionMethodCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="AdmissionMethodCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionSourceCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="AdmissionSourceCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[PatientClassificationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="PatientClassificationCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[IntendedManagementCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="IntendedManagementCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[DischargeMethodCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="DischargeMethodCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[DischargeDestinationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="DischargeDestinationCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdministrativeCategoryCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="AdministrativeCategoryCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[LegalStatusCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="LegalStatusCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[AdmissionStatusCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="AdmissionStatusCode" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[RecordCreatedAt]"
+                      dataType="dbTimeStamp2"
+                      name="RecordCreatedAt" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[RecordUpdatedAt]"
+                      dataType="dbTimeStamp2"
+                      name="RecordUpdatedAt" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[IsDeleted]"
+                      dataType="bool"
+                      name="IsDeleted" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[SourceRowNumber]"
+                      dataType="i8"
+                      name="SourceRowNumber" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[SourceRecordIdentifier]"
+                      dataType="wstr"
+                      length="200"
+                      name="SourceRecordIdentifier" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output].ExternalColumns[ExtractedAt]"
+                      dataType="dbTimeStamp2"
+                      name="ExtractedAt"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionId]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionId]"
+                      name="AdmissionId" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[PatientId]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[PatientId]"
+                      name="PatientId" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[OrganisationId]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[OrganisationId]"
+                      name="OrganisationId" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[SiteId]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[SiteId]"
+                      name="SiteId" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionNumber]"
+                      name="AdmissionNumber" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[PatientPathwayId]"
+                      codePage="1252"
+                      dataType="str"
+                      length="30"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[PatientPathwayId]"
+                      name="PatientPathwayId" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionDateTime]"
+                      dataType="dbTimeStamp2"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionDateTime]"
+                      name="AdmissionDateTime" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[DischargeDateTime]"
+                      dataType="dbTimeStamp2"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[DischargeDateTime]"
+                      name="DischargeDateTime" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionMethodCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionMethodCode]"
+                      name="AdmissionMethodCode" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionSourceCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionSourceCode]"
+                      name="AdmissionSourceCode" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[PatientClassificationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[PatientClassificationCode]"
+                      name="PatientClassificationCode" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[IntendedManagementCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[IntendedManagementCode]"
+                      name="IntendedManagementCode" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[DischargeMethodCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[DischargeMethodCode]"
+                      name="DischargeMethodCode" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[DischargeDestinationCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[DischargeDestinationCode]"
+                      name="DischargeDestinationCode" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdministrativeCategoryCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdministrativeCategoryCode]"
+                      name="AdministrativeCategoryCode" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[LegalStatusCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[LegalStatusCode]"
+                      name="LegalStatusCode" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionStatusCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[AdmissionStatusCode]"
+                      name="AdmissionStatusCode" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[RecordCreatedAt]"
+                      dataType="dbTimeStamp2"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[RecordCreatedAt]"
+                      name="RecordCreatedAt" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[RecordUpdatedAt]"
+                      dataType="dbTimeStamp2"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[RecordUpdatedAt]"
+                      name="RecordUpdatedAt" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[IsDeleted]"
+                      dataType="bool"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[IsDeleted]"
+                      name="IsDeleted" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[SourceRowNumber]"
+                      dataType="i8"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[SourceRowNumber]"
+                      name="SourceRowNumber" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[SourceRecordIdentifier]"
+                      dataType="wstr"
+                      length="200"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[SourceRecordIdentifier]"
+                      name="SourceRecordIdentifier" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[ExtractedAt]"
+                      dataType="dbTimeStamp2"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[ExtractedAt]"
+                      name="ExtractedAt"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DFT_Land_Admissions.Paths[Derived Column Output]"
+              endId="Package\DFT_Land_Admissions\CNT_Landed_Admissions.Inputs[Row Count Input 1]"
+              name="Derived Column Output"
+              startId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT_Land_Admissions.Paths[OLE DB Source Output]"
+              endId="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\DFT_Land_Admissions.Paths[Row Count Output 1]"
+              endId="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission.Inputs[OLE DB Destination Input]"
+              name="Row Count Output 1"
+              startId="Package\DFT_Land_Admissions\CNT_Landed_Admissions.Outputs[Row Count Output 1]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL_Classify_Staging_Admissions"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{362E3EA5-1400-48E1-A301-4A1D09F277D3}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL_Classify_Staging_Admissions"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{F6208311-4AF5-4F7F-9F74-B83868D8B68C}"
+          SQLTask:SqlStatementSource="UPDATE [Staging]&#xA;SET&#xA;    [PatientLookupStatus] =&#xA;        CASE&#xA;            WHEN [Patient].[PatientId] IS NOT NULL THEN 'MATCHED'&#xA;            ELSE 'NOT_FOUND'&#xA;        END,&#xA;&#xA;    [OrganisationLookupStatus] =&#xA;        CASE&#xA;            WHEN [Organisation].[OrganisationId] IS NOT NULL THEN 'MATCHED'&#xA;            ELSE 'NOT_FOUND'&#xA;        END,&#xA;&#xA;    [SiteLookupStatus] =&#xA;        CASE&#xA;            WHEN [Site].[SiteId] IS NOT NULL&#xA;             AND [Site].[OrganisationId] = [Staging].[OrganisationId]&#xA;            THEN 'MATCHED'&#xA;            ELSE 'NOT_FOUND'&#xA;        END,&#xA;&#xA;    [ValidationFailureCount] =&#xA;          CASE&#xA;              WHEN [Staging].[DischargeDateTime] IS NOT NULL&#xA;               AND [Staging].[AdmissionDateTime] IS NOT NULL&#xA;               AND [Staging].[DischargeDateTime] &lt; [Staging].[AdmissionDateTime]&#xA;              THEN 1 ELSE 0&#xA;          END&#xA;        + CASE&#xA;              WHEN [Staging].[AdmissionStatusCode] = 'OPEN'&#xA;               AND&#xA;               (&#xA;                    [Staging].[DischargeDateTime] IS NOT NULL&#xA;                 OR [Staging].[DischargeMethodCode] IS NOT NULL&#xA;                 OR [Staging].[DischargeDestinationCode] IS NOT NULL&#xA;               )&#xA;              THEN 1 ELSE 0&#xA;          END&#xA;        + CASE&#xA;              WHEN [Staging].[AdmissionStatusCode] = 'DISCHARGED'&#xA;               AND&#xA;               (&#xA;                    [Staging].[DischargeDateTime] IS NULL&#xA;                 OR [Staging].[DischargeMethodCode] IS NULL&#xA;                 OR [Staging].[DischargeDestinationCode] IS NULL&#xA;               )&#xA;              THEN 1 ELSE 0&#xA;          END&#xA;        + CASE&#xA;              WHEN [Patient].[PatientId] IS NULL&#xA;              THEN 1 ELSE 0&#xA;          END&#xA;        + CASE&#xA;              WHEN [Organisation].[OrganisationId] IS NULL&#xA;                OR [Site].[SiteId] IS NULL&#xA;                OR [Site].[OrganisationId] &lt;&gt; [Staging].[OrganisationId]&#xA;              THEN 1 ELSE 0&#xA;          END,&#xA;&#xA;    [ValidationStatus] =&#xA;        CASE&#xA;            WHEN&#xA;            (&#xA;                  CASE&#xA;                      WHEN [Staging].[DischargeDateTime] IS NOT NULL&#xA;                       AND [Staging].[AdmissionDateTime] IS NOT NULL&#xA;                       AND [Staging].[DischargeDateTime] &lt; [Staging].[AdmissionDateTime]&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Staging].[AdmissionStatusCode] = 'OPEN'&#xA;                       AND&#xA;                       (&#xA;                            [Staging].[DischargeDateTime] IS NOT NULL&#xA;                         OR [Staging].[DischargeMethodCode] IS NOT NULL&#xA;                         OR [Staging].[DischargeDestinationCode] IS NOT NULL&#xA;                       )&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Staging].[AdmissionStatusCode] = 'DISCHARGED'&#xA;                       AND&#xA;                       (&#xA;                            [Staging].[DischargeDateTime] IS NULL&#xA;                         OR [Staging].[DischargeMethodCode] IS NULL&#xA;                         OR [Staging].[DischargeDestinationCode] IS NULL&#xA;                       )&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Patient].[PatientId] IS NULL&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Organisation].[OrganisationId] IS NULL&#xA;                        OR [Site].[SiteId] IS NULL&#xA;                        OR [Site].[OrganisationId] &lt;&gt; [Staging].[OrganisationId]&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;            ) = 0&#xA;            THEN 'VALID'&#xA;            ELSE 'INVALID'&#xA;        END,&#xA;&#xA;    [ProcessingOutcome] =&#xA;        CASE&#xA;            WHEN&#xA;            (&#xA;                  CASE&#xA;                      WHEN [Staging].[DischargeDateTime] IS NOT NULL&#xA;                       AND [Staging].[AdmissionDateTime] IS NOT NULL&#xA;                       AND [Staging].[DischargeDateTime] &lt; [Staging].[AdmissionDateTime]&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Staging].[AdmissionStatusCode] = 'OPEN'&#xA;                       AND&#xA;                       (&#xA;                            [Staging].[DischargeDateTime] IS NOT NULL&#xA;                         OR [Staging].[DischargeMethodCode] IS NOT NULL&#xA;                         OR [Staging].[DischargeDestinationCode] IS NOT NULL&#xA;                       )&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Staging].[AdmissionStatusCode] = 'DISCHARGED'&#xA;                       AND&#xA;                       (&#xA;                            [Staging].[DischargeDateTime] IS NULL&#xA;                         OR [Staging].[DischargeMethodCode] IS NULL&#xA;                         OR [Staging].[DischargeDestinationCode] IS NULL&#xA;                       )&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Patient].[PatientId] IS NULL&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Organisation].[OrganisationId] IS NULL&#xA;                        OR [Site].[SiteId] IS NULL&#xA;                        OR [Site].[OrganisationId] &lt;&gt; [Staging].[OrganisationId]&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;            ) = 0&#xA;            THEN 'ACCEPTED'&#xA;            ELSE 'QUARANTINED'&#xA;        END,&#xA;&#xA;    [AcceptedAt] =&#xA;        CASE&#xA;            WHEN&#xA;            (&#xA;                  CASE&#xA;                      WHEN [Staging].[DischargeDateTime] IS NOT NULL&#xA;                       AND [Staging].[AdmissionDateTime] IS NOT NULL&#xA;                       AND [Staging].[DischargeDateTime] &lt; [Staging].[AdmissionDateTime]&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Staging].[AdmissionStatusCode] = 'OPEN'&#xA;                       AND&#xA;                       (&#xA;                            [Staging].[DischargeDateTime] IS NOT NULL&#xA;                         OR [Staging].[DischargeMethodCode] IS NOT NULL&#xA;                         OR [Staging].[DischargeDestinationCode] IS NOT NULL&#xA;                       )&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Staging].[AdmissionStatusCode] = 'DISCHARGED'&#xA;                       AND&#xA;                       (&#xA;                            [Staging].[DischargeDateTime] IS NULL&#xA;                         OR [Staging].[DischargeMethodCode] IS NULL&#xA;                         OR [Staging].[DischargeDestinationCode] IS NULL&#xA;                       )&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Patient].[PatientId] IS NULL&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;                + CASE&#xA;                      WHEN [Organisation].[OrganisationId] IS NULL&#xA;                        OR [Site].[SiteId] IS NULL&#xA;                        OR [Site].[OrganisationId] &lt;&gt; [Staging].[OrganisationId]&#xA;                      THEN 1 ELSE 0&#xA;                  END&#xA;            ) = 0&#xA;            THEN SYSUTCDATETIME()&#xA;            ELSE NULL&#xA;        END,&#xA;&#xA;    [ClassifiedAt] = SYSUTCDATETIME(),&#xA;    [UpdatedAt] = SYSUTCDATETIME()&#xA;&#xA;FROM [stg].[Admission] AS [Staging]&#xA;&#xA;LEFT JOIN [Aegis_Source].[pas].[Patient] AS [Patient]&#xA;    ON [Patient].[PatientId] = [Staging].[PatientId]&#xA;&#xA;LEFT JOIN [Aegis_Source].[ref].[Organisation] AS [Organisation]&#xA;    ON [Organisation].[OrganisationId] = [Staging].[OrganisationId]&#xA;&#xA;LEFT JOIN [Aegis_Source].[ref].[Site] AS [Site]&#xA;    ON [Site].[SiteId] = [Staging].[SiteId]&#xA;&#xA;WHERE [Staging].[BatchId] = ?&#xA;  AND [Staging].[PackageExecutionId] = ?&#xA;  AND [Staging].[ValidationStatus] = 'NOT_VALIDATED';&#xA;&#xA;IF @@ROWCOUNT = 0&#xA;BEGIN&#xA;    THROW 51000, 'No admission staging rows were classified.', 1;&#xA;END;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="User::PackageExecutionId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL_Finalise_Admission_Batch"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{84DABC95-5553-4BA4-BAC2-7A9735754F59}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL_Finalise_Admission_Batch"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9A90D54D-FEEE-4092-A847-BF2DB78C3E88}"
+          SQLTask:SqlStatementSource="DECLARE @BatchId BIGINT = ?;&#xA;DECLARE @PackageExecutionId BIGINT = ?;&#xA;&#xA;DECLARE @SourceRowCount BIGINT;&#xA;DECLARE @LandedRowCount BIGINT;&#xA;DECLARE @StagingRowCount BIGINT;&#xA;DECLARE @OutcomeRowCount BIGINT;&#xA;DECLARE @AcceptedRowCount BIGINT;&#xA;DECLARE @RejectedRowCount BIGINT;&#xA;DECLARE @QuarantinedRowCount BIGINT;&#xA;DECLARE @WarningRowCount BIGINT;&#xA;DECLARE @DuplicateRowCount BIGINT;&#xA;DECLARE @ExceptionCount BIGINT;&#xA;DECLARE @PhysicalQuarantineRowCount BIGINT;&#xA;&#xA;SELECT&#xA;    @SourceRowCount = [SourceRowCount],&#xA;    @LandedRowCount = [LandedRowCount]&#xA;FROM [audit].[PackageExecution]&#xA;WHERE [PackageExecutionId] = @PackageExecutionId&#xA;  AND [BatchId] = @BatchId;&#xA;&#xA;SELECT&#xA;    @StagingRowCount = COUNT_BIG(*),&#xA;    @AcceptedRowCount =&#xA;        SUM(CASE WHEN [ProcessingOutcome] = 'ACCEPTED' THEN 1 ELSE 0 END),&#xA;    @RejectedRowCount =&#xA;        SUM(CASE WHEN [ProcessingOutcome] = 'REJECTED' THEN 1 ELSE 0 END),&#xA;    @QuarantinedRowCount =&#xA;        SUM(CASE WHEN [ProcessingOutcome] = 'QUARANTINED' THEN 1 ELSE 0 END),&#xA;    @WarningRowCount =&#xA;        SUM(CASE WHEN [ProcessingOutcome] = 'WARNING' THEN 1 ELSE 0 END),&#xA;    @DuplicateRowCount =&#xA;        SUM(CASE WHEN [ProcessingOutcome] = 'DUPLICATE' THEN 1 ELSE 0 END)&#xA;FROM [Aegis_Staging].[stg].[Admission]&#xA;WHERE [BatchId] = @BatchId&#xA;  AND [PackageExecutionId] = @PackageExecutionId;&#xA;&#xA;SELECT&#xA;    @OutcomeRowCount = COUNT_BIG(*)&#xA;FROM [audit].[RecordOutcome]&#xA;WHERE [BatchId] = @BatchId&#xA;  AND [PackageExecutionId] = @PackageExecutionId&#xA;  AND [SourceDomain] = 'PAS_ACTIVITY'&#xA;  AND [SourceObject] = 'Admission';&#xA;&#xA;SELECT&#xA;    @ExceptionCount = COUNT_BIG(*)&#xA;FROM [dq].[DataQualityException]&#xA;WHERE [BatchId] = @BatchId&#xA;  AND [PackageExecutionId] = @PackageExecutionId&#xA;  AND [SourceDomain] = 'PAS_ACTIVITY'&#xA;  AND [SourceObject] = 'Admission';&#xA;&#xA;SELECT&#xA;    @PhysicalQuarantineRowCount = COUNT_BIG(*)&#xA;FROM [Aegis_Staging].[quarantine].[Admission]&#xA;WHERE [BatchId] = @BatchId&#xA;  AND [PackageExecutionId] = @PackageExecutionId;&#xA;&#xA;SET @AcceptedRowCount = COALESCE(@AcceptedRowCount, 0);&#xA;SET @RejectedRowCount = COALESCE(@RejectedRowCount, 0);&#xA;SET @QuarantinedRowCount = COALESCE(@QuarantinedRowCount, 0);&#xA;SET @WarningRowCount = COALESCE(@WarningRowCount, 0);&#xA;SET @DuplicateRowCount = COALESCE(@DuplicateRowCount, 0);&#xA;SET @ExceptionCount = COALESCE(@ExceptionCount, 0);&#xA;SET @PhysicalQuarantineRowCount = COALESCE(@PhysicalQuarantineRowCount, 0);&#xA;&#xA;IF @SourceRowCount IS NULL&#xA;   OR @LandedRowCount IS NULL&#xA;BEGIN&#xA;    THROW 51000, 'Source or landing counts have not been recorded.', 1;&#xA;END;&#xA;&#xA;IF @SourceRowCount &lt;&gt; @LandedRowCount&#xA;BEGIN&#xA;    THROW 51000, 'Source and landing counts do not reconcile.', 1;&#xA;END;&#xA;&#xA;IF @LandedRowCount &lt;&gt; @StagingRowCount&#xA;BEGIN&#xA;    THROW 51000, 'Landing and staging counts do not reconcile.', 1;&#xA;END;&#xA;&#xA;IF @StagingRowCount &lt;&gt; @OutcomeRowCount&#xA;BEGIN&#xA;    THROW 51000, 'Staging rows and principal record outcomes do not reconcile.', 1;&#xA;END;&#xA;&#xA;IF @OutcomeRowCount &lt;&gt;&#xA;   (&#xA;       @AcceptedRowCount&#xA;       + @RejectedRowCount&#xA;       + @QuarantinedRowCount&#xA;       + @WarningRowCount&#xA;       + @DuplicateRowCount&#xA;   )&#xA;BEGIN&#xA;    THROW 51000, 'Principal record outcome totals do not reconcile.', 1;&#xA;END;&#xA;&#xA;IF @QuarantinedRowCount &lt;&gt; @PhysicalQuarantineRowCount&#xA;BEGIN&#xA;    THROW 51000, 'Quarantined outcomes and physical quarantine rows do not reconcile.', 1;&#xA;END;&#xA;&#xA;IF @QuarantinedRowCount &gt; 0&#xA;   AND @ExceptionCount &lt; @QuarantinedRowCount&#xA;BEGIN&#xA;    THROW 51000, 'One or more quarantined admissions have no data-quality exception.', 1;&#xA;END;&#xA;&#xA;UPDATE [audit].[PackageExecution]&#xA;SET&#xA;    [AcceptedRowCount] = @AcceptedRowCount,&#xA;    [RejectedRowCount] = @RejectedRowCount,&#xA;    [QuarantinedRowCount] = @QuarantinedRowCount,&#xA;    [WarningRowCount] = @WarningRowCount,&#xA;    [DuplicateRowCount] = @DuplicateRowCount,&#xA;    [ExecutionStatus] =&#xA;        CASE&#xA;            WHEN @RejectedRowCount &gt; 0&#xA;              OR @QuarantinedRowCount &gt; 0&#xA;              OR @WarningRowCount &gt; 0&#xA;              OR @DuplicateRowCount &gt; 0&#xA;            THEN 'SUCCEEDED_WITH_EXCEPTIONS'&#xA;            ELSE 'SUCCEEDED'&#xA;        END,&#xA;    [CompletedAt] = SYSUTCDATETIME(),&#xA;    [UpdatedAt] = SYSUTCDATETIME()&#xA;WHERE [PackageExecutionId] = @PackageExecutionId&#xA;  AND [BatchId] = @BatchId&#xA;  AND [ExecutionStatus] = 'STARTED';&#xA;&#xA;IF @@ROWCOUNT &lt;&gt; 1&#xA;BEGIN&#xA;    THROW 51000, 'The package-execution audit row could not be finalised.', 1;&#xA;END;&#xA;&#xA;UPDATE [audit].[Batch]&#xA;SET&#xA;    [AcceptedRowCount] = @AcceptedRowCount,&#xA;    [RejectedRowCount] = @RejectedRowCount,&#xA;    [QuarantinedRowCount] = @QuarantinedRowCount,&#xA;    [WarningRowCount] = @WarningRowCount,&#xA;    [DuplicateRowCount] = @DuplicateRowCount,&#xA;    [BatchStatus] =&#xA;        CASE&#xA;            WHEN @RejectedRowCount &gt; 0&#xA;              OR @QuarantinedRowCount &gt; 0&#xA;              OR @WarningRowCount &gt; 0&#xA;              OR @DuplicateRowCount &gt; 0&#xA;            THEN 'COMPLETED_WITH_EXCEPTIONS'&#xA;            ELSE 'COMPLETED'&#xA;        END,&#xA;    [CompletedAt] = SYSUTCDATETIME(),&#xA;    [UpdatedAt] = SYSUTCDATETIME()&#xA;WHERE [BatchId] = @BatchId&#xA;  AND [BatchStatus] = 'PROCESSING';&#xA;&#xA;IF @@ROWCOUNT &lt;&gt; 1&#xA;BEGIN&#xA;    THROW 51000, 'The batch audit row could not be finalised.', 1;&#xA;END;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="User::PackageExecutionId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL_Finalise_Landing_Audit"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{9CFBDFFD-2A86-4319-B4CB-6AA631D4889B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL_Finalise_Landing_Audit"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9A90D54D-FEEE-4092-A847-BF2DB78C3E88}"
+          SQLTask:SqlStatementSource="DECLARE @ActualLandedRowCount BIGINT;&#xA;&#xA;SELECT&#xA;    @ActualLandedRowCount = COUNT_BIG(*)&#xA;FROM [Aegis_Staging].[landing].[Admission]&#xA;WHERE [BatchId] = ?&#xA;  AND [PackageExecutionId] = ?;&#xA;&#xA;IF @ActualLandedRowCount &lt;&gt; ?&#xA;BEGIN&#xA;    THROW 51000, 'The admission landing row count does not match the SSIS row-count variable.', 1;&#xA;END;&#xA;&#xA;UPDATE [audit].[PackageExecution]&#xA;SET&#xA;    [SourceRowCount] = ?,&#xA;    [LandedRowCount] = @ActualLandedRowCount,&#xA;    [UpdatedAt] = SYSUTCDATETIME()&#xA;WHERE [PackageExecutionId] = ?&#xA;  AND [BatchId] = ?&#xA;  AND [ExecutionStatus] = 'STARTED';&#xA;&#xA;IF @@ROWCOUNT &lt;&gt; 1&#xA;BEGIN&#xA;    THROW 51000, 'The Aegis package-execution audit row could not be updated after landing.', 1;&#xA;END;&#xA;&#xA;UPDATE [audit].[Batch]&#xA;SET&#xA;    [SourceRowCount] = ?,&#xA;    [LandedRowCount] = @ActualLandedRowCount,&#xA;    [UpdatedAt] = SYSUTCDATETIME()&#xA;WHERE [BatchId] = ?&#xA;  AND [BatchStatus] = 'PROCESSING';&#xA;&#xA;IF @@ROWCOUNT &lt;&gt; 1&#xA;BEGIN&#xA;    THROW 51000, 'The Aegis batch audit row could not be updated after landing.', 1;&#xA;END;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="User::PackageExecutionId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="2"
+            SQLTask:DtsVariableName="User::LandedRowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="3"
+            SQLTask:DtsVariableName="User::LandedRowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="4"
+            SQLTask:DtsVariableName="User::PackageExecutionId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="5"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="6"
+            SQLTask:DtsVariableName="User::LandedRowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="7"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL_Load_Quarantined_Admissions"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{71C88AF5-476B-40F0-9170-8AE782B55507}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL_Load_Quarantined_Admissions"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{F6208311-4AF5-4F7F-9F74-B83868D8B68C}"
+          SQLTask:SqlStatementSource="INSERT INTO [quarantine].[Admission]&#xA;(&#xA;    [LandingAdmissionId],&#xA;    [StagingAdmissionId],&#xA;    [BatchId],&#xA;    [PackageExecutionId],&#xA;    [SourceSystemCode],&#xA;    [SourceFileName],&#xA;    [SourceRowNumber],&#xA;    [SourceRecordIdentifier],&#xA;    [AdmissionId],&#xA;    [PatientId],&#xA;    [OrganisationId],&#xA;    [SiteId],&#xA;    [AdmissionNumber],&#xA;    [PatientPathwayId],&#xA;    [AdmissionDateTime],&#xA;    [DischargeDateTime],&#xA;    [AdmissionMethodCode],&#xA;    [AdmissionSourceCode],&#xA;    [PatientClassificationCode],&#xA;    [IntendedManagementCode],&#xA;    [DischargeMethodCode],&#xA;    [DischargeDestinationCode],&#xA;    [AdministrativeCategoryCode],&#xA;    [LegalStatusCode],&#xA;    [AdmissionStatusCode],&#xA;    [RecordCreatedAt],&#xA;    [RecordUpdatedAt],&#xA;    [IsDeleted],&#xA;    [QuarantineReasonCode],&#xA;    [QuarantineReasonDetail],&#xA;    [ValidationFailureCount],&#xA;    [QuarantineStatus],&#xA;    [QuarantinedAt]&#xA;)&#xA;SELECT&#xA;    [Staging].[LandingAdmissionId],&#xA;    [Staging].[StagingAdmissionId],&#xA;    [Staging].[BatchId],&#xA;    [Staging].[PackageExecutionId],&#xA;    [Staging].[SourceSystemCode],&#xA;    [Landing].[SourceFileName],&#xA;    [Staging].[SourceRowNumber],&#xA;    [Staging].[SourceRecordIdentifier],&#xA;    [Staging].[AdmissionId],&#xA;    [Staging].[PatientId],&#xA;    [Staging].[OrganisationId],&#xA;    [Staging].[SiteId],&#xA;    [Staging].[AdmissionNumber],&#xA;    [Staging].[PatientPathwayId],&#xA;    [Staging].[AdmissionDateTime],&#xA;    [Staging].[DischargeDateTime],&#xA;    [Staging].[AdmissionMethodCode],&#xA;    [Staging].[AdmissionSourceCode],&#xA;    [Staging].[PatientClassificationCode],&#xA;    [Staging].[IntendedManagementCode],&#xA;    [Staging].[DischargeMethodCode],&#xA;    [Staging].[DischargeDestinationCode],&#xA;    [Staging].[AdministrativeCategoryCode],&#xA;    [Staging].[LegalStatusCode],&#xA;    [Staging].[AdmissionStatusCode],&#xA;    [Staging].[RecordCreatedAt],&#xA;    [Staging].[RecordUpdatedAt],&#xA;    [Staging].[IsDeleted],&#xA;&#xA;    CASE&#xA;        WHEN [Staging].[DischargeDateTime] IS NOT NULL&#xA;         AND [Staging].[AdmissionDateTime] IS NOT NULL&#xA;         AND [Staging].[DischargeDateTime] &lt; [Staging].[AdmissionDateTime]&#xA;        THEN 'DQ-ADM-001'&#xA;&#xA;        WHEN [Staging].[AdmissionStatusCode] = 'OPEN'&#xA;         AND&#xA;         (&#xA;              [Staging].[DischargeDateTime] IS NOT NULL&#xA;           OR [Staging].[DischargeMethodCode] IS NOT NULL&#xA;           OR [Staging].[DischargeDestinationCode] IS NOT NULL&#xA;         )&#xA;        THEN 'DQ-ADM-002'&#xA;&#xA;        WHEN [Staging].[AdmissionStatusCode] = 'DISCHARGED'&#xA;         AND&#xA;         (&#xA;              [Staging].[DischargeDateTime] IS NULL&#xA;           OR [Staging].[DischargeMethodCode] IS NULL&#xA;           OR [Staging].[DischargeDestinationCode] IS NULL&#xA;         )&#xA;        THEN 'DQ-ADM-003'&#xA;&#xA;        WHEN [Staging].[PatientLookupStatus] = 'NOT_FOUND'&#xA;        THEN 'DQ-ADM-004'&#xA;&#xA;        WHEN [Staging].[OrganisationLookupStatus] = 'NOT_FOUND'&#xA;          OR [Staging].[SiteLookupStatus] = 'NOT_FOUND'&#xA;        THEN 'DQ-ADM-005'&#xA;&#xA;        ELSE 'VALIDATION_FAILURE'&#xA;    END,&#xA;&#xA;    CASE&#xA;        WHEN [Staging].[DischargeDateTime] IS NOT NULL&#xA;         AND [Staging].[AdmissionDateTime] IS NOT NULL&#xA;         AND [Staging].[DischargeDateTime] &lt; [Staging].[AdmissionDateTime]&#xA;        THEN N'Discharge date and time occurs before admission date and time.'&#xA;&#xA;        WHEN [Staging].[AdmissionStatusCode] = 'OPEN'&#xA;         AND&#xA;         (&#xA;              [Staging].[DischargeDateTime] IS NOT NULL&#xA;           OR [Staging].[DischargeMethodCode] IS NOT NULL&#xA;           OR [Staging].[DischargeDestinationCode] IS NOT NULL&#xA;         )&#xA;        THEN N'Open admission contains one or more discharge values.'&#xA;&#xA;        WHEN [Staging].[AdmissionStatusCode] = 'DISCHARGED'&#xA;         AND&#xA;         (&#xA;              [Staging].[DischargeDateTime] IS NULL&#xA;           OR [Staging].[DischargeMethodCode] IS NULL&#xA;           OR [Staging].[DischargeDestinationCode] IS NULL&#xA;         )&#xA;        THEN N'Discharged admission is missing one or more required discharge values.'&#xA;&#xA;        WHEN [Staging].[PatientLookupStatus] = 'NOT_FOUND'&#xA;        THEN N'Admission references an unknown patient.'&#xA;&#xA;        WHEN [Staging].[OrganisationLookupStatus] = 'NOT_FOUND'&#xA;          OR [Staging].[SiteLookupStatus] = 'NOT_FOUND'&#xA;        THEN N'Admission references an unknown or inconsistent organisation and site.'&#xA;&#xA;        ELSE N'Admission failed one or more configured validation rules.'&#xA;    END,&#xA;&#xA;    [Staging].[ValidationFailureCount],&#xA;    'OPEN',&#xA;    SYSUTCDATETIME()&#xA;FROM [stg].[Admission] AS [Staging]&#xA;INNER JOIN [landing].[Admission] AS [Landing]&#xA;    ON [Landing].[LandingAdmissionId] = [Staging].[LandingAdmissionId]&#xA;WHERE [Staging].[BatchId] = ?&#xA;  AND [Staging].[PackageExecutionId] = ?&#xA;  AND [Staging].[ProcessingOutcome] = 'QUARANTINED'&#xA;  AND NOT EXISTS&#xA;  (&#xA;      SELECT 1&#xA;      FROM [quarantine].[Admission] AS [Existing]&#xA;      WHERE [Existing].[BatchId] = [Staging].[BatchId]&#xA;        AND [Existing].[LandingAdmissionId] = [Staging].[LandingAdmissionId]&#xA;  );" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="User::PackageExecutionId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL_Populate_Staging_Admissions"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{516B3B0A-FC27-4095-B6F6-96FA597BA73F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL_Populate_Staging_Admissions"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{F6208311-4AF5-4F7F-9F74-B83868D8B68C}"
+          SQLTask:SqlStatementSource="INSERT INTO [stg].[Admission]&#xA;(&#xA;    [LandingAdmissionId],&#xA;    [BatchId],&#xA;    [PackageExecutionId],&#xA;    [SourceSystemCode],&#xA;    [SourceRecordIdentifier],&#xA;    [SourceRowNumber],&#xA;    [AdmissionId],&#xA;    [PatientId],&#xA;    [OrganisationId],&#xA;    [SiteId],&#xA;    [AdmissionNumber],&#xA;    [PatientPathwayId],&#xA;    [AdmissionDateTime],&#xA;    [DischargeDateTime],&#xA;    [AdmissionMethodCode],&#xA;    [AdmissionSourceCode],&#xA;    [PatientClassificationCode],&#xA;    [IntendedManagementCode],&#xA;    [DischargeMethodCode],&#xA;    [DischargeDestinationCode],&#xA;    [AdministrativeCategoryCode],&#xA;    [LegalStatusCode],&#xA;    [AdmissionStatusCode],&#xA;    [RecordCreatedAt],&#xA;    [RecordUpdatedAt],&#xA;    [IsDeleted]&#xA;)&#xA;SELECT&#xA;    [LandingAdmissionId],&#xA;    [BatchId],&#xA;    [PackageExecutionId],&#xA;    [SourceSystemCode],&#xA;    [SourceRecordIdentifier],&#xA;    [SourceRowNumber],&#xA;    [AdmissionId],&#xA;    [PatientId],&#xA;    [OrganisationId],&#xA;    [SiteId],&#xA;    [AdmissionNumber],&#xA;    [PatientPathwayId],&#xA;    [AdmissionDateTime],&#xA;    [DischargeDateTime],&#xA;    [AdmissionMethodCode],&#xA;    [AdmissionSourceCode],&#xA;    [PatientClassificationCode],&#xA;    [IntendedManagementCode],&#xA;    [DischargeMethodCode],&#xA;    [DischargeDestinationCode],&#xA;    [AdministrativeCategoryCode],&#xA;    [LegalStatusCode],&#xA;    [AdmissionStatusCode],&#xA;    [RecordCreatedAt],&#xA;    [RecordUpdatedAt],&#xA;    [IsDeleted]&#xA;FROM [landing].[Admission]&#xA;WHERE [BatchId] = ?&#xA;  AND [PackageExecutionId] = ?&#xA;  AND NOT EXISTS&#xA;  (&#xA;      SELECT 1&#xA;      FROM [stg].[Admission] AS [Existing]&#xA;      WHERE [Existing].[LandingAdmissionId] =&#xA;            [landing].[Admission].[LandingAdmissionId]&#xA;  );&#xA;&#xA;IF @@ROWCOUNT = 0&#xA;BEGIN&#xA;    THROW 51000, 'No admission rows were inserted into staging.', 1;&#xA;END;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="User::PackageExecutionId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL_Register_Batch"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{AE00FDAE-1A5A-48E5-92F4-FA44681A6F88}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL_Register_Batch"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9A90D54D-FEEE-4092-A847-BF2DB78C3E88}"
+          SQLTask:SqlStatementSource="DECLARE @InterfaceId INT;&#xA;&#xA;SELECT&#xA;    @InterfaceId = [InterfaceId]&#xA;FROM [audit].[Interface]&#xA;WHERE [InterfaceCode] = ?;&#xA;&#xA;IF @InterfaceId IS NULL&#xA;BEGIN&#xA;    THROW 51000, 'The requested Aegis interface code is not configured.', 1;&#xA;END;&#xA;&#xA;INSERT INTO [audit].[Batch]&#xA;(&#xA;    [InterfaceId],&#xA;    [BatchStatus],&#xA;    [ReceivedAt]&#xA;)&#xA;VALUES&#xA;(&#xA;    @InterfaceId,&#xA;    'RECEIVED',&#xA;    SYSUTCDATETIME()&#xA;);&#xA;&#xA;SELECT&#xA;    [BatchId] = CONVERT(BIGINT, SCOPE_IDENTITY());"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="BatchId"
+            SQLTask:DtsVariableName="User::BatchId" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::InterfaceCode"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="129"
+            SQLTask:ParameterSize="50" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL_Register_Package_Execution"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{C91EEAAA-0A2E-40C0-A797-350963CB916F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL_Register_Package_Execution"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9A90D54D-FEEE-4092-A847-BF2DB78C3E88}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS&#xA;(&#xA;    SELECT 1&#xA;    FROM [audit].[Batch]&#xA;    WHERE [BatchId] = ?&#xA;)&#xA;BEGIN&#xA;    THROW 51000, 'The Aegis batch could not be found.', 1;&#xA;END;&#xA;&#xA;UPDATE [audit].[Batch]&#xA;SET&#xA;    [BatchStatus] = 'PROCESSING',&#xA;    [StartedAt] = COALESCE([StartedAt], SYSUTCDATETIME()),&#xA;    [UpdatedAt] = SYSUTCDATETIME()&#xA;WHERE [BatchId] = ?;&#xA;&#xA;INSERT INTO [audit].[PackageExecution]&#xA;(&#xA;    [BatchId],&#xA;    [PackageName],&#xA;    [ExecutionStatus],&#xA;    [StartedAt]&#xA;)&#xA;VALUES&#xA;(&#xA;    ?,&#xA;    ?,&#xA;    'STARTED',&#xA;    SYSUTCDATETIME()&#xA;);&#xA;&#xA;SELECT&#xA;    [PackageExecutionId] =&#xA;        CONVERT(BIGINT, SCOPE_IDENTITY());"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="PackageExecutionId"
+            SQLTask:DtsVariableName="User::PackageExecutionId" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="2"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="3"
+            SQLTask:DtsVariableName="User::PackageName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="130"
+            SQLTask:ParameterSize="260" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL_Write_Data_Quality_Exceptions"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{7248AF64-0E68-4CB5-A236-2A8B3F6A0219}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL_Write_Data_Quality_Exceptions"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9A90D54D-FEEE-4092-A847-BF2DB78C3E88}"
+          SQLTask:SqlStatementSource="DECLARE @BatchId BIGINT = ?;&#xA;DECLARE @PackageExecutionId BIGINT = ?;&#xA;&#xA;INSERT INTO [dq].[DataQualityException]&#xA;(&#xA;    [RecordOutcomeId],&#xA;    [BatchId],&#xA;    [PackageExecutionId],&#xA;    [ValidationRuleId],&#xA;    [SourceDomain],&#xA;    [SourceObject],&#xA;    [SourceRecordIdentifier],&#xA;    [SourceColumnName],&#xA;    [SourceValue],&#xA;    [ExpectedValue],&#xA;    [ErrorCode],&#xA;    [ErrorDetail],&#xA;    [ResolutionStatus],&#xA;    [QuarantinedAt]&#xA;)&#xA;SELECT&#xA;    [Outcome].[RecordOutcomeId],&#xA;    [Staging].[BatchId],&#xA;    [Staging].[PackageExecutionId],&#xA;    [Rule].[ValidationRuleId],&#xA;    'PAS_ACTIVITY',&#xA;    'Admission',&#xA;    [Staging].[SourceRecordIdentifier],&#xA;    N'DischargeDateTime',&#xA;    CONVERT(NVARCHAR(50), [Staging].[DischargeDateTime], 126),&#xA;    N'DischargeDateTime must be greater than or equal to AdmissionDateTime.',&#xA;    [Rule].[ErrorCode],&#xA;    N'The discharge date and time occurs before the admission date and time.',&#xA;    'OPEN',&#xA;    SYSUTCDATETIME()&#xA;FROM [Aegis_Staging].[stg].[Admission] AS [Staging]&#xA;INNER JOIN [audit].[RecordOutcome] AS [Outcome]&#xA;    ON [Outcome].[BatchId] = [Staging].[BatchId]&#xA;   AND [Outcome].[PackageExecutionId] = [Staging].[PackageExecutionId]&#xA;   AND [Outcome].[SourceDomain] = 'PAS_ACTIVITY'&#xA;   AND [Outcome].[SourceObject] = 'Admission'&#xA;   AND [Outcome].[SourceRecordIdentifier] = [Staging].[SourceRecordIdentifier]&#xA;INNER JOIN [dq].[ValidationRule] AS [Rule]&#xA;    ON [Rule].[ValidationRuleCode] = 'DQ-ADM-001'&#xA;   AND [Rule].[ValidationRuleVersion] = 1&#xA;   AND [Rule].[IsActive] = 1&#xA;WHERE [Staging].[BatchId] = @BatchId&#xA;  AND [Staging].[PackageExecutionId] = @PackageExecutionId&#xA;  AND [Staging].[DischargeDateTime] IS NOT NULL&#xA;  AND [Staging].[AdmissionDateTime] IS NOT NULL&#xA;  AND [Staging].[DischargeDateTime] &lt; [Staging].[AdmissionDateTime]&#xA;  AND NOT EXISTS&#xA;  (&#xA;      SELECT 1&#xA;      FROM [dq].[DataQualityException] AS [Existing]&#xA;      WHERE [Existing].[RecordOutcomeId] = [Outcome].[RecordOutcomeId]&#xA;        AND [Existing].[ValidationRuleId] = [Rule].[ValidationRuleId]&#xA;  );&#xA;&#xA;INSERT INTO [dq].[DataQualityException]&#xA;(&#xA;    [RecordOutcomeId],&#xA;    [BatchId],&#xA;    [PackageExecutionId],&#xA;    [ValidationRuleId],&#xA;    [SourceDomain],&#xA;    [SourceObject],&#xA;    [SourceRecordIdentifier],&#xA;    [SourceColumnName],&#xA;    [SourceValue],&#xA;    [ExpectedValue],&#xA;    [ErrorCode],&#xA;    [ErrorDetail],&#xA;    [ResolutionStatus],&#xA;    [QuarantinedAt]&#xA;)&#xA;SELECT&#xA;    [Outcome].[RecordOutcomeId],&#xA;    [Staging].[BatchId],&#xA;    [Staging].[PackageExecutionId],&#xA;    [Rule].[ValidationRuleId],&#xA;    'PAS_ACTIVITY',&#xA;    'Admission',&#xA;    [Staging].[SourceRecordIdentifier],&#xA;    N'AdmissionStatusCode',&#xA;    [Staging].[AdmissionStatusCode],&#xA;    N'Open admissions must not contain discharge details.',&#xA;    [Rule].[ErrorCode],&#xA;    N'The admission is marked as open but contains one or more discharge values.',&#xA;    'OPEN',&#xA;    SYSUTCDATETIME()&#xA;FROM [Aegis_Staging].[stg].[Admission] AS [Staging]&#xA;INNER JOIN [audit].[RecordOutcome] AS [Outcome]&#xA;    ON [Outcome].[BatchId] = [Staging].[BatchId]&#xA;   AND [Outcome].[PackageExecutionId] = [Staging].[PackageExecutionId]&#xA;   AND [Outcome].[SourceDomain] = 'PAS_ACTIVITY'&#xA;   AND [Outcome].[SourceObject] = 'Admission'&#xA;   AND [Outcome].[SourceRecordIdentifier] = [Staging].[SourceRecordIdentifier]&#xA;INNER JOIN [dq].[ValidationRule] AS [Rule]&#xA;    ON [Rule].[ValidationRuleCode] = 'DQ-ADM-002'&#xA;   AND [Rule].[ValidationRuleVersion] = 1&#xA;   AND [Rule].[IsActive] = 1&#xA;WHERE [Staging].[BatchId] = @BatchId&#xA;  AND [Staging].[PackageExecutionId] = @PackageExecutionId&#xA;  AND [Staging].[AdmissionStatusCode] = 'OPEN'&#xA;  AND&#xA;  (&#xA;       [Staging].[DischargeDateTime] IS NOT NULL&#xA;    OR [Staging].[DischargeMethodCode] IS NOT NULL&#xA;    OR [Staging].[DischargeDestinationCode] IS NOT NULL&#xA;  )&#xA;  AND NOT EXISTS&#xA;  (&#xA;      SELECT 1&#xA;      FROM [dq].[DataQualityException] AS [Existing]&#xA;      WHERE [Existing].[RecordOutcomeId] = [Outcome].[RecordOutcomeId]&#xA;        AND [Existing].[ValidationRuleId] = [Rule].[ValidationRuleId]&#xA;  );&#xA;&#xA;INSERT INTO [dq].[DataQualityException]&#xA;(&#xA;    [RecordOutcomeId],&#xA;    [BatchId],&#xA;    [PackageExecutionId],&#xA;    [ValidationRuleId],&#xA;    [SourceDomain],&#xA;    [SourceObject],&#xA;    [SourceRecordIdentifier],&#xA;    [SourceColumnName],&#xA;    [SourceValue],&#xA;    [ExpectedValue],&#xA;    [ErrorCode],&#xA;    [ErrorDetail],&#xA;    [ResolutionStatus],&#xA;    [QuarantinedAt]&#xA;)&#xA;SELECT&#xA;    [Outcome].[RecordOutcomeId],&#xA;    [Staging].[BatchId],&#xA;    [Staging].[PackageExecutionId],&#xA;    [Rule].[ValidationRuleId],&#xA;    'PAS_ACTIVITY',&#xA;    'Admission',&#xA;    [Staging].[SourceRecordIdentifier],&#xA;    N'AdmissionStatusCode',&#xA;    [Staging].[AdmissionStatusCode],&#xA;    N'Discharged admissions must contain discharge date, method and destination.',&#xA;    [Rule].[ErrorCode],&#xA;    N'The admission is marked as discharged but one or more required discharge values are missing.',&#xA;    'OPEN',&#xA;    SYSUTCDATETIME()&#xA;FROM [Aegis_Staging].[stg].[Admission] AS [Staging]&#xA;INNER JOIN [audit].[RecordOutcome] AS [Outcome]&#xA;    ON [Outcome].[BatchId] = [Staging].[BatchId]&#xA;   AND [Outcome].[PackageExecutionId] = [Staging].[PackageExecutionId]&#xA;   AND [Outcome].[SourceDomain] = 'PAS_ACTIVITY'&#xA;   AND [Outcome].[SourceObject] = 'Admission'&#xA;   AND [Outcome].[SourceRecordIdentifier] = [Staging].[SourceRecordIdentifier]&#xA;INNER JOIN [dq].[ValidationRule] AS [Rule]&#xA;    ON [Rule].[ValidationRuleCode] = 'DQ-ADM-003'&#xA;   AND [Rule].[ValidationRuleVersion] = 1&#xA;   AND [Rule].[IsActive] = 1&#xA;WHERE [Staging].[BatchId] = @BatchId&#xA;  AND [Staging].[PackageExecutionId] = @PackageExecutionId&#xA;  AND [Staging].[AdmissionStatusCode] = 'DISCHARGED'&#xA;  AND&#xA;  (&#xA;       [Staging].[DischargeDateTime] IS NULL&#xA;    OR [Staging].[DischargeMethodCode] IS NULL&#xA;    OR [Staging].[DischargeDestinationCode] IS NULL&#xA;  )&#xA;  AND NOT EXISTS&#xA;  (&#xA;      SELECT 1&#xA;      FROM [dq].[DataQualityException] AS [Existing]&#xA;      WHERE [Existing].[RecordOutcomeId] = [Outcome].[RecordOutcomeId]&#xA;        AND [Existing].[ValidationRuleId] = [Rule].[ValidationRuleId]&#xA;  );&#xA;&#xA;INSERT INTO [dq].[DataQualityException]&#xA;(&#xA;    [RecordOutcomeId],&#xA;    [BatchId],&#xA;    [PackageExecutionId],&#xA;    [ValidationRuleId],&#xA;    [SourceDomain],&#xA;    [SourceObject],&#xA;    [SourceRecordIdentifier],&#xA;    [SourceColumnName],&#xA;    [SourceValue],&#xA;    [ExpectedValue],&#xA;    [ErrorCode],&#xA;    [ErrorDetail],&#xA;    [ResolutionStatus],&#xA;    [QuarantinedAt]&#xA;)&#xA;SELECT&#xA;    [Outcome].[RecordOutcomeId],&#xA;    [Staging].[BatchId],&#xA;    [Staging].[PackageExecutionId],&#xA;    [Rule].[ValidationRuleId],&#xA;    'PAS_ACTIVITY',&#xA;    'Admission',&#xA;    [Staging].[SourceRecordIdentifier],&#xA;    N'PatientId',&#xA;    CONVERT(NVARCHAR(50), [Staging].[PatientId]),&#xA;    N'PatientId must resolve to Aegis_Source.pas.Patient.',&#xA;    [Rule].[ErrorCode],&#xA;    N'The admission references an unknown patient.',&#xA;    'OPEN',&#xA;    SYSUTCDATETIME()&#xA;FROM [Aegis_Staging].[stg].[Admission] AS [Staging]&#xA;INNER JOIN [audit].[RecordOutcome] AS [Outcome]&#xA;    ON [Outcome].[BatchId] = [Staging].[BatchId]&#xA;   AND [Outcome].[PackageExecutionId] = [Staging].[PackageExecutionId]&#xA;   AND [Outcome].[SourceDomain] = 'PAS_ACTIVITY'&#xA;   AND [Outcome].[SourceObject] = 'Admission'&#xA;   AND [Outcome].[SourceRecordIdentifier] = [Staging].[SourceRecordIdentifier]&#xA;INNER JOIN [dq].[ValidationRule] AS [Rule]&#xA;    ON [Rule].[ValidationRuleCode] = 'DQ-ADM-004'&#xA;   AND [Rule].[ValidationRuleVersion] = 1&#xA;   AND [Rule].[IsActive] = 1&#xA;WHERE [Staging].[BatchId] = @BatchId&#xA;  AND [Staging].[PackageExecutionId] = @PackageExecutionId&#xA;  AND [Staging].[PatientLookupStatus] = 'NOT_FOUND'&#xA;  AND NOT EXISTS&#xA;  (&#xA;      SELECT 1&#xA;      FROM [dq].[DataQualityException] AS [Existing]&#xA;      WHERE [Existing].[RecordOutcomeId] = [Outcome].[RecordOutcomeId]&#xA;        AND [Existing].[ValidationRuleId] = [Rule].[ValidationRuleId]&#xA;  );&#xA;&#xA;INSERT INTO [dq].[DataQualityException]&#xA;(&#xA;    [RecordOutcomeId],&#xA;    [BatchId],&#xA;    [PackageExecutionId],&#xA;    [ValidationRuleId],&#xA;    [SourceDomain],&#xA;    [SourceObject],&#xA;    [SourceRecordIdentifier],&#xA;    [SourceColumnName],&#xA;    [SourceValue],&#xA;    [ExpectedValue],&#xA;    [ErrorCode],&#xA;    [ErrorDetail],&#xA;    [ResolutionStatus],&#xA;    [QuarantinedAt]&#xA;)&#xA;SELECT&#xA;    [Outcome].[RecordOutcomeId],&#xA;    [Staging].[BatchId],&#xA;    [Staging].[PackageExecutionId],&#xA;    [Rule].[ValidationRuleId],&#xA;    'PAS_ACTIVITY',&#xA;    'Admission',&#xA;    [Staging].[SourceRecordIdentifier],&#xA;    N'OrganisationId/SiteId',&#xA;    CONCAT&#xA;    (&#xA;        N'OrganisationId=',&#xA;        COALESCE(CONVERT(NVARCHAR(50), [Staging].[OrganisationId]), N'NULL'),&#xA;        N'; SiteId=',&#xA;        COALESCE(CONVERT(NVARCHAR(50), [Staging].[SiteId]), N'NULL')&#xA;    ),&#xA;    N'Organisation and site must resolve, and the site must belong to the organisation.',&#xA;    [Rule].[ErrorCode],&#xA;    N'The admission references an unknown or inconsistent organisation and site combination.',&#xA;    'OPEN',&#xA;    SYSUTCDATETIME()&#xA;FROM [Aegis_Staging].[stg].[Admission] AS [Staging]&#xA;INNER JOIN [audit].[RecordOutcome] AS [Outcome]&#xA;    ON [Outcome].[BatchId] = [Staging].[BatchId]&#xA;   AND [Outcome].[PackageExecutionId] = [Staging].[PackageExecutionId]&#xA;   AND [Outcome].[SourceDomain] = 'PAS_ACTIVITY'&#xA;   AND [Outcome].[SourceObject] = 'Admission'&#xA;   AND [Outcome].[SourceRecordIdentifier] = [Staging].[SourceRecordIdentifier]&#xA;INNER JOIN [dq].[ValidationRule] AS [Rule]&#xA;    ON [Rule].[ValidationRuleCode] = 'DQ-ADM-005'&#xA;   AND [Rule].[ValidationRuleVersion] = 1&#xA;   AND [Rule].[IsActive] = 1&#xA;WHERE [Staging].[BatchId] = @BatchId&#xA;  AND [Staging].[PackageExecutionId] = @PackageExecutionId&#xA;  AND&#xA;  (&#xA;       [Staging].[OrganisationLookupStatus] = 'NOT_FOUND'&#xA;    OR [Staging].[SiteLookupStatus] = 'NOT_FOUND'&#xA;  )&#xA;  AND NOT EXISTS&#xA;  (&#xA;      SELECT 1&#xA;      FROM [dq].[DataQualityException] AS [Existing]&#xA;      WHERE [Existing].[RecordOutcomeId] = [Outcome].[RecordOutcomeId]&#xA;        AND [Existing].[ValidationRuleId] = [Rule].[ValidationRuleId]&#xA;  );" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="User::PackageExecutionId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL_Write_Record_Outcomes"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{1226118C-73AE-48C3-97A1-18AC54D0661E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL_Write_Record_Outcomes"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9A90D54D-FEEE-4092-A847-BF2DB78C3E88}"
+          SQLTask:SqlStatementSource="INSERT INTO [audit].[RecordOutcome]&#xA;(&#xA;    [BatchId],&#xA;    [PackageExecutionId],&#xA;    [SourceDomain],&#xA;    [SourceObject],&#xA;    [SourceRecordIdentifier],&#xA;    [SourceRowNumber],&#xA;    [LandingRecordId],&#xA;    [ProcessingOutcome],&#xA;    [OutcomeReasonCode],&#xA;    [OutcomeDetail],&#xA;    [ProcessedAt]&#xA;)&#xA;SELECT&#xA;    [Staging].[BatchId],&#xA;    [Staging].[PackageExecutionId],&#xA;    'PAS_ACTIVITY',&#xA;    'Admission',&#xA;    [Staging].[SourceRecordIdentifier],&#xA;    [Staging].[SourceRowNumber],&#xA;    [Staging].[LandingAdmissionId],&#xA;    [Staging].[ProcessingOutcome],&#xA;    CASE&#xA;        WHEN [Staging].[ProcessingOutcome] = 'ACCEPTED'&#xA;        THEN 'VALID_ADMISSION'&#xA;        WHEN [Staging].[ProcessingOutcome] = 'QUARANTINED'&#xA;        THEN 'VALIDATION_FAILURE'&#xA;        ELSE NULL&#xA;    END,&#xA;    CASE&#xA;        WHEN [Staging].[ProcessingOutcome] = 'ACCEPTED'&#xA;        THEN N'Admission passed all configured validation and lookup rules.'&#xA;        WHEN [Staging].[ProcessingOutcome] = 'QUARANTINED'&#xA;        THEN N'Admission failed one or more configured validation or lookup rules.'&#xA;        ELSE NULL&#xA;    END,&#xA;    SYSUTCDATETIME()&#xA;FROM [Aegis_Staging].[stg].[Admission] AS [Staging]&#xA;WHERE [Staging].[BatchId] = ?&#xA;  AND [Staging].[PackageExecutionId] = ?&#xA;  AND [Staging].[ProcessingOutcome] IS NOT NULL&#xA;  AND NOT EXISTS&#xA;  (&#xA;      SELECT 1&#xA;      FROM [audit].[RecordOutcome] AS [Existing]&#xA;      WHERE [Existing].[BatchId] = [Staging].[BatchId]&#xA;        AND [Existing].[SourceDomain] = 'PAS_ACTIVITY'&#xA;        AND [Existing].[SourceObject] = 'Admission'&#xA;        AND [Existing].[SourceRecordIdentifier] =&#xA;            [Staging].[SourceRecordIdentifier]&#xA;  );&#xA;&#xA;IF @@ROWCOUNT = 0&#xA;BEGIN&#xA;    THROW 51000, 'No admission record outcomes were written.', 1;&#xA;END;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::BatchId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="User::PackageExecutionId"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="20"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{A751731B-482F-43A2-B375-DFDAC56561EB}"
+      DTS:From="Package\SQL_Register_Batch"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\SQL_Register_Package_Execution" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{3AE0D87C-B686-4D9A-9664-C460F8EDB05A}"
+      DTS:From="Package\SQL_Register_Package_Execution"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\DFT_Land_Admissions" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{CDA42B4A-49BC-4BB1-A57E-A3040343FE60}"
+      DTS:From="Package\DFT_Land_Admissions"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\SQL_Finalise_Landing_Audit" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{C950FA0B-9095-4261-833F-59C7DA0D39FF}"
+      DTS:From="Package\SQL_Finalise_Landing_Audit"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\SQL_Populate_Staging_Admissions" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{0E3154D7-4044-4C57-8BE1-C9C9B49A8B52}"
+      DTS:From="Package\SQL_Populate_Staging_Admissions"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\SQL_Classify_Staging_Admissions" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{0192993A-16B7-43BB-B3F8-BCF194E5CCC0}"
+      DTS:From="Package\SQL_Classify_Staging_Admissions"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\SQL_Write_Record_Outcomes" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 6]"
+      DTS:CreationName=""
+      DTS:DTSID="{3DF60E79-DAF9-4087-9B95-D57E6C89070C}"
+      DTS:From="Package\SQL_Write_Record_Outcomes"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 6"
+      DTS:To="Package\SQL_Write_Data_Quality_Exceptions" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 7]"
+      DTS:CreationName=""
+      DTS:DTSID="{E9466862-4C6B-4298-A994-2E55A7ED0335}"
+      DTS:From="Package\SQL_Write_Data_Quality_Exceptions"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 7"
+      DTS:To="Package\SQL_Load_Quarantined_Admissions" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 8]"
+      DTS:CreationName=""
+      DTS:DTSID="{3DC93EB6-08D8-4BBD-8EA4-74CB4004DE87}"
+      DTS:From="Package\SQL_Load_Quarantined_Admissions"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 8"
+      DTS:To="Package\SQL_Finalise_Admission_Batch" />
+  </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{8DE70849-1D1A-4F7B-955B-842B91CBE426}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{57FE9AAA-2FF2-4733-9EE0-EB2EF2E023BC}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\SQL_Record_Failed_Execution"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{cb6cbee6-76a3-4a7e-8dc6-5b654f94a1a0}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL_Record_Failed_Execution"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{9A90D54D-FEEE-4092-A847-BF2DB78C3E88}"
+              SQLTask:SqlStatementSource="DECLARE @BatchId BIGINT = ?;&#xA;DECLARE @PackageExecutionId BIGINT = ?;&#xA;DECLARE @SsisErrorCode INT = ?;&#xA;DECLARE @ErrorDescription NVARCHAR(4000) = ?;&#xA;DECLARE @ErrorSource NVARCHAR(260) = ?;&#xA;&#xA;IF @BatchId &lt;= 0&#xA;   OR @PackageExecutionId &lt;= 0&#xA;BEGIN&#xA;    RETURN;&#xA;END;&#xA;&#xA;UPDATE [audit].[PackageExecution]&#xA;SET&#xA;    [ExecutionStatus] = 'FAILED',&#xA;    [CompletedAt] = COALESCE([CompletedAt], SYSUTCDATETIME()),&#xA;    [ErrorCode] = 'AEGIS-SSIS-RUNTIME',&#xA;    [ErrorDetail] =&#xA;        LEFT&#xA;        (&#xA;            CONCAT&#xA;            (&#xA;                N'SSIS error ',&#xA;                @SsisErrorCode,&#xA;                N' raised by ',&#xA;                COALESCE(@ErrorSource, N'unknown source'),&#xA;                N': ',&#xA;                COALESCE(@ErrorDescription, N'No error description supplied.')&#xA;            ),&#xA;            4000&#xA;        ),&#xA;    [UpdatedAt] = SYSUTCDATETIME()&#xA;WHERE [PackageExecutionId] = @PackageExecutionId&#xA;  AND [BatchId] = @BatchId&#xA;  AND [ExecutionStatus] = 'STARTED';&#xA;&#xA;UPDATE [audit].[Batch]&#xA;SET&#xA;    [BatchStatus] = 'FAILED',&#xA;    [CompletedAt] = COALESCE([CompletedAt], SYSUTCDATETIME()),&#xA;    [ErrorCode] = 'AEGIS-SSIS-RUNTIME',&#xA;    [ErrorDetail] =&#xA;        LEFT&#xA;        (&#xA;            CONCAT&#xA;            (&#xA;                N'Package execution ',&#xA;                @PackageExecutionId,&#xA;                N' failed. SSIS error ',&#xA;                @SsisErrorCode,&#xA;                N' raised by ',&#xA;                COALESCE(@ErrorSource, N'unknown source'),&#xA;                N': ',&#xA;                COALESCE(@ErrorDescription, N'No error description supplied.')&#xA;            ),&#xA;            4000&#xA;        ),&#xA;    [UpdatedAt] = SYSUTCDATETIME()&#xA;WHERE [BatchId] = @BatchId&#xA;  AND [BatchStatus] IN&#xA;  (&#xA;      'RECEIVED',&#xA;      'PROCESSING'&#xA;  );" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::BatchId"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="20"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::PackageExecutionId"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="20"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="2"
+                SQLTask:DtsVariableName="System::ErrorCode"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="3"
+                SQLTask:DtsVariableName="System::ErrorDescription"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="4000" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="4"
+                SQLTask:DtsVariableName="System::SourceName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="260" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="185,42"
+          Id="Package\DFT_Land_Admissions"
+          TopLeft="302,273" />
+        <NodeLayout
+          Size="238,42"
+          Id="Package\SQL_Classify_Staging_Admissions"
+          TopLeft="408,551" />
+        <NodeLayout
+          Size="224,42"
+          Id="Package\SQL_Finalise_Admission_Batch"
+          TopLeft="548,912" />
+        <NodeLayout
+          Size="211,42"
+          Id="Package\SQL_Finalise_Landing_Audit"
+          TopLeft="282,352" />
+        <NodeLayout
+          Size="248,42"
+          Id="Package\SQL_Load_Quarantined_Admissions"
+          TopLeft="519,814" />
+        <NodeLayout
+          Size="243,42"
+          Id="Package\SQL_Populate_Staging_Admissions"
+          TopLeft="367,447" />
+        <NodeLayout
+          Size="174,42"
+          Id="Package\SQL_Register_Batch"
+          TopLeft="114,101" />
+        <NodeLayout
+          Size="238,42"
+          Id="Package\SQL_Register_Package_Execution"
+          TopLeft="207,187" />
+        <NodeLayout
+          Size="251,42"
+          Id="Package\SQL_Write_Data_Quality_Exceptions"
+          TopLeft="501,725" />
+        <NodeLayout
+          Size="220,42"
+          Id="Package\SQL_Write_Record_Outcomes"
+          TopLeft="466,633" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="201,143">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="125,44"
+              Start="0,0"
+              End="125,36.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18"
+                    Point2="0,22"
+                    Point3="4,22" />
+                  <mssgle:LineSegment
+                    End="121,22" />
+                  <mssgle:CubicBezierSegment
+                    Point1="121,22"
+                    Point2="125,22"
+                    Point3="125,26" />
+                  <mssgle:LineSegment
+                    End="125,36.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="326,229">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="68.5,44"
+              Start="0,0"
+              End="68.5,36.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18"
+                    Point2="0,22"
+                    Point3="4,22" />
+                  <mssgle:LineSegment
+                    End="64.5,22" />
+                  <mssgle:CubicBezierSegment
+                    Point1="64.5,22"
+                    Point2="68.5,22"
+                    Point3="68.5,26" />
+                  <mssgle:LineSegment
+                    End="68.5,36.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="391,315">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,37"
+              Start="0,0"
+              End="0,29.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="387.5,394">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="101,53"
+              Start="0,0"
+              End="101,45.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22.5"
+                    Point2="0,26.5"
+                    Point3="4,26.5" />
+                  <mssgle:LineSegment
+                    End="97,26.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="97,26.5"
+                    Point2="101,26.5"
+                    Point3="101,30.5" />
+                  <mssgle:LineSegment
+                    End="101,45.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="488.5,489">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="38.5,62"
+              Start="0,0"
+              End="38.5,54.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27"
+                    Point2="0,31"
+                    Point3="4,31" />
+                  <mssgle:LineSegment
+                    End="34.5,31" />
+                  <mssgle:CubicBezierSegment
+                    Point1="34.5,31"
+                    Point2="38.5,31"
+                    Point3="38.5,35" />
+                  <mssgle:LineSegment
+                    End="38.5,54.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="527,593">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="49,40"
+              Start="0,0"
+              End="49,32.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16"
+                    Point2="0,20"
+                    Point3="4,20" />
+                  <mssgle:LineSegment
+                    End="45,20" />
+                  <mssgle:CubicBezierSegment
+                    Point1="45,20"
+                    Point2="49,20"
+                    Point3="49,24" />
+                  <mssgle:LineSegment
+                    End="49,32.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 6]"
+          TopLeft="576,675">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="50.5,50"
+              Start="0,0"
+              End="50.5,42.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21"
+                    Point2="0,25"
+                    Point3="4,25" />
+                  <mssgle:LineSegment
+                    End="46.5,25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="46.5,25"
+                    Point2="50.5,25"
+                    Point3="50.5,29" />
+                  <mssgle:LineSegment
+                    End="50.5,42.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 7]"
+          TopLeft="626.5,767">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="16.5,47"
+              Start="0,0"
+              End="16.5,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.5"
+                    Point2="0,23.5"
+                    Point3="4,23.5" />
+                  <mssgle:LineSegment
+                    End="12.5,23.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="12.5,23.5"
+                    Point2="16.5,23.5"
+                    Point3="16.5,27.5" />
+                  <mssgle:LineSegment
+                    End="16.5,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 8]"
+          TopLeft="643,856">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="17,56"
+              Start="0,0"
+              End="17,48.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,24"
+                    Point2="0,28"
+                    Point3="4,28" />
+                  <mssgle:LineSegment
+                    End="13,28" />
+                  <mssgle:CubicBezierSegment
+                    Point1="13,28"
+                    Point2="17,28"
+                    Point3="17,32" />
+                  <mssgle:LineSegment
+                    End="17,48.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\DFT_Land_Admissions">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="237,42"
+          Id="Package\DFT_Land_Admissions\DRV_Add_Admission_Provenance"
+          TopLeft="347,371" />
+        <NodeLayout
+          Size="225,42"
+          Id="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions"
+          TopLeft="263,254" />
+        <NodeLayout
+          Size="197,42"
+          Id="Package\DFT_Land_Admissions\CNT_Landed_Admissions"
+          TopLeft="419,480" />
+        <NodeLayout
+          Size="267,42"
+          Id="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission"
+          TopLeft="393,606" />
+        <EdgeLayout
+          Id="Package\DFT_Land_Admissions.Paths[Row Count Output 1]"
+          TopLeft="517.5,522">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="9,84"
+              Start="0,0"
+              End="9,76.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,38"
+                    Point2="0,42"
+                    Point3="4,42" />
+                  <mssgle:LineSegment
+                    End="5,42" />
+                  <mssgle:CubicBezierSegment
+                    Point1="5,42"
+                    Point2="9,42"
+                    Point3="9,46" />
+                  <mssgle:LineSegment
+                    End="9,76.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT_Land_Admissions.Paths[OLE DB Source Output]"
+          TopLeft="375.5,296">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="90,75"
+              Start="0,0"
+              End="90,67.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33.5"
+                    Point2="0,37.5"
+                    Point3="4,37.5" />
+                  <mssgle:LineSegment
+                    End="86,37.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="86,37.5"
+                    Point2="90,37.5"
+                    Point3="90,41.5" />
+                  <mssgle:LineSegment
+                    End="90,67.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT_Land_Admissions.Paths[Derived Column Output]"
+          TopLeft="465.5,413">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="52,67"
+              Start="0,0"
+              End="52,59.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.5"
+                    Point2="0,33.5"
+                    Point3="4,33.5" />
+                  <mssgle:LineSegment
+                    End="48,33.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="48,33.5"
+                    Point2="52,33.5"
+                    Point3="52,37.5" />
+                  <mssgle:LineSegment
+                    End="52,59.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT_Land_Admissions\SRC_Aegis_Source_Admissions">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT_Land_Admissions\DST_Aegis_Staging_Landing_Admission">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <DtsEventHandler
+    design-time-name="Package.EventHandlers[OnError]">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="221,42"
+          Id="Package.EventHandlers[OnError]\SQL_Record_Failed_Execution"
+          TopLeft="264,136" />
+      </GraphLayout>
+    </LayoutInfo>
+  </DtsEventHandler>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

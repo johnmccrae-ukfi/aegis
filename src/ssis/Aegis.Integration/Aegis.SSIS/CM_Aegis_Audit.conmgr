@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="CM_Aegis_Audit"
+  DTS:DTSID="{9A90D54D-FEEE-4092-A847-BF2DB78C3E88}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectRetryCount="1"
+      DTS:ConnectRetryInterval="5"
+      DTS:ConnectionString="Data Source=DESKTOP-N58JDOH;Initial Catalog=Aegis_Audit;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Aegis.SSIS-{9A90D54D-FEEE-4092-A847-BF2DB78C3E88}DESKTOP-N58JDOH.Aegis_Audit;Auto Translate=False;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>
