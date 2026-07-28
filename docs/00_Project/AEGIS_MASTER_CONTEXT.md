@@ -6,7 +6,7 @@
 **Repository:** Aegis  
 **Purpose:** Synthetic NHS-style clinical data migration, reporting and operational-assurance platform.  
 **Current branch:** `dev`  
-**Current delivery position:** Day 2 complete; ready to begin Day 3 staging, audit and SSIS development.
+**Current delivery position:** Day 3 complete; the audited Admissions migration pipeline is ready for downstream SSAS and SSRS development.
 
 ---
 
@@ -87,12 +87,13 @@ Aegis is a focused migration and assurance simulation. It is not intended to rep
 | Database | Status |
 |---|---|
 | `Aegis_Source` | Implemented and populated |
-| `Aegis_Staging` | Planned for Day 3 |
-| `Aegis_Audit` | Planned for Day 3 |
-| `Aegis_Warehouse` | Planned for Day 4 |
-| `Aegis_Reporting` | Planned |
+| `Aegis_Staging` | Implemented, published and populated for Admissions |
+| `Aegis_Audit` | Implemented, published and populated |
+| `Aegis_Warehouse` | Deferred while the Admissions-only end-to-end scenario is completed |
+| `Aegis_Reporting` | Planned for SSRS reporting |
 | `Aegis_Source_ReportingReplica` | Planned for replication demonstration |
-| `Aegis_Warehouse_DR` | Planned for log-shipping demonstration |
+| `Aegis_Warehouse_DR` | Planned for later log-shipping demonstration |
+
 
 ---
 
@@ -163,20 +164,24 @@ The SQL database solution is:
 src/database/Aegis.Database.slnx
 ```
 
-The source database project is:
+The implemented database projects are:
 
 ```text
 src/database/Aegis.Source/Aegis.Source.sqlproj
+src/database/Aegis.Staging/Aegis.Staging.sqlproj
+src/database/Aegis.Audit/Aegis.Audit.sqlproj
 ```
 
-The project targets SQL Server 2022 and publishes to:
+The projects target SQL Server 2022 and publish locally to:
 
 ```text
 DESKTOP-N58JDOH
-└── Aegis_Source
+├── Aegis_Source
+├── Aegis_Staging
+└── Aegis_Audit
 ```
 
-The `Aegis.Source` project currently builds and publishes successfully.
+All three database projects currently build and publish successfully.
 
 ### Build-artifact rule
 
@@ -293,6 +298,7 @@ aegis/
 │   └── tests/
 ├── src/
 │   ├── database/
+│   ├── ssis/
 │   └── synthetic_data/
 ├── .gitignore
 └── requirements.txt
@@ -1134,13 +1140,76 @@ Result:
 0 failed
 ```
 
+
+## Day 3 control-plane validation
+
+The repeatable Day 3 validation script is:
+
+```text
+sql/tests/validate_aegis_day3_control_plane.sql
+```
+
+It currently performs:
+
+```text
+78 checks
+```
+
+covering:
+
+- `Aegis_Audit` and `Aegis_Staging` deployment;
+- audit, data-quality and replay schemas;
+- landing, staging, quarantine and curated Admissions structures;
+- batch and package-execution audit;
+- validation-rule catalogue;
+- record outcomes and data-quality exceptions;
+- failed-execution history and absence of orphaned active runs;
+- the valid 1,600-row baseline;
+- the controlled five-row defect batch;
+- the realistic 1,605-row mixed batch;
+- one exception for each rule `DQ-ADM-001` through `DQ-ADM-005`;
+- split source provenance;
+- accepted and quarantined physical materialisation;
+- complete mixed-batch reconciliation.
+
+Result:
+
+```text
+78 passed
+0 failed
+```
+
+### Latest validated mixed-batch result
+
+```text
+Source rows:                 1,605
+Landing rows:                1,605
+Staging rows:                1,605
+Record outcomes:             1,605
+Curated accepted rows:       1,600
+Quarantined rows:                5
+Data-quality exceptions:         5
+Unexplained rows:                0
+Batch status:                COMPLETED_WITH_EXCEPTIONS
+Package status:              SUCCEEDED_WITH_EXCEPTIONS
+```
+
+The five quarantined Admissions comprise exactly one occurrence of each implemented rule:
+
+- `DQ-ADM-001` — discharge before admission;
+- `DQ-ADM-002` — open admission contains discharge details;
+- `DQ-ADM-003` — discharged admission missing discharge details;
+- `DQ-ADM-004` — unknown patient;
+- `DQ-ADM-005` — unknown site or organisation.
+
 ## Combined executed validation
 
 ```text
 Foundation validation:       56 / 56
 Day 2 reconciliation:        63 / 63
+Day 3 control plane:          78 / 78
                              -------
-Combined checks:            119 / 119
+Combined checks:            197 / 197
 ```
 
 The Day 2 script also reports the external defect-pack control:
@@ -1189,88 +1258,92 @@ Controlled defect extracts are excluded from this loaded total.
 
 ---
 
-# Planned audit model
+# Implemented audit and migration-control model
 
-The future `Aegis_Audit` database will include batch, interface, validation, quarantine and replay structures.
+`Aegis_Audit` now provides the operational control plane for the Admissions pipeline.
 
-## Interface-message audit
-
-Planned concepts include:
+## Implemented schemas
 
 ```text
-audit.InterfaceMessage
-├── InterfaceMessageId
-├── InterfaceCode
-├── MessageControlId
-├── MessageType
-├── TriggerEvent
-├── SourceSystemCode
-├── TargetSystemCode
-├── ReceivedAt
-├── ProcessedAt
-├── ProcessingStatus
-├── RetryCount
-├── ErrorCode
-└── ErrorDetail
+audit
+dq
+replay
 ```
 
-## Batch audit
-
-Planned concepts include:
+## Implemented audit objects
 
 ```text
+audit.Interface
 audit.Batch
-├── BatchId
-├── InterfaceCode
-├── SourceFileName
-├── StartedAt
-├── CompletedAt
-├── BatchStatus
-├── SourceRowCount
-├── AcceptedRowCount
-├── RejectedRowCount
-├── QuarantinedRowCount
-├── WarningRowCount
-└── ReplayedRowCount
+audit.PackageExecution
+audit.RecordOutcome
+dq.ValidationRule
+dq.DataQualityException
+replay.ReplayRequest
+replay.ReplayAttempt
 ```
 
-## Record-level exception audit
+The replay structures are present as an architectural foundation, but controlled replay implementation is intentionally deferred until after the interview-focused Admissions scenario is complete.
 
-Planned concepts include:
+## Implemented staging objects
 
 ```text
-audit.DataQualityException
-├── DataQualityExceptionId
-├── BatchId
-├── ScenarioCode
-├── SourceObject
-├── SourceRecordIdentifier
-├── ValidationRuleCode
-├── ExpectedOutcome
-├── ErrorCode
-├── ErrorDetail
-├── QuarantinedAt
-├── ResolutionStatus
-└── ResolvedAt
+landing.Admission
+stg.Admission
+quarantine.Admission
+curated.Admission
 ```
+
+The physical processing pattern is:
+
+```text
+Legacy PAS SQL source + controlled defect CSV
+                    ↓
+           landing.Admission
+                    ↓
+             stg.Admission
+                    ↓
+        validate and classify
+             ├───────────────┐
+             ↓               ↓
+   curated.Admission   quarantine.Admission
+```
+
+## Batch and package audit
+
+Each execution records:
+
+- interface;
+- batch reference;
+- package execution;
+- source, landed, accepted and quarantined counts;
+- start and completion timestamps;
+- execution and batch statuses;
+- runtime error code and error detail;
+- row-level outcomes;
+- data-quality exceptions.
+
+Package-level `OnError` handlers automatically close failed batches and package executions using:
+
+```text
+AEGIS-SSIS-RUNTIME
+```
+
+Controlled failure tests proved that failed runs do not leave batches in `PROCESSING` or package executions in `STARTED`.
 
 ## Processing statuses
 
-The conceptual processing states are:
+Implemented operational outcomes include:
 
-- `RECEIVED`
-- `PROCESSING`
-- `PROCESSED`
-- `REJECTED`
-- `QUARANTINED`
-- `REPLAY_PENDING`
-- `REPLAYED`
-- `DUPLICATE`
-- `CANCELLED`
-
-Exact values and constraints will be finalised during Day 3.
-
----
+- `RECEIVED`;
+- `PROCESSING`;
+- `COMPLETED`;
+- `COMPLETED_WITH_EXCEPTIONS`;
+- `FAILED`;
+- `SUCCEEDED`;
+- `SUCCEEDED_WITH_EXCEPTIONS`;
+- `ACCEPTED`;
+- `QUARANTINED`.
 
 # Reconciliation scope
 
@@ -1310,65 +1383,96 @@ All reconciliation must be repeatable and attributable to a batch, file, message
 
 ---
 
-# SSIS delivery direction
+# SSIS delivery status
 
-The current synthetic source is rich enough to support meaningful SSIS packages resembling a real PAS/EPR migration and assurance workload.
-
-The expected high-level flow is:
+The SSIS solution is:
 
 ```text
-Extract from legacy PAS
-        ↓
-Land in staging
-        ↓
-Validate and classify
-        ↓
-Load accepted rows
-        ↓
-Redirect rejected rows
-        ↓
-Write audit counts
-        ↓
-Reconcile source, staging and target
+src/ssis/Aegis.Integration/Aegis.Integration.sln
 ```
 
-Representative future packages include:
+The SSIS project is:
 
 ```text
-01_Load_Reference_Data
-02_Load_Patient_Identity
-03_Load_Admissions
-04_Load_Consultant_Episodes
-05_Load_Diagnoses_Procedures
-06_Load_Ward_Stays
-07_Process_Patient_Merges
-08_Reconcile_Migration_Batch
-09_Replay_Quarantined_Records
+src/ssis/Aegis.Integration/Aegis.SSIS
 ```
 
-Planned SSIS capabilities include:
+## Project connection managers
 
-- source-file ingestion;
-- SQL source extraction;
-- lookup transformations;
-- conditional splits;
-- derived validation flags;
-- duplicate detection;
-- error outputs;
-- quarantine tables;
-- row-count variables;
-- package audit logging;
-- batch audit logging;
-- source-to-target reconciliation;
-- restartability;
-- replay;
-- package-level and record-level error handling.
+```text
+CM_Aegis_Source
+CM_Aegis_Staging
+CM_Aegis_Audit
+```
 
-The core migration principle is:
+## Implemented packages
 
-> Preserve the imperfect legacy source, detect and classify defects in staging, migrate what is valid, quarantine what is unsafe, and reconcile every outcome.
+```text
+PKG_Load_Admissions.dtsx
+PKG_Load_Admission_Defects.dtsx
+PKG_Load_Admission_Mixed.dtsx
+```
 
----
+### `PKG_Load_Admissions.dtsx`
+
+Processes the 1,600-row valid SQL-source baseline and proves the all-valid acceptance path.
+
+### `PKG_Load_Admission_Defects.dtsx`
+
+Processes five controlled defect rows and proves each data-quality and quarantine path independently.
+
+### `PKG_Load_Admission_Mixed.dtsx`
+
+Combines:
+
+```text
+1,600 valid SQL-source Admissions
++    5 controlled defect Admissions
+-----------------------------------
+1,605 Admissions in one audited batch
+```
+
+The package then:
+
+1. registers the batch;
+2. registers package execution;
+3. lands both source branches;
+4. writes landing audit counts;
+5. populates staging;
+6. performs lookup and business-rule classification;
+7. writes record outcomes;
+8. writes data-quality exceptions;
+9. materialises accepted rows into `curated.Admission`;
+10. materialises invalid rows into `quarantine.Admission`;
+11. finalises batch and package reconciliation;
+12. records unexpected runtime failures through a package-level `OnError` handler.
+
+## Mixed Data Flow pattern
+
+```text
+Controlled defect CSV
+        ↓
+timestamp presence split
+        ↓
+normalisation and conversion
+        ↓
+defect triage and recombination
+        ↓
+row provenance
+        ┐
+        ├── Union All → row count → landing.Admission
+        │
+Valid PAS SQL source
+        ↓
+row provenance
+        ┘
+```
+
+## Core migration principle
+
+> Preserve the imperfect legacy source, detect and classify defects in staging, process what is valid, quarantine what is unsafe, and reconcile every outcome.
+
+The current interview-focused implementation intentionally concentrates on Admissions. Consultant episodes, diagnoses, procedures and ward stays remain available as deterministic source data and controlled defect extracts for later expansion using the proven Admissions template.
 
 # Day 1 completion summary
 
@@ -1502,6 +1606,67 @@ docs/10_Governance/Synthetic_Data_Generation_and_Safety_Rules.md
 
 ---
 
+
+# Day 3 completion summary
+
+Day 3 established the complete audited Admissions migration-control plane.
+
+## Database delivery completed
+
+- `Aegis.Audit` database project created, built and published.
+- `Aegis.Staging` database project created, built and published.
+- Audit, data-quality and replay schemas implemented.
+- Landing, staging, quarantine and curated schemas implemented.
+- Admissions landing, staging, quarantine and curated tables implemented.
+- Validation-rule catalogue seeded with `DQ-ADM-001` through `DQ-ADM-005`.
+- Replay request and replay-attempt structures created for future controlled remediation.
+
+## SSIS delivery completed
+
+- SSIS solution and project created.
+- Project-level source, staging and audit connections configured.
+- Valid Admissions package implemented.
+- Controlled defect Admissions package implemented.
+- Realistic mixed Admissions package implemented.
+- SQL-source and flat-file ingestion demonstrated.
+- Nullable timestamp processing and conversion implemented.
+- Derived-column provenance implemented.
+- Conditional split and Union All transformations implemented.
+- Row-count capture implemented.
+- Batch and package audit implemented.
+- Row-level outcome and DQ-exception audit implemented.
+- Physical accepted and quarantine layers implemented.
+- Package-level automatic `OnError` audit closure implemented and tested.
+
+## Final Day 3 processing evidence
+
+```text
+Latest mixed BatchId:        17
+Source rows:              1,605
+Landed rows:              1,605
+Staged rows:              1,605
+Accepted/curated rows:    1,600
+Quarantined rows:             5
+DQ exceptions:                5
+Unexplained rows:             0
+```
+
+The latest mixed batch completed as:
+
+```text
+BatchStatus:      COMPLETED_WITH_EXCEPTIONS
+ExecutionStatus:  SUCCEEDED_WITH_EXCEPTIONS
+```
+
+## Final Day 3 validation
+
+```text
+78 passed
+0 failed
+```
+
+Day 3 is complete and ready to support the downstream SSAS Tabular and SSRS interview demonstration.
+
 # Revised delivery plan
 
 ## Day 1 — Platform and PAS source foundation
@@ -1544,27 +1709,25 @@ Delivered:
 
 ## Day 3 — Staging, audit and SSIS
 
-**Status:** Next.
+**Status:** Complete.
 
-Planned:
+Delivered:
 
-- create `Aegis_Staging`;
-- create `Aegis_Audit`;
-- create database projects for staging and audit;
-- define staging schemas and table grains;
-- define batch-audit structures;
-- define record-level quarantine structures;
-- define validation-rule catalogue;
-- define replay status model;
-- establish SSIS solution and project;
-- build the first package framework;
-- load relational PAS extracts;
-- process valid and invalid records;
-- route failures into quarantine;
-- reconcile accepted, rejected and quarantined counts;
-- begin representative ADT processing.
+- `Aegis_Staging`;
+- `Aegis_Audit`;
+- database projects and DACPAC publication;
+- landing, staging, quarantine and curated Admissions structures;
+- batch, package and record-level audit;
+- five Admissions validation rules;
+- valid, defect-only and mixed SSIS packages;
+- automatic package failure auditing;
+- 1,605-row realistic mixed-batch processing;
+- 1,600 accepted Admissions;
+- five quarantined Admissions;
+- five DQ exceptions;
+- 78 of 78 control-plane checks passed.
 
-## Day 4 — Warehouse and reconciliation
+## Day 4 — SSAS Tabular and analytical model
 
 Planned:
 
@@ -1612,98 +1775,51 @@ Planned if time permits:
 
 ---
 
-# Day 3 starting position
+# Day 4 starting position
 
-Day 3 begins with a stable and fully reconciled legacy-source baseline.
+Day 4 begins with a complete, repeatable and fully reconciled Admissions migration pipeline.
 
-## Available source domains
-
-```text
-Reference
-├── Organisation
-├── Site
-├── Specialty
-├── Consultant
-└── Ward
-
-Patient identity
-├── Patient
-├── PatientIdentifier
-└── PatientMerge
-
-Admitted-patient activity
-├── Admission
-├── ConsultantEpisode
-├── Diagnosis
-├── Procedure
-└── WardStay
-```
-
-## Available controlled defect inputs
+## Authoritative downstream dataset
 
 ```text
-data/generated/defects/
-├── admission_defects.csv
-├── consultant_episode_defects.csv
-├── diagnosis_defects.csv
-├── procedure_defects.csv
-├── ward_stay_defects.csv
-├── patient_identity_defect_manifest.csv
-└── patient_journey_defect_manifest.csv
+Aegis_Staging.curated.Admission
 ```
 
-## Day 3 architectural objective
-
-Create a repeatable migration-control plane that can:
+Latest validated population:
 
 ```text
-Receive a batch
-      ↓
-Audit the batch
-      ↓
-Land raw records
-      ↓
-Validate structure and business rules
-      ↓
-Resolve reference and identity keys
-      ↓
-Accept valid records
-      ↓
-Quarantine invalid records
-      ↓
-Record every outcome
-      ↓
-Reconcile all counts
-      ↓
-Support controlled replay
+1,600 accepted Admissions
 ```
 
-## Recommended Day 3 sequence
+## Operational exception dataset
 
-1. Review the current solution and repository state.
-2. Define the responsibilities of `Aegis_Staging`.
-3. Define the responsibilities of `Aegis_Audit`.
-4. Create the staging and audit SQL database projects.
-5. Define `stg`, `audit` and quarantine schemas.
-6. Create batch and package audit tables.
-7. Create validation-rule and exception tables.
-8. Create staging tables for reference and PAS domains.
-9. Build and publish both databases.
-10. Extend automated deployment validation.
-11. Create the SSIS solution and initial project.
-12. Build the first audited ingestion package.
-13. Process a valid source extract.
-14. Process a controlled defect extract.
-15. Reconcile source, accepted and quarantined counts.
+```text
+Aegis_Staging.quarantine.Admission
+```
 
----
+Latest validated population:
 
-# Immediate next steps
+```text
+5 quarantined Admissions
+```
+
+## Audit and DQ evidence
+
+```text
+Aegis_Audit.audit.Batch
+Aegis_Audit.audit.PackageExecution
+Aegis_Audit.audit.RecordOutcome
+Aegis_Audit.dq.DataQualityException
+Aegis_Audit.dq.ValidationRule
+```
+
+## Immediate next steps
 
 1. Save this updated `AEGIS_MASTER_CONTEXT.md`.
-2. Review `git status`.
-3. Confirm no generated data, `.venv`, DACPAC, `bin` or `obj` artefacts are staged.
-4. Review the complete Day 2 change set.
-5. Commit the Day 2 database, documentation, Python and validation work to `dev`.
-6. Create and merge the Day 2 pull request when ready.
-7. Begin Day 3 in a new chat using this file as the authoritative context.
+2. Capture clean all-green SSIS Control Flow and Data Flow screenshots under `images`.
+3. Add an SSIS Pipeline Overview section to the README.
+4. Review `git status` and confirm that `.venv`, generated data, `bin`, `obj` and DACPAC outputs remain excluded.
+5. Commit the completed Day 3 database, SSIS, validation and documentation changes to `dev`.
+6. Create and merge the Day 3 pull request.
+7. Tag the completed Day 3 release.
+8. Begin Day 4 in a new chat using this file as the authoritative context.
