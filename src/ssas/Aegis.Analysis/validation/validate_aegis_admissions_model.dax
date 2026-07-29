@@ -1,0 +1,54 @@
+-- Aegis Admissions SSAS Tabular validation
+-- Execute against the deployed Aegis_Admissions_Analysis database.
+
+-- 1. Core model reconciliation
+EVALUATE
+ROW(
+    "Admissions", [Admissions],
+    "Open Admissions", [Open Admissions],
+    "Discharged Admissions", [Discharged Admissions],
+    "Distinct Patients", [Distinct Patients],
+    "Average Completed Length of Stay", [Average Completed Length of Stay],
+    "Open Admission Percentage", [Open Admission Percentage]
+)
+
+-- Expected:
+-- Admissions                         1600
+-- Open Admissions                     192
+-- Discharged Admissions              1408
+-- Distinct Patients                   708
+-- Average Completed Length of Stay   7.43 approximately
+-- Open Admission Percentage          0.12
+
+
+-- 2. Organisation and site filtering
+EVALUATE
+SUMMARIZECOLUMNS(
+    'Dim Organisation'[OrganisationCode],
+    'Dim Organisation'[OrganisationName],
+    'Dim Site'[SiteCode],
+    'Dim Site'[SiteName],
+    "Admissions", [Admissions],
+    "Open Admissions", [Open Admissions],
+    "Discharged Admissions", [Discharged Admissions],
+    "Distinct Patients", [Distinct Patients],
+    "Average Completed Length of Stay",
+        [Average Completed Length of Stay]
+)
+ORDER BY
+    'Dim Organisation'[OrganisationCode],
+    'Dim Site'[SiteCode]
+
+
+-- 3. Admission-date and discharge-date roles
+EVALUATE
+FILTER(
+    SUMMARIZECOLUMNS(
+        'Dim Date'[Year],
+        "Admissions by Admission Date", [Admissions],
+        "Discharges by Discharge Date", [Discharged Admissions]
+    ),
+    NOT ISBLANK('Dim Date'[Year])
+)
+ORDER BY
+    'Dim Date'[Year]
