@@ -1,0 +1,799 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1600,
+  "model": {
+    "culture": "en-GB",
+    "dataSources": [
+      {
+        "type": "structured",
+        "name": "SQL/DESKTOP-N58JDOH;Aegis_Staging",
+        "connectionDetails": {
+          "protocol": "tds",
+          "address": {
+            "server": "DESKTOP-N58JDOH",
+            "database": "Aegis_Staging"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "credential": {
+          "AuthenticationKind": "UsernamePassword",
+          "kind": "SQL",
+          "path": "desktop-n58jdoh;Aegis_Staging",
+          "Username": "aegis_ssas_reader",
+          "EncryptConnection": false
+        }
+      },
+      {
+        "type": "structured",
+        "name": "SQL/DESKTOP-N58JDOH;Aegis_Source",
+        "connectionDetails": {
+          "protocol": "tds",
+          "address": {
+            "server": "DESKTOP-N58JDOH",
+            "database": "Aegis_Source"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "credential": {
+          "AuthenticationKind": "UsernamePassword",
+          "kind": "SQL",
+          "path": "desktop-n58jdoh;Aegis_Source",
+          "Username": "aegis_ssas_reader",
+          "EncryptConnection": false
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "Fact Admission",
+        "columns": [
+          {
+            "name": "CuratedAdmissionId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "CuratedAdmissionId"
+          },
+          {
+            "name": "AdmissionId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "AdmissionId"
+          },
+          {
+            "name": "AdmissionNumber",
+            "dataType": "string",
+            "sourceColumn": "AdmissionNumber"
+          },
+          {
+            "name": "PatientId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "PatientId"
+          },
+          {
+            "name": "PatientPathwayId",
+            "dataType": "string",
+            "sourceColumn": "PatientPathwayId"
+          },
+          {
+            "name": "OrganisationId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "OrganisationId"
+          },
+          {
+            "name": "SiteId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "SiteId"
+          },
+          {
+            "name": "AdmissionDateTime",
+            "dataType": "dateTime",
+            "sourceColumn": "AdmissionDateTime"
+          },
+          {
+            "name": "AdmissionDate",
+            "dataType": "dateTime",
+            "sourceColumn": "AdmissionDate"
+          },
+          {
+            "name": "DischargeDateTime",
+            "dataType": "dateTime",
+            "sourceColumn": "DischargeDateTime"
+          },
+          {
+            "name": "DischargeDate",
+            "dataType": "dateTime",
+            "sourceColumn": "DischargeDate"
+          },
+          {
+            "name": "AdmissionMethodCode",
+            "dataType": "string",
+            "sourceColumn": "AdmissionMethodCode"
+          },
+          {
+            "name": "AdmissionSourceCode",
+            "dataType": "string",
+            "sourceColumn": "AdmissionSourceCode"
+          },
+          {
+            "name": "PatientClassificationCode",
+            "dataType": "string",
+            "sourceColumn": "PatientClassificationCode"
+          },
+          {
+            "name": "IntendedManagementCode",
+            "dataType": "string",
+            "sourceColumn": "IntendedManagementCode"
+          },
+          {
+            "name": "AdministrativeCategoryCode",
+            "dataType": "string",
+            "sourceColumn": "AdministrativeCategoryCode"
+          },
+          {
+            "name": "LegalStatusCode",
+            "dataType": "string",
+            "sourceColumn": "LegalStatusCode"
+          },
+          {
+            "name": "DischargeMethodCode",
+            "dataType": "string",
+            "sourceColumn": "DischargeMethodCode"
+          },
+          {
+            "name": "DischargeDestinationCode",
+            "dataType": "string",
+            "sourceColumn": "DischargeDestinationCode"
+          },
+          {
+            "name": "AdmissionStatusCode",
+            "dataType": "string",
+            "sourceColumn": "AdmissionStatusCode"
+          },
+          {
+            "name": "IsOpenAdmission",
+            "dataType": "boolean",
+            "sourceColumn": "IsOpenAdmission"
+          },
+          {
+            "name": "IsDischargedAdmission",
+            "dataType": "boolean",
+            "sourceColumn": "IsDischargedAdmission"
+          },
+          {
+            "name": "CompletedLengthOfStayDays",
+            "dataType": "double",
+            "sourceColumn": "CompletedLengthOfStayDays"
+          },
+          {
+            "name": "LengthOfStayBand",
+            "dataType": "string",
+            "sourceColumn": "LengthOfStayBand",
+            "sortByColumn": "LengthOfStayBandSort"
+          },
+          {
+            "name": "LengthOfStayBandSort",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "LengthOfStayBandSort"
+          },
+          {
+            "name": "AdmissionCount",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "AdmissionCount"
+          },
+          {
+            "name": "OpenAdmissionCount",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "OpenAdmissionCount"
+          },
+          {
+            "name": "DischargedAdmissionCount",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "DischargedAdmissionCount"
+          },
+          {
+            "name": "StagingAdmissionId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "StagingAdmissionId"
+          },
+          {
+            "name": "LandingAdmissionId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "LandingAdmissionId"
+          },
+          {
+            "name": "BatchId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "BatchId"
+          },
+          {
+            "name": "PackageExecutionId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "PackageExecutionId"
+          },
+          {
+            "name": "SourceSystemCode",
+            "dataType": "string",
+            "sourceColumn": "SourceSystemCode"
+          },
+          {
+            "name": "SourceRecordIdentifier",
+            "dataType": "string",
+            "sourceColumn": "SourceRecordIdentifier"
+          },
+          {
+            "name": "SourceRowNumber",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "SourceRowNumber"
+          },
+          {
+            "name": "AcceptedAt",
+            "dataType": "dateTime",
+            "sourceColumn": "AcceptedAt"
+          },
+          {
+            "name": "CuratedAt",
+            "dataType": "dateTime",
+            "sourceColumn": "CuratedAt"
+          },
+          {
+            "name": "RecordCreatedAt",
+            "dataType": "dateTime",
+            "sourceColumn": "RecordCreatedAt"
+          },
+          {
+            "name": "RecordUpdatedAt",
+            "dataType": "dateTime",
+            "sourceColumn": "RecordUpdatedAt"
+          },
+          {
+            "name": "IsDeleted",
+            "dataType": "boolean",
+            "isHidden": true,
+            "sourceColumn": "IsDeleted"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/DESKTOP-N58JDOH;Aegis_Staging\",",
+                "    reporting_AdmissionAnalysis = Source{[Schema=\"reporting\",Item=\"AdmissionAnalysis\"]}[Data]",
+                "in",
+                "    reporting_AdmissionAnalysis"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Admissions",
+            "description": "Count of accepted Admissions, evaluated using the active Admission Date relationship.",
+            "expression": [
+              "",
+              "SUM('Fact Admission'[AdmissionCount])"
+            ],
+            "formatString": "0"
+          },
+          {
+            "name": "Open Admissions",
+            "description": "Count of accepted Admissions without a discharge date.",
+            "expression": [
+              "",
+              "SUM('Fact Admission'[OpenAdmissionCount])"
+            ],
+            "formatString": "0"
+          },
+          {
+            "name": "Discharged Admissions",
+            "description": "Count of accepted discharged Admissions, evaluated using the inactive Discharge Date relationship.",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "    SUM('Fact Admission'[DischargedAdmissionCount]),",
+              "    USERELATIONSHIP(",
+              "        'Dim Date'[Date],",
+              "        'Fact Admission'[DischargeDate]",
+              "    )",
+              ")"
+            ],
+            "formatString": "0"
+          },
+          {
+            "name": "Distinct Patients",
+            "description": "Distinct count of patients represented within the accepted Admissions dataset.",
+            "expression": [
+              "",
+              "DISTINCTCOUNT('Fact Admission'[PatientId])"
+            ],
+            "formatString": "0"
+          },
+          {
+            "name": "Average Completed Length of Stay",
+            "description": "Average completed length of stay in days for discharged Admissions only.",
+            "expression": [
+              "",
+              "AVERAGE('Fact Admission'[CompletedLengthOfStayDays])"
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Open Admission Percentage",
+            "description": "Percentage of accepted Admissions that remain open.",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "    [Open Admissions],",
+              "    [Admissions]",
+              ")"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%"
+          }
+        ]
+      },
+      {
+        "name": "Dim Organisation",
+        "columns": [
+          {
+            "name": "OrganisationId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "OrganisationId"
+          },
+          {
+            "name": "OrganisationCode",
+            "dataType": "string",
+            "sourceColumn": "OrganisationCode"
+          },
+          {
+            "name": "NationalOrganisationCode",
+            "dataType": "string",
+            "sourceColumn": "NationalOrganisationCode"
+          },
+          {
+            "name": "OrganisationName",
+            "dataType": "string",
+            "sourceColumn": "OrganisationName"
+          },
+          {
+            "name": "OrganisationTypeCode",
+            "dataType": "string",
+            "sourceColumn": "OrganisationTypeCode"
+          },
+          {
+            "name": "ParentOrganisationCode",
+            "dataType": "string",
+            "sourceColumn": "ParentOrganisationCode"
+          },
+          {
+            "name": "Postcode",
+            "dataType": "string",
+            "sourceColumn": "Postcode"
+          },
+          {
+            "name": "EffectiveFromDate",
+            "dataType": "dateTime",
+            "sourceColumn": "EffectiveFromDate"
+          },
+          {
+            "name": "EffectiveToDate",
+            "dataType": "dateTime",
+            "sourceColumn": "EffectiveToDate"
+          },
+          {
+            "name": "RecordCreatedAt",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "RecordCreatedAt"
+          },
+          {
+            "name": "RecordUpdatedAt",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "RecordUpdatedAt"
+          },
+          {
+            "name": "IsDeleted",
+            "dataType": "boolean",
+            "isHidden": true,
+            "sourceColumn": "IsDeleted"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/DESKTOP-N58JDOH;Aegis_Source\",",
+                "    ref_Organisation = Source{[Schema=\"ref\",Item=\"Organisation\"]}[Data]",
+                "in",
+                "    ref_Organisation"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim Site",
+        "columns": [
+          {
+            "name": "SiteId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "SiteId"
+          },
+          {
+            "name": "OrganisationId",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "OrganisationId"
+          },
+          {
+            "name": "SiteCode",
+            "dataType": "string",
+            "sourceColumn": "SiteCode"
+          },
+          {
+            "name": "NationalSiteCode",
+            "dataType": "string",
+            "sourceColumn": "NationalSiteCode"
+          },
+          {
+            "name": "SiteName",
+            "dataType": "string",
+            "sourceColumn": "SiteName"
+          },
+          {
+            "name": "AddressLine1",
+            "dataType": "string",
+            "sourceColumn": "AddressLine1"
+          },
+          {
+            "name": "AddressLine2",
+            "dataType": "string",
+            "sourceColumn": "AddressLine2"
+          },
+          {
+            "name": "AddressLine3",
+            "dataType": "string",
+            "sourceColumn": "AddressLine3"
+          },
+          {
+            "name": "Postcode",
+            "dataType": "string",
+            "sourceColumn": "Postcode"
+          },
+          {
+            "name": "EffectiveFromDate",
+            "dataType": "dateTime",
+            "sourceColumn": "EffectiveFromDate"
+          },
+          {
+            "name": "EffectiveToDate",
+            "dataType": "dateTime",
+            "sourceColumn": "EffectiveToDate"
+          },
+          {
+            "name": "RecordCreatedAt",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "RecordCreatedAt"
+          },
+          {
+            "name": "RecordUpdatedAt",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "RecordUpdatedAt"
+          },
+          {
+            "name": "IsDeleted",
+            "dataType": "boolean",
+            "isHidden": true,
+            "sourceColumn": "IsDeleted"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/DESKTOP-N58JDOH;Aegis_Source\",",
+                "    ref_Site = Source{[Schema=\"ref\",Item=\"Site\"]}[Data]",
+                "in",
+                "    ref_Site"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim Date",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Date",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Date]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Date Key",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Date Key]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Year",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Year]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Quarter Number",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Quarter Number]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Quarter",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Quarter]",
+            "sortByColumn": "Quarter Number"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Year Quarter",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Year Quarter]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Month Number",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Month Number]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Month",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Month]",
+            "sortByColumn": "Month Number"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Month Short",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Month Short]",
+            "sortByColumn": "Month Number"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Year Month",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Year Month]",
+            "sortByColumn": "Year Month Sort"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Year Month Sort",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Year Month Sort]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Day",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Day]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Day of Week Number",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Day of Week Number]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Day of Week",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Day of Week]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Day of Week Short",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Day of Week Short]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Is Weekend",
+            "dataType": "boolean",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Is Weekend]",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\""
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "",
+                "VAR StartDate = DATE(2023, 1, 1)",
+                "VAR EndDate   = DATE(2026, 12, 31)",
+                "RETURN",
+                "ADDCOLUMNS(",
+                "    CALENDAR(StartDate, EndDate),",
+                "    \"Date Key\", VALUE(FORMAT([Date], \"yyyymmdd\")),",
+                "    \"Year\", YEAR([Date]),",
+                "    \"Quarter Number\", QUARTER([Date]),",
+                "    \"Quarter\", \"Q\" & FORMAT(QUARTER([Date]), \"0\"),",
+                "    \"Year Quarter\",",
+                "        FORMAT(YEAR([Date]), \"0000\")",
+                "            & \" Q\"",
+                "            & FORMAT(QUARTER([Date]), \"0\"),",
+                "    \"Month Number\", MONTH([Date]),",
+                "    \"Month\", FORMAT([Date], \"MMMM\"),",
+                "    \"Month Short\", FORMAT([Date], \"MMM\"),",
+                "    \"Year Month\",",
+                "        FORMAT([Date], \"yyyy-MM\"),",
+                "    \"Year Month Sort\",",
+                "        YEAR([Date]) * 100 + MONTH([Date]),",
+                "    \"Day\", DAY([Date]),",
+                "    \"Day of Week Number\", WEEKDAY([Date], 2),",
+                "    \"Day of Week\", FORMAT([Date], \"dddd\"),",
+                "    \"Day of Week Short\", FORMAT([Date], \"ddd\"),",
+                "    \"Is Weekend\", WEEKDAY([Date], 2) >= 6",
+                ")"
+              ]
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Calendar",
+            "levels": [
+              {
+                "name": "Year",
+                "ordinal": 0,
+                "column": "Year"
+              },
+              {
+                "name": "Quarter",
+                "ordinal": 1,
+                "column": "Quarter"
+              },
+              {
+                "name": "Month",
+                "ordinal": 2,
+                "column": "Month"
+              },
+              {
+                "name": "Date",
+                "ordinal": 3,
+                "column": "Date"
+              }
+            ]
+          },
+          {
+            "name": "Calendar Month",
+            "levels": [
+              {
+                "name": "Year",
+                "ordinal": 0,
+                "column": "Year"
+              },
+              {
+                "name": "Year Month",
+                "ordinal": 1,
+                "column": "Year Month"
+              },
+              {
+                "name": "Date",
+                "ordinal": 2,
+                "column": "Date"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "ec876714-21c4-466b-814a-2899c48748ed",
+        "fromTable": "Dim Site",
+        "fromColumn": "OrganisationId",
+        "toTable": "Dim Organisation",
+        "toColumn": "OrganisationId"
+      },
+      {
+        "name": "c0efcba7-5944-4c39-beaf-32601c02062f",
+        "fromTable": "Fact Admission",
+        "fromColumn": "SiteId",
+        "toTable": "Dim Site",
+        "toColumn": "SiteId"
+      },
+      {
+        "name": "06c69644-9c2e-4b54-bf52-40d16c2f5501",
+        "fromTable": "Fact Admission",
+        "fromColumn": "AdmissionDate",
+        "toTable": "Dim Date",
+        "toColumn": "Date"
+      },
+      {
+        "name": "57ec2ad0-df02-4335-a0a6-e7fda0187c0f",
+        "fromTable": "Fact Admission",
+        "fromColumn": "DischargeDate",
+        "toTable": "Dim Date",
+        "toColumn": "Date",
+        "isActive": false
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "700"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}

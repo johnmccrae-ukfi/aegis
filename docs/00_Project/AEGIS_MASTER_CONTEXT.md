@@ -4,9 +4,9 @@
 
 **Name:** Aegis Clinical Data Platform  
 **Repository:** Aegis  
-**Purpose:** Synthetic NHS-style clinical data migration, reporting and operational-assurance platform.  
+**Purpose:** Synthetic NHS-style clinical data migration, validation, semantic-modelling, reporting and operational-assurance platform.  
 **Current branch:** `dev`  
-**Current delivery position:** Day 3 complete; the audited Admissions migration pipeline is ready for downstream SSAS and SSRS development.
+**Current delivery position:** Day 4 complete; the audited Admissions migration pipeline and deployed SSAS Tabular semantic model are ready for Day 5 SSRS reporting.
 
 ---
 
@@ -16,10 +16,37 @@ Aegis is a portfolio project designed to demonstrate practical delivery across t
 
 It complements Atlas:
 
-- **Atlas:** Microsoft Fabric, cloud data engineering, real-time analytics and AI.
-- **Aegis:** SQL Server, SSIS, SSAS Tabular, SSRS, healthcare migration, reporting, database resilience and operational assurance.
+- **Atlas:** Microsoft Fabric, cloud data engineering, real-time analytics, semantic modelling and AI.
+- **Aegis:** SQL Server, SSIS, SSAS Tabular, SSRS, healthcare migration, reporting, data quality, governance, database resilience and operational assurance.
 
-Aegis is intended to demonstrate that the same disciplined engineering principles can be applied across both modern cloud platforms and established enterprise SQL Server estates.
+Aegis demonstrates that the same disciplined engineering principles can be applied across both modern cloud platforms and established enterprise SQL Server estates.
+
+The project is also intended to show the continuity between:
+
+```text
+SSAS Tabular
+        ↓
+Power BI and Fabric semantic models
+```
+
+and:
+
+```text
+SSRS paginated reporting
+        ↓
+Power BI paginated reporting
+```
+
+The underlying concepts remain transferable:
+
+- dimensional modelling;
+- tabular relationships;
+- DAX measures;
+- active and inactive relationships;
+- semantic metadata;
+- governed reporting;
+- parameter-driven operational reports;
+- lineage and reconciliation.
 
 ---
 
@@ -47,12 +74,33 @@ The project will process representative:
 
 Aegis is a focused migration and assurance simulation. It is not intended to reproduce a complete NHS PAS, EPR, interface engine or statutory-submission service.
 
+The current interview-focused implementation deliberately concentrates on taking **Admissions** through a polished end-to-end flow:
+
+```text
+Synthetic legacy PAS
+        ↓
+Audited SSIS ingestion
+        ↓
+Landing and staging
+        ↓
+Validation and classification
+        ↓
+Accepted or quarantined
+        ↓
+Reporting view
+        ↓
+SSAS Tabular semantic model
+        ↓
+SSRS reporting
+```
+
 ---
 
 ## Core technologies
 
 - SQL Server 2022 Developer Edition
 - T-SQL
+- DAX
 - SQL Server Database DevOps projects
 - DACPAC build and publish
 - SQL Server Integration Services
@@ -69,31 +117,57 @@ Aegis is a focused migration and assurance simulation. It is not intended to rep
 - Python
 - PowerShell
 - Azure SQL Database
+- Microsoft Purview concepts for later governance expansion
 
 ---
 
-## Planned databases
+## Implemented databases and services
 
-- `Aegis_Source`
-- `Aegis_Staging`
-- `Aegis_Audit`
-- `Aegis_Warehouse`
-- `Aegis_Reporting`
-- `Aegis_Source_ReportingReplica`
-- `Aegis_Warehouse_DR`
+### Relational databases
 
-### Current database status
+```text
+Aegis_Source
+Aegis_Staging
+Aegis_Audit
+```
 
-| Database | Status |
-|---|---|
-| `Aegis_Source` | Implemented and populated |
-| `Aegis_Staging` | Implemented, published and populated for Admissions |
-| `Aegis_Audit` | Implemented, published and populated |
-| `Aegis_Warehouse` | Deferred while the Admissions-only end-to-end scenario is completed |
-| `Aegis_Reporting` | Planned for SSRS reporting |
-| `Aegis_Source_ReportingReplica` | Planned for replication demonstration |
-| `Aegis_Warehouse_DR` | Planned for later log-shipping demonstration |
+### Analysis Services database
 
+```text
+Aegis_Admissions_Analysis
+```
+
+### Deferred databases
+
+```text
+Aegis_Warehouse
+Aegis_Reporting
+Aegis_Source_ReportingReplica
+Aegis_Warehouse_DR
+```
+
+### Current database and service status
+
+| Database or service | Purpose | Status |
+|---|---|---|
+| `Aegis_Source` | Synthetic legacy PAS source and reference data | Implemented and populated |
+| `Aegis_Staging` | Landing, staging, curated, quarantine and reporting layers | Implemented, published and populated |
+| `Aegis_Audit` | Batch, package, row-outcome and data-quality audit | Implemented, published and populated |
+| `Aegis_Admissions_Analysis` | SSAS Tabular Admissions semantic model | Implemented, deployed and validated |
+| `Aegis_Warehouse` | Broader analytical warehouse | Deferred |
+| `Aegis_Reporting` | Potential future relational reporting database | Deferred |
+| `Aegis_Source_ReportingReplica` | Transactional-replication reporting target | Deferred |
+| `Aegis_Warehouse_DR` | Log-shipping recovery target | Deferred |
+
+The focused Admissions scenario currently uses:
+
+```text
+Aegis_Staging.reporting.AdmissionAnalysis
+        ↓
+Aegis_Admissions_Analysis
+```
+
+A separate relational `Aegis_Reporting` database is not required for the current SSAS and SSRS demonstration.
 
 ---
 
@@ -117,7 +191,19 @@ Feature branches may be used for larger isolated changes.
 dev
 ```
 
-### Tool responsibilities
+### Released versions
+
+```text
+v0.1.0 — Platform and SQL database foundation
+v0.2.0 — Deterministic synthetic PAS data and patient identity
+v0.3.0 — Audited SSIS Admissions pipeline
+```
+
+Day 4 changes are currently being completed on `dev` and have not yet been released.
+
+---
+
+## Tool responsibilities
 
 Use **SSMS Database DevOps** for:
 
@@ -127,6 +213,14 @@ Use **SSMS Database DevOps** for:
 - DACPAC creation;
 - DACPAC publication;
 - SQL parser and deployment validation.
+
+Use **Visual Studio 2022** for:
+
+- SSIS package development;
+- SSAS Tabular development;
+- SSRS report development;
+- Analysis Services build and deployment;
+- Reporting Services build and deployment.
 
 Use **VS Code** for:
 
@@ -138,7 +232,17 @@ Use **VS Code** for:
 - generated-file inspection;
 - general development work.
 
-Standalone SQL validation and reconciliation scripts may be created and executed in SSMS, provided they are saved within the repository under `sql/`.
+Standalone SQL validation and reconciliation scripts may be created and executed in SSMS, provided they are saved within the repository under:
+
+```text
+sql/
+```
+
+Standalone deployed-model DAX validation scripts may be retained with the SSAS solution under:
+
+```text
+src/ssas/Aegis.Analysis/validation/
+```
 
 ---
 
@@ -183,7 +287,58 @@ DESKTOP-N58JDOH
 
 All three database projects currently build and publish successfully.
 
-### Build-artifact rule
+---
+
+## SSAS development workflow
+
+```text
+SSAS Tabular project source
+        ↓
+Workspace-model processing
+        ↓
+Project build
+        ↓
+Deployment to Analysis Services
+        ↓
+Deployed-model DAX validation
+        ↓
+Git commit and push
+```
+
+The SSAS solution is:
+
+```text
+src/ssas/Aegis.Analysis/Aegis.Analysis.sln
+```
+
+The SSAS Tabular project is:
+
+```text
+src/ssas/Aegis.Analysis/Aegis.Admissions.Analysis
+```
+
+The project targets:
+
+```text
+SQL Server 2022
+Compatibility level 1600
+```
+
+The deployed model is:
+
+```text
+Server:    DESKTOP-N58JDOH
+Database:  Aegis_Admissions_Analysis
+Model:     Model
+```
+
+The project builds and deploys successfully.
+
+Visual Studio creates a separate temporary workspace database while the model is being authored. This is distinct from the deployed production-style model database.
+
+---
+
+## Build-artifact rule
 
 Generated build outputs must not be committed to normal Git history.
 
@@ -193,9 +348,12 @@ Excluded artefacts include:
 **/bin/
 **/obj/
 *.dacpac
+.venv/
 ```
 
-DACPAC files are reproducible build outputs. A future CI/CD workflow may publish them as pipeline or release artefacts, but locally generated DACPACs do not belong in the repository source tree.
+DACPAC files and Analysis Services build outputs are reproducible artefacts.
+
+A future CI/CD workflow may publish them as pipeline or release artefacts, but locally generated outputs do not belong in the repository source tree.
 
 ---
 
@@ -214,7 +372,9 @@ The following must never enter public source control:
 - real NHS numbers;
 - real staff identifiers;
 - production screenshots containing identifiable information;
-- passwords, secrets or private connection strings.
+- passwords, secrets or private connection strings;
+- SQL login passwords;
+- stored credentials exported from local development tools.
 
 Private structural reference material must remain under:
 
@@ -249,7 +409,7 @@ docs/10_Governance/Synthetic_Data_Generation_and_Safety_Rules.md
 ## Working conventions
 
 - Proceed step by step.
-- Pause after each significant build, publish, generation, load or validation operation.
+- Pause after each significant build, publish, generation, load, deployment or validation operation.
 - Wait for the observed result before continuing.
 - Provide complete file contents when creating or replacing scripts and Markdown documents.
 - Put a whole Markdown document inside one outer four-backtick block when it contains inner fenced blocks.
@@ -263,8 +423,10 @@ docs/10_Governance/Synthetic_Data_Generation_and_Safety_Rules.md
 - Keep credentials and environment-specific values outside Git.
 - Use repeatable test data and explicit reconciliation controls.
 - Document architectural decisions affecting portability, security or operations.
-- Capture diagrams and screenshots under `images`.
+- Capture diagrams and screenshots under technology-specific folders within `images`.
 - Keep generated `bin`, `obj`, DACPAC and virtual-environment artefacts outside Git.
+- Prefer polished, explainable end-to-end delivery over unnecessary breadth.
+- Keep the current interview-focused implementation limited to Admissions until SSRS is complete.
 
 ---
 
@@ -291,6 +453,13 @@ aegis/
 │   ├── 09_Operations/
 │   └── 10_Governance/
 ├── images/
+│   ├── architecture/
+│   ├── database/
+│   ├── log_shipping/
+│   ├── replication/
+│   ├── ssas/
+│   ├── ssis/
+│   └── ssrs/
 ├── sql/
 │   ├── administration/
 │   ├── deployment/
@@ -298,13 +467,17 @@ aegis/
 │   └── tests/
 ├── src/
 │   ├── database/
+│   ├── ssas/
+│   │   └── Aegis.Analysis/
+│   │       ├── Aegis.Admissions.Analysis/
+│   │       └── validation/
 │   ├── ssis/
 │   └── synthetic_data/
 ├── .gitignore
 └── requirements.txt
 ```
 
-Generated data under `data/generated` is currently excluded from Git while the generator and schemas are still evolving.
+Generated data under `data/generated` is currently excluded from Git while the generators and schemas remain under development.
 
 Reviewed deterministic synthetic samples may later be copied into an explicitly governed public sample-data location.
 
@@ -334,11 +507,30 @@ SSRS endpoints are available through:
 /Reports
 ```
 
+The Analysis Services default instance is:
+
+```text
+DESKTOP-N58JDOH
+```
+
+The Analysis Services service:
+
+- uses the default `MSSQLSERVER` instance;
+- is configured for Tabular mode;
+- is running;
+- starts automatically.
+
 Visual Studio 2022 contains the required BI extensions for:
 
 - SSIS;
 - SSAS;
 - SSRS.
+
+Installed Analysis Services project extension:
+
+```text
+Microsoft Analysis Services Projects 4.0.0
+```
 
 The local SQL Server has also been connected to Azure through the SQL Server Azure Extension.
 
@@ -377,7 +569,7 @@ The design accounts for:
 - cutover readiness;
 - post-go-live assurance.
 
-Aegis will avoid unsupported claims about the exact private products or implementation details used by real NHS organisations.
+Aegis avoids unsupported claims about the exact private products or implementation details used by real NHS organisations.
 
 ---
 
@@ -429,7 +621,8 @@ Representative interfaces include:
 | Warehouse extract | PAS/EPR | Warehouse | SQL Server and SSIS | Patient and clinical activity |
 | APC-style extract | Warehouse | Statutory consumer | Delimited file | Admitted-patient episodes |
 | Regional feed | Warehouse/EPR | Regional consumer | Extract or API | Governed patient activity |
-| Reconciliation results | Staging/Warehouse | Audit | SQL Server | Batch and attribute controls |
+| Reconciliation results | Staging/reporting | Audit | SQL Server | Batch and attribute controls |
+| Semantic reporting | SSAS | SSRS | Tabular model | Admissions activity and assurance |
 
 Aegis will not implement complete:
 
@@ -453,7 +646,7 @@ Their boundaries will be represented through:
 
 ## HL7 scope
 
-The initial HL7 implementation will include:
+The initial HL7 implementation may later include:
 
 - `ADT^A01` — admit;
 - `ADT^A02` — transfer;
@@ -465,7 +658,7 @@ A later representative clinical-result interface may include:
 
 - `ORU^R01` — observation or laboratory result.
 
-The implementation will demonstrate:
+The future implementation may demonstrate:
 
 - receipt;
 - parsing;
@@ -476,6 +669,8 @@ The implementation will demonstrate:
 - replay.
 
 It will remain a focused simulation rather than a complete production interface engine.
+
+HL7 and FHIR work is deferred until after the interview-focused Admissions SSIS, SSAS and SSRS demonstration.
 
 ---
 
@@ -519,7 +714,7 @@ The source is expected to preserve:
 - source defects;
 - inconsistent legacy values where deliberately generated.
 
-Business validation and quarantine will occur downstream in staging, SSIS and audit processing.
+Business validation and quarantine occur downstream in staging, SSIS and audit processing.
 
 ---
 
@@ -651,6 +846,8 @@ Physical patient rows:         1,000
 Superseded merged patients:       25
 Logical patients after merges:   975
 ```
+
+Downstream patient-merge resolution is deferred while the Admissions-only end-to-end reporting scenario is completed.
 
 ---
 
@@ -828,7 +1025,7 @@ The valid patient-journey baseline is:
 | Discharged | 1,408 |
 | Total | 1,600 |
 
-Open admissions represent exactly 12% of the admission baseline.
+Open Admissions represent exactly 12% of the Admission baseline.
 
 ### Approximate activity ratios
 
@@ -844,9 +1041,9 @@ Ward stays per admission:             2.01
 The generated valid baseline enforces:
 
 - discharge not before admission;
-- open admissions without discharge details;
-- discharged admissions with discharge details;
-- episodes within admission boundaries;
+- open Admissions without discharge details;
+- discharged Admissions with discharge details;
+- episodes within Admission boundaries;
 - continuous episode sequences;
 - diagnosis dates within episode boundaries;
 - one primary diagnosis per episode;
@@ -854,12 +1051,12 @@ The generated valid baseline enforces:
 - procedure times within episode boundaries;
 - one primary procedure where procedures exist;
 - continuous procedure sequences;
-- ward stays within admission boundaries;
+- ward stays within Admission boundaries;
 - continuous ward-stay sequences;
 - one admission ward;
-- one discharge ward for discharged admissions;
-- final open episode for open admissions;
-- final open ward stay for open admissions;
+- one discharge ward for discharged Admissions;
+- final open episode for open Admissions;
+- final open ward stay for open Admissions;
 - no activity against superseded merged patients;
 - no activity against deceased patients in the valid baseline.
 
@@ -971,16 +1168,16 @@ The journey defect pack contains:
 #### Admission
 
 - `DQ-ADM-001` — discharge before admission;
-- `DQ-ADM-002` — open admission containing discharge details;
-- `DQ-ADM-003` — discharged admission without discharge details;
+- `DQ-ADM-002` — open Admission containing discharge details;
+- `DQ-ADM-003` — discharged Admission without discharge details;
 - `DQ-ADM-004` — unknown patient;
 - `DQ-ADM-005` — unknown site and organisation.
 
 #### Consultant episode
 
-- `DQ-EPI-001` — episode begins before admission;
+- `DQ-EPI-001` — episode begins before Admission;
 - `DQ-EPI-002` — episode ends after discharge;
-- `DQ-EPI-003` — unknown admission;
+- `DQ-EPI-003` — unknown Admission;
 - `DQ-EPI-004` — non-contiguous episode sequence.
 
 #### Diagnosis
@@ -1066,7 +1263,7 @@ The schema and deployment validation script is:
 sql/tests/validate_aegis_source_foundation.sql
 ```
 
-It currently performs:
+It performs:
 
 ```text
 56 checks
@@ -1094,6 +1291,8 @@ Result:
 0 failed
 ```
 
+---
+
 ## Day 2 source-data reconciliation
 
 The complete data reconciliation script is:
@@ -1120,7 +1319,7 @@ covering:
 - referential integrity;
 - merged-patient exclusion;
 - deceased-patient exclusion;
-- admission rules;
+- Admission rules;
 - episode chronology;
 - diagnosis chronology;
 - procedure chronology;
@@ -1140,6 +1339,7 @@ Result:
 0 failed
 ```
 
+---
 
 ## Day 3 control-plane validation
 
@@ -1149,7 +1349,7 @@ The repeatable Day 3 validation script is:
 sql/tests/validate_aegis_day3_control_plane.sql
 ```
 
-It currently performs:
+It performs:
 
 ```text
 78 checks
@@ -1197,19 +1397,78 @@ Package status:              SUCCEEDED_WITH_EXCEPTIONS
 The five quarantined Admissions comprise exactly one occurrence of each implemented rule:
 
 - `DQ-ADM-001` — discharge before admission;
-- `DQ-ADM-002` — open admission contains discharge details;
-- `DQ-ADM-003` — discharged admission missing discharge details;
+- `DQ-ADM-002` — open Admission contains discharge details;
+- `DQ-ADM-003` — discharged Admission missing discharge details;
 - `DQ-ADM-004` — unknown patient;
 - `DQ-ADM-005` — unknown site or organisation.
 
-## Combined executed validation
+---
+
+## Day 4 reporting-layer validation
+
+The Day 4 SQL reporting validation script is:
 
 ```text
-Foundation validation:       56 / 56
-Day 2 reconciliation:        63 / 63
-Day 3 control plane:          78 / 78
-                             -------
-Combined checks:            197 / 197
+sql/tests/validate_aegis_day4_admissions_reporting.sql
+```
+
+It performs:
+
+```text
+22 checks
+```
+
+covering:
+
+- reporting schema deployment;
+- `reporting.AdmissionAnalysis` deployment;
+- reporting row count;
+- distinct Admission count;
+- distinct patient count;
+- open Admission count;
+- discharged Admission count;
+- reporting-to-curated reconciliation;
+- additive status-flag reconciliation;
+- open Admission discharge-date rules;
+- discharged Admission discharge-date rules;
+- admission-date range;
+- discharge-date range;
+- minimum completed length of stay;
+- maximum completed length of stay;
+- average completed length of stay;
+- lineage completeness;
+- organisation references;
+- site references;
+- site-to-organisation consistency.
+
+Result:
+
+```text
+22 passed
+0 failed
+```
+
+Validated length-of-stay profile:
+
+```text
+Minimum completed length of stay:  0.33 days
+Maximum completed length of stay: 14.00 days
+Average completed length of stay:  7.43 days
+```
+
+Completed length of stay is calculated using elapsed minutes rather than calendar-day boundaries.
+
+---
+
+## Combined executed SQL validation
+
+```text
+Foundation validation:          56 / 56
+Day 2 reconciliation:           63 / 63
+Day 3 control plane:             78 / 78
+Day 4 reporting layer:           22 / 22
+                                -------
+Combined SQL checks:            219 / 219
 ```
 
 The Day 2 script also reports the external defect-pack control:
@@ -1220,7 +1479,49 @@ Expected scenarios:         15
 Expected outcome:           QUARANTINE
 ```
 
-The script raises SQL error `51000` if any loaded-source control fails, making it suitable for later automated deployment or CI validation.
+The validation scripts raise SQL error `51000` when a control fails, making them suitable for later automated deployment or CI validation.
+
+---
+
+## Deployed-model DAX validation
+
+The deployed SSAS model is independently validated using:
+
+```text
+src/ssas/Aegis.Analysis/validation/validate_aegis_admissions_model.dax
+```
+
+The DAX validation covers:
+
+- core measure reconciliation;
+- organisation and site filtering;
+- organisation-to-site-to-Admission filter propagation;
+- active Admission Date behaviour;
+- inactive Discharge Date behaviour;
+- yearly Admission and discharge trends.
+
+Validated core model results:
+
+```text
+Admissions:                         1,600
+Open Admissions:                      192
+Discharged Admissions:              1,408
+Distinct Patients:                    708
+Average Completed Length of Stay:    7.43 days
+Open Admission Percentage:          12.00%
+```
+
+Validated yearly activity:
+
+| Year | Admissions | Discharges |
+|---:|---:|---:|
+| 2023 | 378 | 373 |
+| 2024 | 411 | 403 |
+| 2025 | 391 | 396 |
+| 2026 | 420 | 236 |
+| **Total** | **1,600** | **1,408** |
+
+The lower 2026 discharge count is expected because the synthetic activity extends only to July 2026 and 192 Admissions remain open.
 
 ---
 
@@ -1260,7 +1561,7 @@ Controlled defect extracts are excluded from this loaded total.
 
 # Implemented audit and migration-control model
 
-`Aegis_Audit` now provides the operational control plane for the Admissions pipeline.
+`Aegis_Audit` provides the operational control plane for the Admissions pipeline.
 
 ## Implemented schemas
 
@@ -1292,9 +1593,10 @@ landing.Admission
 stg.Admission
 quarantine.Admission
 curated.Admission
+reporting.AdmissionAnalysis
 ```
 
-The physical processing pattern is:
+The physical and analytical processing pattern is:
 
 ```text
 Legacy PAS SQL source + controlled defect CSV
@@ -1307,7 +1609,13 @@ Legacy PAS SQL source + controlled defect CSV
              ├───────────────┐
              ↓               ↓
    curated.Admission   quarantine.Admission
+             ↓
+ reporting.AdmissionAnalysis
+             ↓
+ Aegis_Admissions_Analysis
 ```
+
+---
 
 ## Batch and package audit
 
@@ -1345,6 +1653,8 @@ Implemented operational outcomes include:
 - `ACCEPTED`;
 - `QUARANTINED`.
 
+---
+
 # Reconciliation scope
 
 Reconciliation compares:
@@ -1352,34 +1662,48 @@ Reconciliation compares:
 ```text
 Legacy PAS source
         ↓
-Migration staging and target
+Migration staging and curated layer
         ↓
-Warehouse and reporting outputs
+Reporting view
+        ↓
+SSAS semantic model
+        ↓
+SSRS reporting
 ```
 
-Planned controls include:
+Current implemented controls include:
+
+- source, landing and staging counts;
+- accepted and quarantined counts;
+- record-outcome totals;
+- data-quality exception totals;
+- open Admissions;
+- discharged Admissions;
+- distinct patients represented in Admissions;
+- daily and yearly Admission activity;
+- daily and yearly discharge activity;
+- completed length of stay;
+- organisation and site activity;
+- source-to-curated lineage;
+- batch and package lineage;
+- no unexplained migration rows.
+
+Later controls may include:
 
 - physical patient counts;
 - logical patient counts after merges;
 - current and historic identifiers;
 - duplicate identifier exceptions;
-- open admissions;
-- discharged admissions;
 - consultant episodes per spell;
 - primary diagnoses;
 - procedure counts;
 - ward movements;
-- daily admissions;
-- daily discharges;
-- source-to-target attribute comparisons;
 - statutory-style extract totals;
 - interface-message totals;
-- processing failures;
-- quarantine totals;
 - replay outcomes;
 - report totals before and after source transition.
 
-All reconciliation must be repeatable and attributable to a batch, file, message or interface run.
+All reconciliation must be repeatable and attributable to a batch, file, message, interface execution or semantic-model deployment.
 
 ---
 
@@ -1472,7 +1796,373 @@ row provenance
 
 > Preserve the imperfect legacy source, detect and classify defects in staging, process what is valid, quarantine what is unsafe, and reconcile every outcome.
 
-The current interview-focused implementation intentionally concentrates on Admissions. Consultant episodes, diagnoses, procedures and ward stays remain available as deterministic source data and controlled defect extracts for later expansion using the proven Admissions template.
+The current interview-focused implementation intentionally concentrates on Admissions.
+
+Consultant episodes, diagnoses, procedures and ward stays remain available as deterministic source data and controlled defect extracts for later expansion using the proven Admissions template.
+
+---
+
+# Reporting-layer delivery status
+
+## Reporting schema
+
+The implemented reporting schema is:
+
+```text
+Aegis_Staging.reporting
+```
+
+## Reporting view
+
+The implemented reporting view is:
+
+```text
+Aegis_Staging.reporting.AdmissionAnalysis
+```
+
+The view reads only active accepted records from:
+
+```text
+Aegis_Staging.curated.Admission
+```
+
+It provides:
+
+- accepted Admission grain;
+- admission and discharge dates;
+- admission and discharge timestamps;
+- organisation and site keys;
+- Admission classifications;
+- open and discharged flags;
+- completed length of stay;
+- length-of-stay bands;
+- additive analytical flags;
+- source-system lineage;
+- source-record lineage;
+- landing and staging lineage;
+- batch and package-execution lineage;
+- accepted and curated timestamps.
+
+Validated reporting population:
+
+```text
+Admissions:                         1,600
+Distinct Admissions:                1,600
+Distinct Patients:                    708
+Open Admissions:                      192
+Discharged Admissions:              1,408
+Average completed length of stay:    7.43 days
+Incomplete lineage rows:                0
+```
+
+---
+
+# SSAS Tabular delivery status
+
+## Project
+
+The SSAS solution is:
+
+```text
+src/ssas/Aegis.Analysis/Aegis.Analysis.sln
+```
+
+The SSAS project is:
+
+```text
+src/ssas/Aegis.Analysis/Aegis.Admissions.Analysis
+```
+
+## Configuration
+
+```text
+Platform:             SQL Server Analysis Services Tabular
+Compatibility level:  1600
+Target version:       SQL Server 2022
+Deployment server:    DESKTOP-N58JDOH
+Deployment database:  Aegis_Admissions_Analysis
+Model name:           Model
+```
+
+The project:
+
+- builds successfully;
+- deploys successfully;
+- processes successfully;
+- is queryable through SSMS;
+- passes deployed-model DAX validation.
+
+---
+
+## Model structure
+
+The focused Admissions model contains:
+
+```text
+Fact Admission
+Dim Organisation
+Dim Site
+Dim Date
+```
+
+The model uses a compact snowflake design:
+
+```text
+Dim Organisation
+        ↓
+Dim Site
+        ↓
+Fact Admission
+```
+
+with a role-playing date dimension:
+
+```text
+Dim Date
+   ├── active → Fact Admission[AdmissionDate]
+   └── inactive → Fact Admission[DischargeDate]
+```
+
+No direct relationship is created between `Dim Organisation` and `Fact Admission`, avoiding an unnecessary alternate filter path.
+
+---
+
+## Model relationships
+
+| From | To | Cardinality | Active |
+|---|---|---:|---|
+| `Dim Organisation[OrganisationId]` | `Dim Site[OrganisationId]` | One-to-many | Yes |
+| `Dim Site[SiteId]` | `Fact Admission[SiteId]` | One-to-many | Yes |
+| `Dim Date[Date]` | `Fact Admission[AdmissionDate]` | One-to-many | Yes |
+| `Dim Date[Date]` | `Fact Admission[DischargeDate]` | One-to-many | No |
+
+All filter directions are single-direction from dimension to fact.
+
+The inactive discharge-date relationship is activated through DAX using:
+
+```text
+USERELATIONSHIP
+```
+
+---
+
+## Date dimension
+
+`Dim Date` is implemented as a calculated DAX table.
+
+Date range:
+
+```text
+2023-01-01 to 2026-12-31
+```
+
+Validated population:
+
+```text
+1,461 dates
+```
+
+Implemented attributes include:
+
+- date;
+- date key;
+- year;
+- quarter;
+- quarter number;
+- year-quarter;
+- month;
+- month short name;
+- month number;
+- year-month;
+- year-month sort;
+- day;
+- day of week;
+- abbreviated day of week;
+- day-of-week number;
+- weekend flag.
+
+### Date hierarchies
+
+```text
+Calendar
+├── Year
+├── Quarter
+├── Month
+└── Date
+```
+
+```text
+Calendar Month
+├── Year
+├── Year Month
+└── Date
+```
+
+Chronological sort metadata is configured for:
+
+- quarter;
+- month;
+- abbreviated month;
+- year-month;
+- length-of-stay bands.
+
+---
+
+## Measures
+
+Implemented measures:
+
+```text
+Admissions
+Open Admissions
+Discharged Admissions
+Distinct Patients
+Average Completed Length of Stay
+Open Admission Percentage
+```
+
+### Admissions
+
+```DAX
+Admissions :=
+SUM('Fact Admission'[AdmissionCount])
+```
+
+### Open Admissions
+
+```DAX
+Open Admissions :=
+SUM('Fact Admission'[OpenAdmissionCount])
+```
+
+### Discharged Admissions
+
+```DAX
+Discharged Admissions :=
+CALCULATE(
+    SUM('Fact Admission'[DischargedAdmissionCount]),
+    USERELATIONSHIP(
+        'Dim Date'[Date],
+        'Fact Admission'[DischargeDate]
+    )
+)
+```
+
+### Distinct Patients
+
+```DAX
+Distinct Patients :=
+DISTINCTCOUNT('Fact Admission'[PatientId])
+```
+
+### Average Completed Length of Stay
+
+```DAX
+Average Completed Length of Stay :=
+AVERAGE('Fact Admission'[CompletedLengthOfStayDays])
+```
+
+### Open Admission Percentage
+
+```DAX
+Open Admission Percentage :=
+DIVIDE(
+    [Open Admissions],
+    [Admissions]
+)
+```
+
+Each measure includes a reporting-friendly description.
+
+---
+
+## Client-tool visibility
+
+Technical relationship keys, internal migration identifiers, helper columns, additive count columns and sort columns are hidden from client tools where they are not required for report authoring.
+
+Visible analytical and lineage fields include:
+
+- Admission number;
+- patient pathway identifier;
+- admission and discharge dates;
+- Admission classifications;
+- discharge classifications;
+- open and discharged flags;
+- completed length of stay;
+- length-of-stay band;
+- source-system code;
+- source-record identifier;
+- accepted timestamp;
+- curated timestamp;
+- record-created timestamp;
+- record-updated timestamp.
+
+Hidden columns continue to support:
+
+- relationships;
+- sorting;
+- measures;
+- deployed-model behaviour.
+
+---
+
+## SSAS processing security
+
+A dedicated SQL login was created for SSAS data-source processing:
+
+```text
+aegis_ssas_reader
+```
+
+It has read-only access through:
+
+```text
+db_datareader
+```
+
+on:
+
+```text
+Aegis_Staging
+Aegis_Source
+```
+
+It does not have:
+
+- server-administrator rights;
+- database-owner rights;
+- schema-modification rights;
+- data-write rights.
+
+The password is not stored in Git or documentation.
+
+The local development connection uses SQL authentication because the user normally signs into Windows with a Windows Hello PIN and the existing Windows account password was not required for the portfolio implementation.
+
+---
+
+## SSAS documentation and visual evidence
+
+Detailed model documentation:
+
+```text
+docs/06_Reporting/SSAS_Admissions_Tabular_Model.md
+```
+
+Model diagram:
+
+```text
+images/ssas/aegis_ssas_admissions_model.png
+```
+
+The README contains an SSAS Admissions analytical-model section showing:
+
+- the model diagram;
+- model structure;
+- role-playing date relationships;
+- validated analytical measures;
+- reporting-validation results.
+
+---
 
 # Day 1 completion summary
 
@@ -1578,14 +2268,14 @@ docs/10_Governance/Synthetic_Data_Generation_and_Safety_Rules.md
 
 ## Valid patient journeys completed
 
-- 1,600 admissions generated and loaded.
+- 1,600 Admissions generated and loaded.
 - 3,125 consultant episodes generated and loaded.
 - 7,797 diagnoses generated and loaded.
 - 2,150 procedures generated and loaded.
 - 3,211 ward stays generated and loaded.
 - 17,883 valid journey rows loaded.
-- 192 open admissions validated.
-- 1,408 discharged admissions validated.
+- 192 open Admissions validated.
+- 1,408 discharged Admissions validated.
 
 ## Controlled defects completed
 
@@ -1602,10 +2292,9 @@ docs/10_Governance/Synthetic_Data_Generation_and_Safety_Rules.md
 - Source-data reconciliation suite: 63 of 63 passed.
 - Combined executed validation: 119 of 119 passed.
 - No controlled journey defect rows were loaded into `Aegis_Source`.
-- Final Day 2 source state is ready for SSIS staging, audit and quarantine development.
+- Final Day 2 source state was ready for SSIS staging, audit and quarantine development.
 
 ---
-
 
 # Day 3 completion summary
 
@@ -1631,10 +2320,10 @@ Day 3 established the complete audited Admissions migration-control plane.
 - SQL-source and flat-file ingestion demonstrated.
 - Nullable timestamp processing and conversion implemented.
 - Derived-column provenance implemented.
-- Conditional split and Union All transformations implemented.
+- Conditional Split and Union All transformations implemented.
 - Row-count capture implemented.
 - Batch and package audit implemented.
-- Row-level outcome and DQ-exception audit implemented.
+- Row-level outcome and data-quality exception audit implemented.
 - Physical accepted and quarantine layers implemented.
 - Package-level automatic `OnError` audit closure implemented and tested.
 
@@ -1665,7 +2354,270 @@ ExecutionStatus:  SUCCEEDED_WITH_EXCEPTIONS
 0 failed
 ```
 
-Day 3 is complete and ready to support the downstream SSAS Tabular and SSRS interview demonstration.
+Day 3 established the repeatable, fully reconciled Admissions pipeline required for downstream semantic modelling and reporting.
+
+---
+
+# Day 4 completion summary
+
+Day 4 established the focused Admissions analytical and semantic-model layer.
+
+## Reporting database layer completed
+
+The reporting schema was added to:
+
+```text
+Aegis_Staging
+```
+
+Implemented object:
+
+```text
+reporting.AdmissionAnalysis
+```
+
+The view exposes only active accepted Admissions from:
+
+```text
+curated.Admission
+```
+
+It provides:
+
+- reporting-friendly Admission and discharge dates;
+- open and discharged Admission flags;
+- completed length of stay;
+- length-of-stay bands and sort order;
+- additive analytical count columns;
+- complete source-to-curated lineage;
+- batch and package-execution lineage.
+
+Validated reporting population:
+
+```text
+Admissions:                         1,600
+Distinct Admissions:                1,600
+Distinct Patients:                    708
+Open Admissions:                      192
+Discharged Admissions:              1,408
+Average completed length of stay:    7.43 days
+Incomplete lineage rows:                0
+```
+
+## SSAS Tabular project completed
+
+The SSAS solution is:
+
+```text
+src/ssas/Aegis.Analysis/Aegis.Analysis.sln
+```
+
+The SSAS Tabular project is:
+
+```text
+src/ssas/Aegis.Analysis/Aegis.Admissions.Analysis
+```
+
+Model configuration:
+
+```text
+Platform:             SQL Server Analysis Services Tabular
+Compatibility level:  1600
+Target version:       SQL Server 2022
+Deployment server:    DESKTOP-N58JDOH
+Deployment database:  Aegis_Admissions_Analysis
+Model name:           Model
+```
+
+The project builds and deploys successfully.
+
+## Model structure completed
+
+The focused Admissions model contains:
+
+```text
+Fact Admission
+Dim Organisation
+Dim Site
+Dim Date
+```
+
+The model uses the following filter path:
+
+```text
+Dim Organisation
+        ↓
+Dim Site
+        ↓
+Fact Admission
+```
+
+Implemented relationships:
+
+| From | To | Cardinality | Active |
+|---|---|---:|---|
+| `Dim Organisation[OrganisationId]` | `Dim Site[OrganisationId]` | One-to-many | Yes |
+| `Dim Site[SiteId]` | `Fact Admission[SiteId]` | One-to-many | Yes |
+| `Dim Date[Date]` | `Fact Admission[AdmissionDate]` | One-to-many | Yes |
+| `Dim Date[Date]` | `Fact Admission[DischargeDate]` | One-to-many | No |
+
+The inactive discharge-date relationship is activated through DAX with:
+
+```text
+USERELATIONSHIP
+```
+
+## Date model completed
+
+`Dim Date` is a calculated DAX table covering:
+
+```text
+2023-01-01 to 2026-12-31
+```
+
+Validated population:
+
+```text
+1,461 dates
+```
+
+Implemented hierarchies:
+
+```text
+Calendar
+├── Year
+├── Quarter
+├── Month
+└── Date
+```
+
+```text
+Calendar Month
+├── Year
+├── Year Month
+└── Date
+```
+
+Chronological sort metadata was configured for:
+
+- quarters;
+- months;
+- abbreviated months;
+- year-month values;
+- length-of-stay bands.
+
+## Measures completed
+
+Implemented measures:
+
+```text
+Admissions
+Open Admissions
+Discharged Admissions
+Distinct Patients
+Average Completed Length of Stay
+Open Admission Percentage
+```
+
+Validated deployed-model results:
+
+```text
+Admissions:                         1,600
+Open Admissions:                      192
+Discharged Admissions:              1,408
+Distinct Patients:                    708
+Average Completed Length of Stay:    7.43 days
+Open Admission Percentage:          12.00%
+```
+
+## Client-tool model completed
+
+Technical relationship keys, internal migration identifiers, additive helper columns and sort columns were hidden from client tools.
+
+Reporting classifications, business attributes and selected lineage fields remain visible.
+
+Each measure includes a reporting-friendly description.
+
+## Data access completed
+
+A dedicated least-privilege SQL login was created for SSAS processing:
+
+```text
+aegis_ssas_reader
+```
+
+The login has read-only `db_datareader` access to:
+
+```text
+Aegis_Staging
+Aegis_Source
+```
+
+It does not have database-owner, administrative, write or schema-modification rights.
+
+No password or secret is stored in Git or project documentation.
+
+## Day 4 validation completed
+
+The SQL reporting-layer validation script is:
+
+```text
+sql/tests/validate_aegis_day4_admissions_reporting.sql
+```
+
+Result:
+
+```text
+22 passed
+0 failed
+```
+
+The deployed SSAS model validation file is:
+
+```text
+src/ssas/Aegis.Analysis/validation/validate_aegis_admissions_model.dax
+```
+
+The DAX validation proves:
+
+- core measure reconciliation;
+- organisation and site filtering;
+- active Admission Date behaviour;
+- inactive Discharge Date behaviour;
+- yearly Admission and discharge trends.
+
+## Documentation and visual evidence completed
+
+Detailed SSAS model documentation:
+
+```text
+docs/06_Reporting/SSAS_Admissions_Tabular_Model.md
+```
+
+Model diagram:
+
+```text
+images/ssas/aegis_ssas_admissions_model.png
+```
+
+The README now includes an SSAS Admissions analytical-model section between the audited SSIS pipeline and implemented architecture sections.
+
+## Day 4 final status
+
+```text
+Aegis_Source build:                  SUCCEEDED
+Aegis_Staging build:                 SUCCEEDED
+Aegis_Staging publish:               SUCCEEDED
+SSAS Tabular build:                  SUCCEEDED
+SSAS Tabular deployment:             SUCCEEDED
+SQL reporting validation:            22 / 22
+Deployed-model DAX validation:       PASSED
+Combined SQL validation:             219 / 219
+```
+
+The focused Admissions semantic model is ready to support Day 5 SSRS reporting.
+
+---
 
 # Revised delivery plan
 
@@ -1689,22 +2641,11 @@ Delivered:
 
 Delivered:
 
-- `pas.PatientIdentifier`;
-- `pas.PatientMerge`;
-- extended schema validation;
-- interface inventory;
-- synthetic-data safety rules;
-- Python environment;
-- deterministic reference data;
-- deterministic patient data;
-- deliberately invalid NHS-number-like values;
-- historic identifiers;
-- duplicate identifiers;
-- merge-ready patient pairs;
-- loaded patient merges;
-- valid admitted-patient journeys;
-- controlled invalid journey extracts;
-- final source-data reconciliation;
+- patient identifiers and merge history;
+- deterministic reference and patient data;
+- admitted-patient journeys;
+- controlled defect extracts;
+- source reconciliation;
 - 119 of 119 combined checks passed.
 
 ## Day 3 — Staging, audit and SSIS
@@ -1713,82 +2654,135 @@ Delivered:
 
 Delivered:
 
-- `Aegis_Staging`;
-- `Aegis_Audit`;
-- database projects and DACPAC publication;
-- landing, staging, quarantine and curated Admissions structures;
-- batch, package and record-level audit;
-- five Admissions validation rules;
-- valid, defect-only and mixed SSIS packages;
-- automatic package failure auditing;
-- 1,605-row realistic mixed-batch processing;
-- 1,600 accepted Admissions;
-- five quarantined Admissions;
-- five DQ exceptions;
+- staging and audit databases;
+- audited valid, defect-only and mixed Admissions packages;
+- accepted and quarantine materialisation;
+- package-level failure handling;
 - 78 of 78 control-plane checks passed.
 
-## Day 4 — SSAS Tabular and analytical model
+## Day 4 — SSAS Tabular Admissions model
 
-Planned:
+**Status:** Complete.
 
-- create `Aegis_Warehouse`;
-- build conformed dimensions and facts;
-- resolve patient merges into logical patient identity;
-- map local source codes;
-- reconcile source, staging and warehouse;
-- produce an APC-style episode extract;
-- add batch and interface monitoring views.
+Delivered:
 
-## Day 5 — SSAS and SSRS
+- Admissions reporting view;
+- organisation, site and date dimensions;
+- focused Admissions fact;
+- role-playing Admission and Discharge dates;
+- date hierarchies;
+- DAX measures;
+- least-privilege SSAS processing account;
+- deployed SSAS model;
+- SQL and DAX validation;
+- 22 of 22 SQL reporting checks passed;
+- 219 of 219 combined SQL checks passed;
+- model documentation and README visual.
 
-Planned:
+## Day 5 — SSRS Admissions reporting
 
-- build SSAS Tabular model;
-- Migration Reconciliation Report;
-- Data Quality Exception Report;
-- Interface and Cutover Readiness Report;
-- Patient Journey Report;
-- optional Power BI management summary.
+**Status:** Next.
 
-## Day 6 — SQL Server resilience
+Planned interview-focused reports:
 
-Planned:
+- Admissions Activity and Trends;
+- Open Admissions and Length of Stay;
+- Migration Reconciliation and Data Quality;
+- quarantined Admission detail where useful;
+- source-to-curated lineage detail where useful.
 
+Day 5 should include:
+
+- SSRS project and shared data source;
+- SSAS-backed datasets where appropriate;
+- relational audit or quarantine datasets where required;
+- report parameters;
+- polished layouts;
+- report deployment to the SSRS web portal;
+- report screenshots;
+- report-level reconciliation;
+- Day 5 documentation;
+- release preparation.
+
+The SSRS scope will remain focused on the validated Admissions semantic model and supporting audit evidence.
+
+## Later roadmap
+
+Deferred until after the interview-focused end-to-end demonstration:
+
+- consultant episodes;
+- diagnoses;
+- procedures;
+- ward stays;
+- downstream patient-merge processing;
+- controlled replay;
+- HL7 and FHIR;
+- broader warehouse and statutory-style extracts;
 - transactional replication;
-- reporting replica;
 - log shipping;
-- monitoring scripts;
-- recovery exercise;
-- operational runbooks.
+- Azure SQL demonstration;
+- Power BI management summary.
 
-## Day 7 — Cloud demonstration and release
+### Microsoft Purview placeholder
 
-Planned if time permits:
+After Day 5 SSRS is complete, review a focused Microsoft Purview governance demonstration covering appropriate concepts such as:
 
-- Azure SQL compatibility assessment;
-- Azure SQL demonstration target;
-- README diagrams;
-- screenshots;
-- release documentation;
-- interview demonstration;
-- interview questions and model answers.
+```text
+Aegis clinical-data assets
+        ↓
+Microsoft Purview Data Map
+        ↓
+Scanning and metadata discovery
+        ↓
+Classification and ownership
+        ↓
+Unified Catalog discovery
+        ↓
+Technical and business lineage
+```
+
+Potential Purview scope may include:
+
+- registering representative Aegis SQL data assets;
+- Data Map concepts;
+- Unified Catalog concepts;
+- clinical-data discovery;
+- business-domain ownership;
+- data-product concepts;
+- classification of patient-identifying and clinical fields;
+- glossary terms;
+- source-to-curated-to-report lineage;
+- data-quality and stewardship context;
+- documenting what can be demonstrated safely in a public synthetic portfolio.
+
+The detailed Purview approach should be discussed only after the Day 5 SSRS implementation, so that it does not disrupt the current end-to-end Admissions delivery.
 
 ---
 
-# Day 4 starting position
+# Day 5 starting position
 
-Day 4 begins with a complete, repeatable and fully reconciled Admissions migration pipeline.
+Day 5 begins with a deployed and validated SSAS Tabular model:
 
-## Authoritative downstream dataset
+```text
+Aegis_Admissions_Analysis
+```
+
+## Authoritative accepted dataset
 
 ```text
 Aegis_Staging.curated.Admission
 ```
 
-Latest validated population:
+Validated population:
 
 ```text
 1,600 accepted Admissions
+```
+
+## Reporting contract
+
+```text
+Aegis_Staging.reporting.AdmissionAnalysis
 ```
 
 ## Operational exception dataset
@@ -1797,13 +2791,13 @@ Latest validated population:
 Aegis_Staging.quarantine.Admission
 ```
 
-Latest validated population:
+Validated population:
 
 ```text
 5 quarantined Admissions
 ```
 
-## Audit and DQ evidence
+## Audit and data-quality evidence
 
 ```text
 Aegis_Audit.audit.Batch
@@ -1813,13 +2807,69 @@ Aegis_Audit.dq.DataQualityException
 Aegis_Audit.dq.ValidationRule
 ```
 
-## Immediate next steps
+## Authoritative analytical baseline
 
-1. Save this updated `AEGIS_MASTER_CONTEXT.md`.
-2. Capture clean all-green SSIS Control Flow and Data Flow screenshots under `images`.
-3. Add an SSIS Pipeline Overview section to the README.
-4. Review `git status` and confirm that `.venv`, generated data, `bin`, `obj` and DACPAC outputs remain excluded.
-5. Commit the completed Day 3 database, SSIS, validation and documentation changes to `dev`.
-6. Create and merge the Day 3 pull request.
-7. Tag the completed Day 3 release.
-8. Begin Day 4 in a new chat using this file as the authoritative context.
+```text
+Accepted Admissions:                1,600
+Open Admissions:                      192
+Discharged Admissions:              1,408
+Distinct Patients:                    708
+Average completed length of stay:    7.43 days
+Open Admission percentage:          12.00%
+```
+
+## Available semantic dimensions
+
+```text
+Dim Organisation
+Dim Site
+Dim Date
+```
+
+## Available semantic measures
+
+```text
+Admissions
+Open Admissions
+Discharged Admissions
+Distinct Patients
+Average Completed Length of Stay
+Open Admission Percentage
+```
+
+## Available date analysis
+
+```text
+Admission Date
+Discharge Date
+Calendar hierarchy
+Calendar Month hierarchy
+```
+
+## Immediate Day 5 objective
+
+Create a small set of polished SSRS reports that consume the governed semantic model and supporting audit evidence.
+
+The reports should demonstrate:
+
+- operational Admission activity;
+- admission and discharge trends;
+- organisation and site analysis;
+- open Admission monitoring;
+- completed length of stay;
+- migration reconciliation;
+- data-quality assurance;
+- quarantined-record visibility;
+- source-to-curated traceability where appropriate.
+
+The solution should prioritise:
+
+- clean report design;
+- explainable datasets;
+- clear parameter behaviour;
+- repeatable validation;
+- deployed evidence in the SSRS web portal;
+- a concise interview narrative;
+- completion within one development day.
+
+The scope must remain limited to Admissions unless another domain is strictly necessary to support the immediate reporting demonstration.
