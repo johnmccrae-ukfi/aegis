@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37516.0 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Aegis.Admissions.Reporting", "Aegis.Admissions.Reporting\Aegis.Admissions.Reporting.rptproj", "{55050E39-C522-5A70-3A08-DB0AF8B13733}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55050E39-C522-5A70-3A08-DB0AF8B13733}.Debug|Default.ActiveCfg = Debug
+		{55050E39-C522-5A70-3A08-DB0AF8B13733}.Debug|Default.Build.0 = Debug
+		{55050E39-C522-5A70-3A08-DB0AF8B13733}.Debug|Default.Deploy.0 = Debug
+		{55050E39-C522-5A70-3A08-DB0AF8B13733}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{55050E39-C522-5A70-3A08-DB0AF8B13733}.DebugLocal|Default.Build.0 = DebugLocal
+		{55050E39-C522-5A70-3A08-DB0AF8B13733}.Release|Default.ActiveCfg = Release
+		{55050E39-C522-5A70-3A08-DB0AF8B13733}.Release|Default.Build.0 = Release
+		{55050E39-C522-5A70-3A08-DB0AF8B13733}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {749D41BF-4829-49A3-ABFF-02DC5B13E53E}
+	EndGlobalSection
+EndGlobal
