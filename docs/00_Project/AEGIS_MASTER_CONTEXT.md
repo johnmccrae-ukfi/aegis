@@ -6,7 +6,7 @@
 **Repository:** Aegis  
 **Purpose:** Synthetic NHS-style clinical data migration, validation, semantic-modelling, reporting and operational-assurance platform.  
 **Current branch:** `dev`  
-**Current delivery position:** Day 4 complete; the audited Admissions migration pipeline and deployed SSAS Tabular semantic model are ready for Day 5 SSRS reporting.
+**Current delivery position:** Day 5 complete; the audited Admissions migration pipeline, deployed SSAS Tabular semantic model and deployed SSRS operational report form a complete end-to-end Admissions demonstration.
 
 ---
 
@@ -154,6 +154,7 @@ Aegis_Warehouse_DR
 | `Aegis_Staging` | Landing, staging, curated, quarantine and reporting layers | Implemented, published and populated |
 | `Aegis_Audit` | Batch, package, row-outcome and data-quality audit | Implemented, published and populated |
 | `Aegis_Admissions_Analysis` | SSAS Tabular Admissions semantic model | Implemented, deployed and validated |
+| `Admissions Activity and Trends` | SSRS operational Admissions report | Implemented, deployed and validated |
 | `Aegis_Warehouse` | Broader analytical warehouse | Deferred |
 | `Aegis_Reporting` | Potential future relational reporting database | Deferred |
 | `Aegis_Source_ReportingReplica` | Transactional-replication reporting target | Deferred |
@@ -197,9 +198,10 @@ dev
 v0.1.0 — Platform and SQL database foundation
 v0.2.0 — Deterministic synthetic PAS data and patient identity
 v0.3.0 — Audited SSIS Admissions pipeline
+v0.4.0 — SSAS Admissions analytical model
 ```
 
-Day 4 changes are currently being completed on `dev` and have not yet been released.
+Day 5 SSRS changes are complete on `dev` and are ready for release as `v0.5.0`.
 
 ---
 
@@ -338,6 +340,62 @@ Visual Studio creates a separate temporary workspace database while the model is
 
 ---
 
+## SSRS development workflow
+
+```text
+SSRS project source
+        ↓
+Project build
+        ↓
+Deployment to Reporting Services
+        ↓
+Portal validation
+        ↓
+Screenshot and documentation
+        ↓
+Git commit and push
+```
+
+The SSRS solution is:
+
+```text
+src/ssrs/Aegis.Reporting/Aegis.Reporting.sln
+```
+
+The SSRS project is:
+
+```text
+src/ssrs/Aegis.Reporting/Aegis.Admissions.Reporting
+```
+
+The implemented report is:
+
+```text
+Reports/Admissions Activity and Trends.rdl
+```
+
+The shared data source is:
+
+```text
+Shared Data Sources/DS_Aegis_Admissions_Analysis.rds
+```
+
+Deployment target:
+
+```text
+http://localhost/reportserver
+```
+
+Deployment folder:
+
+```text
+Aegis/Admissions
+```
+
+The report builds, deploys and renders successfully in the SSRS web portal.
+
+---
+
 ## Build-artifact rule
 
 Generated build outputs must not be committed to normal Git history.
@@ -472,6 +530,8 @@ aegis/
 │   │       ├── Aegis.Admissions.Analysis/
 │   │       └── validation/
 │   ├── ssis/
+│   ├── ssrs/
+│   │   └── Aegis.Reporting/
 │   └── synthetic_data/
 ├── .gitignore
 └── requirements.txt
@@ -2681,30 +2741,36 @@ Delivered:
 
 ## Day 5 — SSRS Admissions reporting
 
-**Status:** Next.
+**Status:** Complete.
 
-Planned interview-focused reports:
+Delivered:
 
-- Admissions Activity and Trends;
+- Visual Studio Report Server solution and project;
+- shared SSAS data source;
+- `Admissions Activity and Trends` paginated report;
+- six governed KPI measures;
+- monthly Admission and discharge trend;
+- organisation parameter with `All Organisations` default;
+- parameter-aware KPI and monthly datasets;
+- organisation-aware site activity table;
+- single-page A4 landscape rendering;
+- successful project build and deployment;
+- deployed SSRS portal validation;
+- report screenshot;
+- detailed report documentation;
+- README visual and status updates.
+
+The release deliberately contains one polished report rather than three partially completed reports.
+
+Deferred SSRS enhancements include:
+
 - Open Admissions and Length of Stay;
 - Migration Reconciliation and Data Quality;
-- quarantined Admission detail where useful;
-- source-to-curated lineage detail where useful.
-
-Day 5 should include:
-
-- SSRS project and shared data source;
-- SSAS-backed datasets where appropriate;
-- relational audit or quarantine datasets where required;
-- report parameters;
-- polished layouts;
-- report deployment to the SSRS web portal;
-- report screenshots;
-- report-level reconciliation;
-- Day 5 documentation;
-- release preparation.
-
-The SSRS scope will remain focused on the validated Admissions semantic model and supporting audit evidence.
+- quarantined Admission detail;
+- source-to-curated lineage detail;
+- cascading site parameters;
+- scheduled subscriptions;
+- role-based report security.
 
 ## Later roadmap
 
@@ -2759,117 +2825,263 @@ The detailed Purview approach should be discussed only after the Day 5 SSRS impl
 
 ---
 
-# Day 5 starting position
+# Day 5 completion summary
 
-Day 5 begins with a deployed and validated SSAS Tabular model:
+Day 5 completed the focused Admissions reporting path through SQL Server Reporting Services.
+
+## SSRS solution and project
 
 ```text
-Aegis_Admissions_Analysis
+Solution:
+src/ssrs/Aegis.Reporting/Aegis.Reporting.sln
 ```
 
-## Authoritative accepted dataset
-
 ```text
-Aegis_Staging.curated.Admission
+Project:
+src/ssrs/Aegis.Reporting/Aegis.Admissions.Reporting
 ```
 
-Validated population:
+## Implemented report
 
 ```text
-1,600 accepted Admissions
+Admissions Activity and Trends
 ```
 
-## Reporting contract
+Source file:
 
 ```text
-Aegis_Staging.reporting.AdmissionAnalysis
+src/ssrs/Aegis.Reporting/Aegis.Admissions.Reporting/Reports/Admissions Activity and Trends.rdl
 ```
 
-## Operational exception dataset
+Shared data source:
 
 ```text
-Aegis_Staging.quarantine.Admission
+DS_Aegis_Admissions_Analysis
 ```
 
-Validated population:
+Data source target:
 
 ```text
-5 quarantined Admissions
+Server:   DESKTOP-N58JDOH
+Database: Aegis_Admissions_Analysis
+Type:     Microsoft SQL Server Analysis Services
+Auth:     Windows integrated authentication
 ```
 
-## Audit and data-quality evidence
+## Embedded datasets
 
 ```text
-Aegis_Audit.audit.Batch
-Aegis_Audit.audit.PackageExecution
-Aegis_Audit.audit.RecordOutcome
-Aegis_Audit.dq.DataQualityException
-Aegis_Audit.dq.ValidationRule
+DS_KPI_Summary
+DS_Monthly_Activity
+DS_Organisation_Site_Activity
+DS_Organisation_Parameter
 ```
 
-## Authoritative analytical baseline
+## Report content
+
+The report contains:
+
+- Admissions;
+- Open Admissions;
+- Discharged Admissions;
+- Distinct Patients;
+- Average Completed Length of Stay;
+- Open Admission Percentage;
+- monthly Admission and discharge trend;
+- organisation parameter;
+- site activity table;
+- synthetic cut-off explanation.
+
+## Organisation parameter
+
+The report parameter is:
 
 ```text
-Accepted Admissions:                1,600
+Organisation
+```
+
+Available values:
+
+```text
+All Organisations
+Aegis Integrated Care Services
+Aegis University Hospitals NHS Trust
+North Aegis Community Health Partnership
+```
+
+The default value is:
+
+```text
+All Organisations
+```
+
+The parameter controls:
+
+- KPI cards;
+- monthly chart;
+- site activity table.
+
+## Validated unfiltered report
+
+```text
+Admissions:                         1,600
 Open Admissions:                      192
 Discharged Admissions:              1,408
 Distinct Patients:                    708
-Average completed length of stay:    7.43 days
-Open Admission percentage:          12.00%
+Average Completed Length of Stay:    7.43 days
+Open Admission Percentage:          12.00%
+Site rows:                               5
 ```
 
-## Available semantic dimensions
+## Validated filtered report
+
+For:
 
 ```text
-Dim Organisation
-Dim Site
-Dim Date
+Aegis University Hospitals NHS Trust
 ```
 
-## Available semantic measures
+the report returns:
 
 ```text
-Admissions
-Open Admissions
-Discharged Admissions
-Distinct Patients
-Average Completed Length of Stay
-Open Admission Percentage
+Admissions:                         655
+Open Admissions:                     75
+Discharged Admissions:              580
+Distinct Patients:                  447
+Average Completed Length of Stay:   7.38 days
+Open Admission Percentage:         11.45%
+Site rows:                            2
 ```
 
-## Available date analysis
+The two filtered sites are:
 
 ```text
-Admission Date
-Discharge Date
-Calendar hierarchy
-Calendar Month hierarchy
+Aegis Community Hospital
+Aegis General Hospital
 ```
 
-## Immediate Day 5 objective
+Their totals reconcile exactly to the filtered KPI values.
 
-Create a small set of polished SSRS reports that consume the governed semantic model and supporting audit evidence.
+## Monthly trend validation
 
-The reports should demonstrate:
+The July 2026 spike is intentional and reflects the synthetic reporting cut-off.
 
-- operational Admission activity;
-- admission and discharge trends;
-- organisation and site analysis;
-- open Admission monitoring;
-- completed length of stay;
-- migration reconciliation;
-- data-quality assurance;
-- quarantined-record visibility;
-- source-to-curated traceability where appropriate.
+Validated July 2026 values:
 
-The solution should prioritise:
+```text
+Admissions:              203
+Open Admissions:         192
+Discharged Admissions:    18
+```
 
-- clean report design;
-- explainable datasets;
-- clear parameter behaviour;
-- repeatable validation;
-- deployed evidence in the SSRS web portal;
-- a concise interview narrative;
-- completion within one development day.
+The report uses a parameter-safe explanatory note:
 
-The scope must remain limited to Admissions unless another domain is strictly necessary to support the immediate reporting demonstration.
+```text
+The July 2026 increase reflects the synthetic reporting cut-off, with a substantial proportion of recently recorded Admissions remaining open.
+```
+
+## Layout
+
+```text
+Page:        A4 landscape
+Page width:  29.7 cm
+Page height: 21.0 cm
+Margins:      1.0 cm
+Body width:  27.5 cm
+Pages:        1
+```
+
+## Build and deployment
+
+```text
+Build:   1 succeeded or up-to-date
+Failed:  0
+Skipped: 0
+```
+
+```text
+Deploy:  1 succeeded
+Failed:  0
+Skipped: 0
+```
+
+Deployment target:
+
+```text
+http://localhost/reportserver
+```
+
+Portal path:
+
+```text
+Aegis
+└── Admissions
+    └── Admissions Activity and Trends
+```
+
+Portal validation completed with:
+
+- no credential prompt;
+- no data-source error;
+- correct default parameter state;
+- correct filtered parameter state;
+- correct KPI reconciliation;
+- correct site reconciliation;
+- correct chart filtering;
+- single-page rendering.
+
+## Documentation and visual evidence
+
+Detailed SSRS documentation:
+
+```text
+docs/06_Reporting/SSRS_Admissions_Operational_Report.md
+```
+
+Screenshot:
+
+```text
+images/ssrs/aegis_ssrs_admissions_activity_and_trends.png
+```
+
+## Final Day 5 status
+
+```text
+SSRS project build:                  SUCCEEDED
+SSRS project deployment:             SUCCEEDED
+Deployed portal validation:          PASSED
+All-organisation reconciliation:     PASSED
+Organisation filtering:              PASSED
+Site-level reconciliation:           PASSED
+Single-page rendering:                PASSED
+```
+
+The focused Admissions delivery path is now complete:
+
+```text
+Synthetic PAS
+        ↓
+Audited SSIS
+        ↓
+Accepted or quarantined
+        ↓
+Governed reporting view
+        ↓
+SSAS Tabular model
+        ↓
+SSRS operational report
+```
+
+---
+
+# Next recommended phase
+
+Before implementing Microsoft Purview, review the smallest credible governance demonstration and confirm:
+
+- tenant and licensing prerequisites;
+- available Microsoft Purview capabilities;
+- safe connectivity to synthetic Aegis assets;
+- portfolio value relative to implementation effort;
+- whether documentation-only architecture or live implementation is the better next step.
+
+The current Admissions release should remain stable while that scope is assessed.

@@ -144,6 +144,76 @@ docs/06_Reporting/SSAS_Admissions_Tabular_Model.md
 
 ---
 
+
+## SSRS Admissions operational report
+
+Aegis includes a deployed SQL Server Reporting Services report over the governed Admissions semantic model.
+
+The implemented report is:
+
+```text
+Admissions Activity and Trends
+```
+
+It provides:
+
+- six governed Admissions KPIs;
+- monthly Admission and discharge trends;
+- organisation filtering;
+- site-level activity and reconciliation;
+- parameter-driven views over the SSAS Tabular model;
+- single-page A4 landscape rendering in the SSRS web portal.
+
+![Aegis SSRS Admissions Activity and Trends](images/ssrs/aegis_ssrs_admissions_activity_and_trends.png)
+
+### Validated report baseline
+
+| Measure | Result |
+|---|---:|
+| Admissions | 1,600 |
+| Open Admissions | 192 |
+| Discharged Admissions | 1,408 |
+| Distinct Patients | 708 |
+| Average completed length of stay | 7.43 days |
+| Open Admission percentage | 12.00% |
+
+The report includes an `All Organisations` default together with three synthetic organisation selections.
+
+For example, filtering to `Aegis University Hospitals NHS Trust` produces:
+
+| Measure | Result |
+|---|---:|
+| Admissions | 655 |
+| Open Admissions | 75 |
+| Discharged Admissions | 580 |
+| Distinct Patients | 447 |
+| Average completed length of stay | 7.38 days |
+| Open Admission percentage | 11.45% |
+
+The filtered site totals reconcile exactly to the filtered KPI totals.
+
+The report builds and deploys successfully to:
+
+```text
+http://localhost/reportserver
+```
+
+under:
+
+```text
+Aegis
+└── Admissions
+    └── Admissions Activity and Trends
+```
+
+Detailed report documentation is available in:
+
+```text
+docs/06_Reporting/SSRS_Admissions_Operational_Report.md
+```
+
+---
+
 ## Implemented architecture
 
 ```text
@@ -170,6 +240,9 @@ Aegis_Staging.stg.Admission
             │      ▼
             │  Aegis_Admissions_Analysis
             │  SSAS Tabular semantic model
+            │      │
+            │      ▼
+            │  SSRS Admissions Activity and Trends
             │
             └── invalid
                    ▼
@@ -201,12 +274,15 @@ The analytical principle is:
 | `Aegis_Staging` | Landing, staging, curated, quarantine and reporting layers | Implemented and populated |
 | `Aegis_Audit` | Batch, package, row-outcome and data-quality audit | Implemented and populated |
 | `Aegis_Admissions_Analysis` | SSAS Tabular Admissions semantic model | Implemented, deployed and validated |
+| `Admissions Activity and Trends` | SSRS operational Admissions report | Implemented, deployed and validated |
 | `Aegis_Warehouse` | Broader future analytical warehouse | Deferred |
 | `Aegis_Reporting` | Potential future relational reporting database | Deferred |
 
 The implemented relational databases are managed through SQL Server Database DevOps projects and deployed through repeatable DACPAC build and publish workflows.
 
 The SSAS model is managed through a Visual Studio Analysis Services Tabular project and deployed to the local SQL Server Analysis Services instance.
+
+The SSRS report is managed through a Visual Studio Report Server project and deployed to the local SQL Server Reporting Services web portal.
 
 ---
 
@@ -291,6 +367,59 @@ aegis_ssas_reader
 ```
 
 Its password is not stored in Git or documentation.
+
+---
+
+
+## Implemented SSRS report
+
+The SSRS solution is:
+
+```text
+src/ssrs/Aegis.Reporting/Aegis.Reporting.sln
+```
+
+The SSRS project is:
+
+```text
+src/ssrs/Aegis.Reporting/Aegis.Admissions.Reporting
+```
+
+The project contains:
+
+```text
+Reports/
+└── Admissions Activity and Trends.rdl
+
+Shared Data Sources/
+└── DS_Aegis_Admissions_Analysis.rds
+```
+
+The report contains four embedded datasets:
+
+```text
+DS_KPI_Summary
+DS_Monthly_Activity
+DS_Organisation_Site_Activity
+DS_Organisation_Parameter
+```
+
+It demonstrates:
+
+- SSRS paginated-report development;
+- Analysis Services shared data sources;
+- DAX-backed datasets;
+- multiple dataset contexts;
+- List and Tablix data regions;
+- parameter-driven filtering;
+- organisation-aware KPI and chart queries;
+- site-level Tablix filtering;
+- line-chart rendering;
+- single-page A4 landscape layout;
+- local report-server deployment;
+- deployed portal validation.
+
+The report is intentionally focused on one polished operational view. Additional Open Admissions, migration-reconciliation and data-quality reports remain suitable future extensions.
 
 ---
 
@@ -435,6 +564,8 @@ aegis/
 │   ├── ssas/
 │   │   └── Aegis.Analysis/
 │   ├── ssis/
+│   ├── ssrs/
+│   │   └── Aegis.Reporting/
 │   └── synthetic_data/
 ├── .gitignore
 └── requirements.txt
@@ -508,18 +639,20 @@ Aegis is intended to demonstrate governance principles as well as technical deli
 - successful SSAS build and deployment
 - deployed-model DAX validation
 - SSAS model documentation and README visual
+- SSRS Admissions Activity and Trends report
+- organisation parameter with All Organisations default
+- KPI, monthly trend and site-level filtering
+- successful SSRS build and deployment
+- deployed SSRS portal validation
+- SSRS report documentation and README visual
 - 219 / 219 combined SQL validation checks passed
 
-### Next — SSRS Admissions reporting
+### Next — governance scope review
 
-- Admissions Activity and Trends report
-- Open Admissions and Length of Stay report
-- Migration Reconciliation and Data Quality report
-- quarantined Admission detail where useful
-- source-to-curated lineage detail where useful
-- report deployment to the SSRS web portal
-- final Day 5 validation
-- interview walkthrough and release documentation
+- review the smallest credible Microsoft Purview portfolio demonstration;
+- identify licensing, tenant and connectivity prerequisites;
+- decide whether implementation adds sufficient portfolio value;
+- keep the current Admissions delivery stable while governance scope is assessed.
 
 ### Later roadmap
 
@@ -532,8 +665,10 @@ Aegis is intended to demonstrate governance principles as well as technical deli
 - log shipping and recovery demonstration
 - Azure SQL compatibility and deployment demonstration
 - Power BI management summary
+- additional SSRS reports for Open Admissions, reconciliation and data quality
+- quarantined Admission and source-to-curated detail
 - Microsoft Purview governance demonstration using Data Map and Unified Catalog concepts for clinical-data discovery, classification, ownership and lineage
-- deeper governance discussion and Purview scope review after the Day 5 SSRS implementation
+- deeper governance discussion and Purview scope review following the completed SSRS implementation
 
 The later roadmap is deliberately deferred so that the current Admissions scenario remains polished, explainable and achievable as an end-to-end interview demonstration.
 
@@ -546,6 +681,7 @@ The later roadmap is deliberately deferred so that the current Admissions scenar
 - [Solution Architecture](docs/01_Architecture/Solution_Architecture.md)
 - [Interface Inventory](docs/04_ETL/Interface_Inventory.md)
 - [SSAS Admissions Tabular Model](docs/06_Reporting/SSAS_Admissions_Tabular_Model.md)
+- [SSRS Admissions Operational Report](docs/06_Reporting/SSRS_Admissions_Operational_Report.md)
 - [Synthetic Data Governance](docs/10_Governance/Synthetic_Data_Generation_and_Safety_Rules.md)
 - [Master Context](docs/00_Project/AEGIS_MASTER_CONTEXT.md)
 
