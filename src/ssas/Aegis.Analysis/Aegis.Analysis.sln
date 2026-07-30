@@ -5,6 +5,11 @@ VisualStudioVersion = 17.14.37516.0 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6870E480-7721-4708-BFB8-9AE898AA21B3}") = "Aegis.Admissions.Analysis", "Aegis.Admissions.Analysis\Aegis.Admissions.Analysis.smproj", "{8CE414BB-95B2-4C99-9E03-51BA72086E22}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "validation", "validation", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		validation\validate_aegis_admissions_model.dax = validation\validate_aegis_admissions_model.dax
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Development|x86 = Development|x86
