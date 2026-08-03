@@ -1,0 +1,157 @@
+{
+	"name": "ds_sql_aegis_landing_adf_raw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_aegis_staging_dev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "LandingAdmissionId",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "BatchId",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "PackageExecutionId",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "SourceSystemCode",
+				"type": "varchar"
+			},
+			{
+				"name": "SourceFileName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SourceRowNumber",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "SourceRecordIdentifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AdmissionId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PatientId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OrganisationId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SiteId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AdmissionNumber",
+				"type": "varchar"
+			},
+			{
+				"name": "PatientPathwayId",
+				"type": "varchar"
+			},
+			{
+				"name": "AdmissionDateTime",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "DischargeDateTime",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "AdmissionMethodCode",
+				"type": "varchar"
+			},
+			{
+				"name": "AdmissionSourceCode",
+				"type": "varchar"
+			},
+			{
+				"name": "PatientClassificationCode",
+				"type": "varchar"
+			},
+			{
+				"name": "IntendedManagementCode",
+				"type": "varchar"
+			},
+			{
+				"name": "DischargeMethodCode",
+				"type": "varchar"
+			},
+			{
+				"name": "DischargeDestinationCode",
+				"type": "varchar"
+			},
+			{
+				"name": "AdministrativeCategoryCode",
+				"type": "varchar"
+			},
+			{
+				"name": "LegalStatusCode",
+				"type": "varchar"
+			},
+			{
+				"name": "AdmissionStatusCode",
+				"type": "varchar"
+			},
+			{
+				"name": "RecordCreatedAt",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "RecordUpdatedAt",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "IsDeleted",
+				"type": "bit"
+			},
+			{
+				"name": "ExtractedAt",
+				"type": "datetime2",
+				"scale": 3
+			},
+			{
+				"name": "ReceivedAt",
+				"type": "datetime2",
+				"scale": 3
+			},
+			{
+				"name": "LandedAt",
+				"type": "datetime2",
+				"scale": 3
+			},
+			{
+				"name": "SourceRowHash",
+				"type": "varbinary"
+			}
+		],
+		"typeProperties": {
+			"schema": "landing",
+			"table": "AdmissionAdfRaw"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

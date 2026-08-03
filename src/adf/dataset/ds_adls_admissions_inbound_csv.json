@@ -1,0 +1,106 @@
+{
+	"name": "ds_adls_admissions_inbound_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_aegis_dev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "admission_mixed.csv",
+				"folderPath": "admissions/inbound",
+				"fileSystem": "aegis"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "AdmissionId",
+				"type": "String"
+			},
+			{
+				"name": "PatientId",
+				"type": "String"
+			},
+			{
+				"name": "OrganisationId",
+				"type": "String"
+			},
+			{
+				"name": "SiteId",
+				"type": "String"
+			},
+			{
+				"name": "AdmissionNumber",
+				"type": "String"
+			},
+			{
+				"name": "PatientPathwayId",
+				"type": "String"
+			},
+			{
+				"name": "AdmissionDateTime",
+				"type": "String"
+			},
+			{
+				"name": "DischargeDateTime",
+				"type": "String"
+			},
+			{
+				"name": "AdmissionMethodCode",
+				"type": "String"
+			},
+			{
+				"name": "AdmissionSourceCode",
+				"type": "String"
+			},
+			{
+				"name": "PatientClassificationCode",
+				"type": "String"
+			},
+			{
+				"name": "IntendedManagementCode",
+				"type": "String"
+			},
+			{
+				"name": "DischargeMethodCode",
+				"type": "String"
+			},
+			{
+				"name": "DischargeDestinationCode",
+				"type": "String"
+			},
+			{
+				"name": "AdministrativeCategoryCode",
+				"type": "String"
+			},
+			{
+				"name": "LegalStatusCode",
+				"type": "String"
+			},
+			{
+				"name": "AdmissionStatusCode",
+				"type": "String"
+			},
+			{
+				"name": "RecordCreatedAt",
+				"type": "String"
+			},
+			{
+				"name": "RecordUpdatedAt",
+				"type": "String"
+			},
+			{
+				"name": "IsDeleted",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

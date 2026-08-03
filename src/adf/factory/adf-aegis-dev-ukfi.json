@@ -1,0 +1,15 @@
+{
+	"name": "adf-aegis-dev-ukfi",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c36fd203-e3ce-4c9e-b28c-93f1fb0ed853",
+		"tenantId": "cdc3df92-0057-4749-b5dc-5e6a627d6c58"
+	}
+}

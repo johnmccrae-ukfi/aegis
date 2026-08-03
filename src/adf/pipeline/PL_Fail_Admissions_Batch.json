@@ -1,0 +1,88 @@
+{
+	"name": "PL_Fail_Admissions_Batch",
+	"properties": {
+		"activities": [
+			{
+				"name": "SCR_Fail_Admissions_Batch",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sql_aegis_audit_dev",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "PipelineRunId",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.PipelineRunId",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "ErrorCode",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.ErrorCode",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "ErrorDetail",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.ErrorDetail",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "FailedActivityName",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.FailedActivityName",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								}
+							],
+							"type": "Query",
+							"text": "EXEC [audit].[usp_FailAdfAdmissionsBatch]\r\n    @PipelineRunId      = @PipelineRunId,\r\n    @ErrorCode          = @ErrorCode,\r\n    @ErrorDetail        = @ErrorDetail,\r\n    @FailedActivityName = @FailedActivityName;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"PipelineRunId": {
+				"type": "string"
+			},
+			"ErrorCode": {
+				"type": "string"
+			},
+			"ErrorDetail": {
+				"type": "string"
+			},
+			"FailedActivityName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-08-03T08:11:05Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

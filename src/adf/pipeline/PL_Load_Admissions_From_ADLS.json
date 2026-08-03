@@ -1,0 +1,930 @@
+{
+	"name": "PL_Load_Admissions_From_ADLS",
+	"properties": {
+		"activities": [
+			{
+				"name": "SP_Complete_Admissions_Batch",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "SCR_Record_Admissions_Outcomes",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[audit].[usp_CompleteAdfAdmissionsBatch]",
+					"storedProcedureParameters": {
+						"AcceptedRowCount": {
+							"value": {
+								"value": "@activity('SCR_Process_Admissions').output.resultSets[0].rows[0].AcceptedRowCount",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						},
+						"DuplicateRowCount": {
+							"value": {
+								"value": "@activity('SCR_Process_Admissions').output.resultSets[0].rows[0].DuplicateRowCount",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						},
+						"LandedRowCount": {
+							"value": {
+								"value": "@activity('SCR_Promote_Admissions_Raw').output.resultSets[0].rows[0].PromotedRowCount",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						},
+						"PipelineRunId": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"QuarantinedRowCount": {
+							"value": {
+								"value": "@activity('SCR_Process_Admissions').output.resultSets[0].rows[0].QuarantinedRowCount",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						},
+						"RejectedRowCount": {
+							"value": {
+								"value": "@activity('SCR_Process_Admissions').output.resultSets[0].rows[0].RejectedRowCount",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						},
+						"WarningRowCount": {
+							"value": {
+								"value": "@activity('SCR_Process_Admissions').output.resultSets[0].rows[0].WarningRowCount",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sql_aegis_audit_dev",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SCR_Start_Admissions_Batch",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sql_aegis_audit_dev",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "PipelineRunId",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "SourceFileName",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.SourceFileName",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "SourceFilePath",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.SourceFilePath",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "SourceExtractedAt",
+									"type": "Datetime",
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "SourceRowCount",
+									"type": "Int64",
+									"value": {
+										"value": "@pipeline().parameters.SourceRowCount",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "PackageVersion",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.PackageVersion",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								}
+							],
+							"type": "Query",
+							"text": "EXEC [audit].[usp_StartAdfAdmissionsBatch]\r\n    @PipelineRunId = @PipelineRunId,\r\n    @SourceFileName = @SourceFileName,\r\n    @SourceFilePath = @SourceFilePath,\r\n    @SourceExtractedAt = @SourceExtractedAt,\r\n    @SourceRowCount = @SourceRowCount,\r\n    @PackageVersion = @PackageVersion;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "CPY_Load_Admissions_To_Raw",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "SP_Clear_Admissions_Raw",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "AdmissionId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AdmissionId",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PatientId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PatientId",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OrganisationId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OrganisationId",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SiteId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SiteId",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AdmissionNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AdmissionNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PatientPathwayId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PatientPathwayId",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AdmissionDateTime",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AdmissionDateTime",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DischargeDateTime",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DischargeDateTime",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AdmissionMethodCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AdmissionMethodCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AdmissionSourceCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AdmissionSourceCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PatientClassificationCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PatientClassificationCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "IntendedManagementCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "IntendedManagementCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DischargeMethodCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DischargeMethodCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DischargeDestinationCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DischargeDestinationCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AdministrativeCategoryCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AdministrativeCategoryCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LegalStatusCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LegalStatusCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AdmissionStatusCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AdmissionStatusCode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RecordCreatedAt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RecordCreatedAt",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RecordUpdatedAt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RecordUpdatedAt",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "IsDeleted",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_adls_admissions_inbound_csv",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_sql_aegis_landing_adf_raw",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "SP_Clear_Admissions_Raw",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "SCR_Start_Admissions_Batch",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[landing].[usp_ClearAdfAdmissionsRaw]"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sql_aegis_staging_dev",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SCR_Promote_Admissions_Raw",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "CPY_Load_Admissions_To_Raw",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sql_aegis_staging_dev",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "BatchId",
+									"type": "Int64",
+									"value": {
+										"value": "@activity('SCR_Start_Admissions_Batch').output.resultSets[0].rows[0].BatchId",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "PackageExecutionId",
+									"type": "Int64",
+									"value": {
+										"value": "@activity('SCR_Start_Admissions_Batch').output.resultSets[0].rows[0].PackageExecutionId",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "SourceFileName",
+									"type": "String",
+									"value": {
+										"value": "@pipeline().parameters.SourceFileName",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								}
+							],
+							"type": "Query",
+							"text": "EXEC [landing].[usp_PromoteAdfAdmissionsRaw]\r\n    @BatchId = @BatchId,\r\n    @PackageExecutionId = @PackageExecutionId,\r\n    @SourceFileName = @SourceFileName,\r\n    @SourceExtractedAt = NULL;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "SCR_Process_Admissions",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "SCR_Promote_Admissions_Raw",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sql_aegis_staging_dev",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "BatchId",
+									"type": "Int64",
+									"value": {
+										"value": "@activity('SCR_Start_Admissions_Batch').output.resultSets[0].rows[0].BatchId",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "PackageExecutionId",
+									"type": "Int64",
+									"value": {
+										"value": "@activity('SCR_Start_Admissions_Batch').output.resultSets[0].rows[0].PackageExecutionId",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								}
+							],
+							"type": "Query",
+							"text": "EXEC [stg].[usp_ProcessAdfAdmissions]\r\n    @BatchId = @BatchId,\r\n    @PackageExecutionId = @PackageExecutionId;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "SCR_Record_Admissions_Outcomes",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "SCR_Process_Admissions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sql_aegis_audit_dev",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "BatchId",
+									"type": "Int64",
+									"value": {
+										"value": "@activity('SCR_Start_Admissions_Batch').output.resultSets[0].rows[0].BatchId",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								},
+								{
+									"name": "PackageExecutionId",
+									"type": "Int64",
+									"value": {
+										"value": "@activity('SCR_Start_Admissions_Batch').output.resultSets[0].rows[0].PackageExecutionId",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								}
+							],
+							"type": "Query",
+							"text": "EXEC [audit].[usp_RecordAdfAdmissionsOutcomes]\r\n    @BatchId = @BatchId,\r\n    @PackageExecutionId = @PackageExecutionId;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "FAIL_SP_Clear_Admissions_Raw",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SP_Clear_Admissions_Raw",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_Fail_Admissions_Batch",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"PipelineRunId": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ErrorCode": {
+							"value": "@activity('SP_Clear_Admissions_Raw').error.errorCode",
+							"type": "Expression"
+						},
+						"ErrorDetail": {
+							"value": "@activity('SP_Clear_Admissions_Raw').error.message",
+							"type": "Expression"
+						},
+						"FailedActivityName": {
+							"value": "SP_Clear_Admissions_Raw",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "FAIL_CPY_Load_Admissions_To_Raw",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "CPY_Load_Admissions_To_Raw",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_Fail_Admissions_Batch",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"PipelineRunId": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ErrorCode": {
+							"value": "@activity('CPY_Load_Admissions_To_Raw').error.errorCode",
+							"type": "Expression"
+						},
+						"ErrorDetail": {
+							"value": "@activity('CPY_Load_Admissions_To_Raw').error.message",
+							"type": "Expression"
+						},
+						"FailedActivityName": {
+							"value": "CPY_Load_Admissions_To_Raw",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "FAIL_SCR_Promote_Admissions_Raw",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SCR_Promote_Admissions_Raw",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_Fail_Admissions_Batch",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"PipelineRunId": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ErrorCode": {
+							"value": "@activity('SCR_Promote_Admissions_Raw').error.errorCode",
+							"type": "Expression"
+						},
+						"ErrorDetail": {
+							"value": "@activity('SCR_Promote_Admissions_Raw').error.message",
+							"type": "Expression"
+						},
+						"FailedActivityName": {
+							"value": "SCR_Promote_Admissions_Raw",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "FAIL_SCR_Process_Admissions",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SCR_Process_Admissions",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_Fail_Admissions_Batch",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"PipelineRunId": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ErrorCode": {
+							"value": "@activity('SCR_Process_Admissions').error.errorCode",
+							"type": "Expression"
+						},
+						"ErrorDetail": {
+							"value": "@activity('SCR_Process_Admissions').error.message",
+							"type": "Expression"
+						},
+						"FailedActivityName": {
+							"value": "SCR_Process_Admissions",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "FAIL_SCR_Record_Admissions_Outcomes",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SCR_Record_Admissions_Outcomes",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_Fail_Admissions_Batch",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"PipelineRunId": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ErrorCode": {
+							"value": "@activity('SCR_Record_Admissions_Outcomes').error.errorCode",
+							"type": "Expression"
+						},
+						"ErrorDetail": {
+							"value": "@activity('SCR_Record_Admissions_Outcomes').error.message",
+							"type": "Expression"
+						},
+						"FailedActivityName": {
+							"value": "SCR_Record_Admissions_Outcomes",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "FAIL_SP_Complete_Admissions_Batch",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SP_Complete_Admissions_Batch",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_Fail_Admissions_Batch",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"PipelineRunId": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"ErrorCode": {
+							"value": "@activity('SP_Complete_Admissions_Batch').error.errorCode",
+							"type": "Expression"
+						},
+						"ErrorDetail": {
+							"value": "@activity('SP_Complete_Admissions_Batch').error.message",
+							"type": "Expression"
+						},
+						"FailedActivityName": {
+							"value": "SP_Complete_Admissions_Batch",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"SourceFileName": {
+				"type": "string",
+				"defaultValue": "admission_mixed.csv"
+			},
+			"SourceFilePath": {
+				"type": "string",
+				"defaultValue": "aegis/admissions/inbound/admission_mixed.csv"
+			},
+			"SourceRowCount": {
+				"type": "int",
+				"defaultValue": 1605
+			},
+			"PackageVersion": {
+				"type": "string",
+				"defaultValue": "v0.6.0"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-08-03T08:11:06Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
