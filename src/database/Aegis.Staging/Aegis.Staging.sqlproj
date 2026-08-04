@@ -5,7 +5,8 @@
     <Name>aegis.staging</Name>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
-    <ProjectGuid>8fbe0bce-8c0d-4dcd-ac4a-78606c303025</ProjectGuid>
+    <ProjectGuid>{8fbe0bce-8c0d-4dcd-ac4a-78606c303025}</ProjectGuid>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Security\" />
@@ -16,5 +17,31 @@
     <Folder Include="Tables\landing\" />
     <Folder Include="Tables\quarantine\" />
     <Folder Include="Tables\stg\" />
+    <Folder Include="Tables\" />
+    <Folder Include="Stored procedures\landing" />
+    <Folder Include="Stored procedures\stg" />
+    <Folder Include="Stored procedures\curated" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Aegis.Source\Aegis.Source.sqlproj">
+      <Name>Aegis.Source</Name>
+      <Project>{da2e5021-97bf-4785-b8e2-56d5aa5898c3}</Project>
+      <Private>True</Private>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>AegisSourceDatabase</DatabaseSqlCmdVariable>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="AegisSourceDatabase">
+      <DefaultValue>Aegis_Source</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <Build Remove="Security\ConfigureAegisAdfLoader.sql" />
+    <Build Remove="Post-Deployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Post-Deployment.sql" />
   </ItemGroup>
 </Project>

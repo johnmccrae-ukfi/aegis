@@ -6,7 +6,7 @@
 **Repository:** Aegis  
 **Purpose:** Synthetic NHS-style clinical data migration, validation, semantic-modelling, reporting and operational-assurance platform.  
 **Current branch:** `dev`  
-**Current delivery position:** Day 5 complete; the audited Admissions migration pipeline, deployed SSAS Tabular semantic model and deployed SSRS operational report form a complete end-to-end Admissions demonstration.
+**Current delivery position:** Day 6 complete; Aegis now includes two fully reconciled Admissions orchestration routes—SQL Server SSIS and Azure Data Factory with ADLS Gen2 and a self-hosted integration runtime—followed by the deployed SSAS Tabular semantic model and SSRS operational report.
 
 ---
 
@@ -117,6 +117,9 @@ SSRS reporting
 - Python
 - PowerShell
 - Azure SQL Database
+- Azure Data Factory
+- Azure Data Lake Storage Gen2
+- Self-hosted Integration Runtime
 - Microsoft Purview concepts for later governance expansion
 
 ---
@@ -201,7 +204,9 @@ v0.3.0 — Audited SSIS Admissions pipeline
 v0.4.0 — SSAS Admissions analytical model
 ```
 
-Day 5 SSRS changes are complete on `dev` and are ready for release as `v0.5.0`.
+v0.5.0 — SSRS Admissions operational reporting
+
+Day 6 ADF hybrid-orchestration changes are complete on `dev` and are ready for release as `v0.6.0`.
 
 ---
 
@@ -223,6 +228,30 @@ Use **Visual Studio 2022** for:
 - SSRS report development;
 - Analysis Services build and deployment;
 - Reporting Services build and deployment.
+
+
+Use **Azure Data Factory Studio** for:
+
+- visual pipeline and dataset authoring;
+- linked-service and integration-runtime configuration;
+- pipeline validation and Debug execution;
+- Git-backed save and commit to the `dev` collaboration branch;
+- publication to the live Data Factory;
+- pipeline-run monitoring.
+
+ADF source-controlled resources are stored under:
+
+```text
+src/adf/
+```
+
+Use **SSMS** for:
+
+- database verification;
+- stored-procedure testing;
+- security verification;
+- reconciliation queries;
+- deployed-database validation.
 
 Use **VS Code** for:
 
@@ -290,6 +319,55 @@ DESKTOP-N58JDOH
 All three database projects currently build and publish successfully.
 
 ---
+
+
+## ADF development workflow
+
+```text
+ADF Studio on dev
+        ↓
+Save and commit ADF JSON to GitHub
+        ↓
+src/adf in the aegis repository
+        ↓
+Validate and Debug
+        ↓
+Publish to the live Data Factory
+        ↓
+Update adf_publish deployment artefacts
+        ↓
+Monitor pipeline runs
+```
+
+ADF Git configuration:
+
+```text
+Repository:            aegis
+Collaboration branch:  dev
+Publish branch:        adf_publish
+Root folder:           /src/adf
+```
+
+ADF Studio remains the visual authoring surface. VS Code is used to pull and review the generated JSON together with SQL, documentation and diagrams.
+
+The implemented factory is:
+
+```text
+adf-aegis-dev-ukfi
+```
+
+The implemented self-hosted integration runtime is:
+
+```text
+shir-aegis-dev-ukfi
+```
+
+Detailed documentation:
+
+```text
+docs/04_ETL/Azure_Data_Factory_Admissions_Orchestration.md
+```
+
 
 ## SSAS development workflow
 
@@ -498,6 +576,8 @@ aegis/
 │   ├── generated/
 │   ├── generators/
 │   └── private/
+├── diagrams/
+│   └── adf/
 ├── docs/
 │   ├── 00_Project/
 │   ├── 01_Architecture/
@@ -511,6 +591,7 @@ aegis/
 │   ├── 09_Operations/
 │   └── 10_Governance/
 ├── images/
+│   ├── adf/
 │   ├── architecture/
 │   ├── database/
 │   ├── log_shipping/
@@ -524,6 +605,7 @@ aegis/
 │   ├── monitoring/
 │   └── tests/
 ├── src/
+│   ├── adf/
 │   ├── database/
 │   ├── ssas/
 │   │   └── Aegis.Analysis/
@@ -599,6 +681,20 @@ The Azure resource group is:
 ```text
 rg-aegis-dev
 ```
+
+
+The implemented Azure Data Factory resources are:
+
+```text
+Data Factory:              adf-aegis-dev-ukfi
+Storage account:           staegisdevukfi
+ADLS Gen2 container:       aegis
+Admissions inbound path:   aegis/admissions/inbound/admission_mixed.csv
+Self-hosted IR:            shir-aegis-dev-ukfi
+```
+
+The ADF route connects Azure orchestration to local SQL Server through the self-hosted integration runtime.
+
 
 ---
 
@@ -1862,6 +1958,131 @@ Consultant episodes, diagnoses, procedures and ward stays remain available as de
 
 ---
 
+
+# Azure Data Factory delivery status
+
+## Hybrid orchestration pattern
+
+The implemented ADF route is:
+
+```text
+ADLS Gen2
+        ↓
+PL_Load_Admissions_From_ADLS
+        ↓
+Self-hosted Integration Runtime
+        ↓
+Local SQL Server
+        ↓
+landing → staging → curated / quarantine → audit
+```
+
+The main pipeline contains:
+
+```text
+SCR_Start_Admissions_Batch
+SP_Clear_Admissions_Raw
+CPY_Load_Admissions_To_Raw
+SCR_Promote_Admissions_Raw
+SCR_Process_Admissions
+SCR_Record_Admissions_Outcomes
+SP_Complete_Admissions_Batch
+```
+
+The reusable failure pipeline is:
+
+```text
+PL_Fail_Admissions_Batch
+```
+
+It calls:
+
+```text
+audit.usp_FailAdfAdmissionsBatch
+```
+
+and closes failed batch and package-execution records without overwriting the first meaningful error.
+
+## ADF SQL procedures
+
+Implemented ADF procedures include:
+
+```text
+Aegis_Audit.audit.usp_StartAdfAdmissionsBatch
+Aegis_Audit.audit.usp_RecordAdfAdmissionsOutcomes
+Aegis_Audit.audit.usp_CompleteAdfAdmissionsBatch
+Aegis_Audit.audit.usp_FailAdfAdmissionsBatch
+Aegis_Staging.landing.usp_ClearAdfAdmissionsRaw
+Aegis_Staging.landing.usp_PromoteAdfAdmissionsRaw
+Aegis_Staging.stg.usp_ProcessAdfAdmissions
+```
+
+## Published-run reconciliation
+
+The final manually triggered published pipeline produced:
+
+```text
+BatchId:                         37
+Source rows:                  1,605
+Landed rows:                  1,605
+Staged rows:                  1,605
+Accepted rows:                1,600
+Curated rows:                 1,600
+Quarantined rows:                 5
+Quarantine table rows:            5
+Record outcomes:              1,605
+Data-quality exceptions:          5
+Unexplained rows:                  0
+BatchStatus:        COMPLETED_WITH_EXCEPTIONS
+ExecutionStatus:    SUCCEEDED_WITH_EXCEPTIONS
+```
+
+## Controlled failure proof
+
+A controlled failure in `SP_Clear_Admissions_Raw` produced:
+
+```text
+BatchId:             34
+BatchStatus:         FAILED
+ExecutionStatus:     FAILED
+ErrorCode:           2402
+Failed activity:     SP_Clear_Admissions_Raw
+CompletedAt:         populated
+```
+
+A repeated failure callback preserved the original error details, proving idempotent failure handling.
+
+## Least-privilege ADF security
+
+ADF uses:
+
+```text
+aegis_adf_loader
+```
+
+Database-level users and grants are source controlled through:
+
+```text
+src/database/Aegis.Source/Security/ConfigureAegisAdfLoader.sql
+src/database/Aegis.Staging/Security/ConfigureAegisAdfLoader.sql
+src/database/Aegis.Audit/Security/ConfigureAegisAdfLoader.sql
+```
+
+The scripts are executed through each project’s `Post-Deployment.sql`.
+
+The server-level login and password remain environment prerequisites and are not stored in Git.
+
+## ADF visual evidence
+
+```text
+diagrams/adf/aegis_adf_hybrid_pipeline_architecture.png
+diagrams/adf/aegis_adf_development_workflow.png
+images/adf/aegis_adf_pipeline_activity_run_success.png
+images/adf/aegis_adf_admissions_reconciliation_success.png
+images/adf/aegis_adf_failure_audit_closure.png
+```
+
+
 # Reporting-layer delivery status
 
 ## Reporting schema
@@ -2772,6 +2993,33 @@ Deferred SSRS enhancements include:
 - scheduled subscriptions;
 - role-based report security.
 
+
+## Day 6 — Azure Data Factory hybrid Admissions orchestration
+
+**Status:** Complete.
+
+Delivered:
+
+- ADLS Gen2 Admissions landing;
+- Azure Data Factory development factory;
+- self-hosted integration runtime;
+- validated linked services and datasets;
+- seven-stage Admissions orchestration pipeline;
+- raw-to-typed landing promotion;
+- SQL-based staging validation and classification;
+- curated and quarantine materialisation;
+- row-outcome and DQ-exception audit;
+- real processing counts propagated into batch completion;
+- reusable failure-handling pipeline;
+- controlled failure and idempotency tests;
+- source-controlled least-privilege database permissions;
+- GitHub integration under `src/adf`;
+- published manual-trigger execution;
+- complete 1,605 / 1,600 / 5 / 0 reconciliation;
+- architecture and development-workflow diagrams;
+- detailed ADF implementation documentation.
+
+
 ## Later roadmap
 
 Deferred until after the interview-focused end-to-end demonstration:
@@ -3074,14 +3322,148 @@ SSRS operational report
 
 ---
 
+
+# Day 6 completion summary
+
+Day 6 established the Azure Data Factory hybrid orchestration route for Admissions.
+
+## Azure platform completed
+
+```text
+Resource group:        rg-aegis-dev
+Data Factory:          adf-aegis-dev-ukfi
+Storage account:       staegisdevukfi
+ADLS container:        aegis
+Self-hosted IR:        shir-aegis-dev-ukfi
+```
+
+## ADF pipeline completed
+
+```text
+PL_Load_Admissions_From_ADLS
+```
+
+Success path:
+
+```text
+Start batch
+→ clear raw
+→ copy to raw
+→ promote raw
+→ process Admissions
+→ record outcomes
+→ complete batch
+```
+
+Failure path:
+
+```text
+Downstream activity failure
+→ PL_Fail_Admissions_Batch
+→ audit.usp_FailAdfAdmissionsBatch
+→ FAILED batch and package execution
+```
+
+## SQL processing completed
+
+The ADF route now performs:
+
+```text
+landing.AdmissionAdfRaw
+        ↓
+landing.Admission
+        ↓
+stg.Admission
+        ├── curated.Admission
+        └── quarantine.Admission
+        ↓
+audit.RecordOutcome
+dq.DataQualityException
+```
+
+The same five rules `DQ-ADM-001` through `DQ-ADM-005` are applied as in the SSIS mixed package.
+
+## Security and deployment completed
+
+- `aegis_adf_loader` uses object-level permissions only.
+- Permissions are represented in database-project post-deployment scripts.
+- Aegis.Source, Aegis.Staging and Aegis.Audit publish successfully in dependency order.
+- Required SQLCMD database variables are supplied explicitly through `SqlPackage`.
+- Generated publish scripts are inspected before publication.
+- Secrets and SQL passwords remain outside Git.
+
+## GitHub integration completed
+
+ADF Studio is connected to:
+
+```text
+Repository:            aegis
+Collaboration branch:  dev
+Publish branch:        adf_publish
+Root folder:           /src/adf
+```
+
+The imported JSON resources cover:
+
+```text
+dataset
+factory
+integrationRuntime
+linkedService
+pipeline
+publish_config.json
+```
+
+## Day 6 final validation
+
+```text
+Published pipeline execution:         SUCCEEDED
+Source rows:                           1,605
+Landed rows:                           1,605
+Staged rows:                           1,605
+Accepted / curated rows:               1,600
+Quarantined rows:                          5
+Record outcomes:                       1,605
+Data-quality exceptions:                   5
+Unexplained rows:                           0
+Failure audit closure:                 PASSED
+Failure-handler idempotency:           PASSED
+Least-privilege permissions:           SOURCE CONTROLLED
+GitHub ADF integration:                CONFIGURED
+```
+
+Aegis now demonstrates two complementary operational routes:
+
+```text
+SQL Server SSIS
+        and
+Azure Data Factory + ADLS Gen2 + SHIR
+```
+
+Both routes preserve the same assurance principle:
+
+> Preserve the imperfect source, validate and classify every record, process what is safe, quarantine what is not, and reconcile every outcome.
+
+
 # Next recommended phase
 
-Before implementing Microsoft Purview, review the smallest credible governance demonstration and confirm:
+Complete the `v0.6.0` release closure:
 
-- tenant and licensing prerequisites;
-- available Microsoft Purview capabilities;
-- safe connectivity to synthetic Aegis assets;
-- portfolio value relative to implementation effort;
-- whether documentation-only architecture or live implementation is the better next step.
+- review the ADF JSON resources under `src/adf`;
+- confirm no credentials or secret values are present;
+- run the final repository validation and Git checks;
+- commit SQL, documentation, diagrams and screenshots;
+- raise the `dev` to `main` pull request;
+- merge and tag `v0.6.0`;
+- create the GitHub release.
 
-The current Admissions release should remain stable while that scope is assessed.
+After the ADF release is complete, suitable next directions include:
+
+- a short Snowflake and dbt skills exploration;
+- the next Aegis delivery day;
+- controlled replay;
+- Azure SQL deployment;
+- broader PAS activity templates;
+- a later Microsoft Purview governance review.
+
+The current Admissions implementation should remain stable and portfolio-ready while the next direction is selected.

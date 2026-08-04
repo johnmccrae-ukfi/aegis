@@ -261,3 +261,6 @@ BEGIN CATCH
 
     THROW;
 END CATCH;
+GO
+
+:r .\Security\ConfigureAegisAdfLoader.sql

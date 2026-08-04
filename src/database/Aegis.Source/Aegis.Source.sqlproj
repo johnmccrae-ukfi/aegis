@@ -5,7 +5,8 @@
     <Name>aegis.source</Name>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
-    <ProjectGuid>da2e5021-97bf-4785-b8e2-56d5aa5898c3</ProjectGuid>
+    <ProjectGuid>{da2e5021-97bf-4785-b8e2-56d5aa5898c3}</ProjectGuid>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Scripts\" />
@@ -16,5 +17,13 @@
     <Folder Include="Tables\pas\" />
     <Folder Include="Views\" />
     <Folder Include="Schemas\" />
+    <Folder Include="Tables\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Remove="Security\ConfigureAegisAdfLoader.sql" />
+    <Build Remove="Post-Deployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Post-Deployment.sql" />
   </ItemGroup>
 </Project>

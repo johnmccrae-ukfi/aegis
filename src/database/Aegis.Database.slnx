@@ -4,13 +4,16 @@
     <BuildType Name="Default" />
     <BuildType Name="Release" />
   </Configurations>
-  <Project Path="Aegis.Audit/Aegis.Audit.sqlproj" Type="42ea0dbd-9cf1-443e-919e-be9c484e4577" Id="fd3a575b-9ed4-4506-9545-38dfcc3b4d73">
+  <Project Path="Aegis.Audit/Aegis.Audit.sqlproj" Id="fd3a575b-9ed4-4506-9545-38dfcc3b4d73">
     <BuildType Solution="Default|*" Project="Release" />
+    <Build />
   </Project>
-  <Project Path="Aegis.Source/Aegis.Source.sqlproj" Type="42ea0dbd-9cf1-443e-919e-be9c484e4577">
+  <Project Path="Aegis.Source/Aegis.Source.sqlproj" Id="da2e5021-97bf-4785-b8e2-56d5aa5898c3">
     <BuildType Solution="Default|*" Project="Release" />
+    <Build />
   </Project>
-  <Project Path="Aegis.Staging/Aegis.Staging.sqlproj" Type="42ea0dbd-9cf1-443e-919e-be9c484e4577" Id="8fbe0bce-8c0d-4dcd-ac4a-78606c303025">
+  <Project Path="Aegis.Staging/Aegis.Staging.sqlproj" Id="8fbe0bce-8c0d-4dcd-ac4a-78606c303025">
     <BuildType Solution="Default|*" Project="Release" />
+    <Build />
   </Project>
 </Solution>

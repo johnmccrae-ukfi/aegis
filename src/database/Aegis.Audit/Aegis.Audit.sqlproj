@@ -5,10 +5,12 @@
     <Name>aegis.audit</Name>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
-    <ProjectGuid>fd3a575b-9ed4-4506-9545-38dfcc3b4d73</ProjectGuid>
+    <ProjectGuid>{fd3a575b-9ed4-4506-9545-38dfcc3b4d73}</ProjectGuid>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
   </PropertyGroup>
   <ItemGroup>
     <Build Remove="Post-Deployment.sql" />
+    <Build Remove="Security\ConfigureAegisAdfLoader.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Security\" />
@@ -18,8 +20,36 @@
     <Folder Include="Tables\audit\" />
     <Folder Include="Tables\dq\" />
     <Folder Include="Tables\replay\" />
+    <Folder Include="Tables\" />
+    <Folder Include="Stored Procedures\audit" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post-Deployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Aegis.Staging\Aegis.Staging.sqlproj">
+      <Name>Aegis.Staging</Name>
+      <Project>{8fbe0bce-8c0d-4dcd-ac4a-78606c303025}</Project>
+      <Private>True</Private>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>AegisStagingDatabase</DatabaseSqlCmdVariable>
+    </ProjectReference>
+    <ProjectReference Include="..\Aegis.Source\Aegis.Source.sqlproj">
+      <Name>Aegis.Source</Name>
+      <Project>{da2e5021-97bf-4785-b8e2-56d5aa5898c3}</Project>
+      <Private>True</Private>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>AegisSourceDatabase</DatabaseSqlCmdVariable>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="AegisSourceDatabase">
+      <DefaultValue>Aegis_Source</DefaultValue>
+      <Value>$(SqlCmdVar__2)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="AegisStagingDatabase">
+      <DefaultValue>Aegis_Staging</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
   </ItemGroup>
 </Project>

@@ -139,27 +139,33 @@ SELECT
 FROM reporting.AdmissionAnalysis;
 
 
-/* 8. Reporting to curated reconciliation */
+/* 8. Reporting to current curated snapshot reconciliation */
 INSERT @Results
 SELECT
-    N'Reporting rows reconcile to active curated rows',
-    CONVERT(
+    N'Reporting rows reconcile to current curated rows',
+    CONVERT
+    (
         nvarchar(200),
         (
             SELECT COUNT_BIG(*)
             FROM curated.Admission
-            WHERE IsDeleted = 0
+            WHERE
+                IsDeleted = 0
+                AND IsCurrent = 1
         )
     ),
     CONVERT(nvarchar(200), COUNT_BIG(*)),
-    CONVERT(
+    CONVERT
+    (
         bit,
         CASE
             WHEN COUNT_BIG(*) =
             (
                 SELECT COUNT_BIG(*)
                 FROM curated.Admission
-                WHERE IsDeleted = 0
+                WHERE
+                    IsDeleted = 0
+                    AND IsCurrent = 1
             )
                 THEN 1
             ELSE 0

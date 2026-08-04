@@ -149,4 +149,6 @@ SELECT
     a.[RecordUpdatedAt],
     a.[IsDeleted]
 FROM [curated].[Admission] AS a
-WHERE a.[IsDeleted] = 0;
+WHERE a.[IsDeleted] = 0
+  AND a.[IsCurrent] = 1;
+GO
