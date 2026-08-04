@@ -1,0 +1,7 @@
+{
+	"name": "shir-aegis-dev-ukfi",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Self-hosted integration runtime for secure hybrid connectivity between Azure Data Factory and the local Aegis SQL Server development environment."
+	}
+}

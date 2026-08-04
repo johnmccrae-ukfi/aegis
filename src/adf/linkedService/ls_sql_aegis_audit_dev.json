@@ -1,0 +1,22 @@
+{
+	"name": "ls_sql_aegis_audit_dev",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "Self-hosted SQL Server connection from Azure Data Factory to the local Aegis_Audit development database.",
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "DESKTOP-N58JDOH",
+			"database": "Aegis_Audit",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "aegis_adf_loader",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3YTFlNjY2Ny1lNmRhLTRkMWEtODFkMS05ZTE0NDIyZDUzZDEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "shir-aegis-dev-ukfi",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

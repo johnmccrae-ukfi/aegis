@@ -1,0 +1,22 @@
+{
+	"name": "ls_sql_aegis_staging_dev",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "Self-hosted SQL Server connection from Azure Data Factory to the local Aegis_Staging development database.",
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "DESKTOP-N58JDOH",
+			"database": "Aegis_Staging",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "aegis_adf_loader",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwMzVmZmVjOS1jZGZlLTQ4ZWEtOWJmNC00MGJiMTk2MGU5NWMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "shir-aegis-dev-ukfi",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

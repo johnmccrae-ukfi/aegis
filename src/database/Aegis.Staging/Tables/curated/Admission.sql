@@ -34,6 +34,10 @@ CREATE TABLE [curated].[Admission]
     [RecordUpdatedAt]          DATETIME2(0)    NULL,
     [IsDeleted]                BIT             NOT NULL,
 
+    [IsCurrent]                BIT             NOT NULL
+        CONSTRAINT [DF_curated_Admission_IsCurrent]
+        DEFAULT (0),
+
     [AcceptedAt]               DATETIME2(3)    NOT NULL,
     [CuratedAt]                DATETIME2(3)    NOT NULL
         CONSTRAINT [DF_curated_Admission_CuratedAt]
@@ -78,6 +82,9 @@ CREATE TABLE [curated].[Admission]
             OR [RecordCreatedAt] IS NULL
             OR [RecordUpdatedAt] >= [RecordCreatedAt]
         ),
+
+    CONSTRAINT [CK_curated_Admission_IsCurrent]
+        CHECK ([IsCurrent] IN (0, 1)),
 
     CONSTRAINT [CK_curated_Admission_CuratedAt]
         CHECK ([CuratedAt] >= [AcceptedAt])

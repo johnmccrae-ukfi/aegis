@@ -2,7 +2,7 @@
 
 **Aegis** is a synthetic NHS-style clinical data migration, validation, semantic-modelling, reporting and operational-assurance platform built on the Microsoft SQL Server data platform.
 
-It demonstrates how established enterprise technologies such as SQL Server, SSIS, SSAS and SSRS can be delivered using modern engineering practices including GitHub version control, database projects, repeatable testing, deterministic synthetic data, governed exception handling, least-privilege access and cloud-compatible design.
+It demonstrates how established enterprise technologies such as SQL Server, SSIS, SSAS and SSRS can be delivered alongside Azure Data Factory, ADLS Gen2 and a self-hosted integration runtime using modern engineering practices including GitHub version control, database projects, repeatable testing, deterministic synthetic data, governed exception handling, least-privilege access and cloud-compatible design.
 
 ---
 
@@ -70,6 +70,119 @@ The Control Flow registers the batch and package execution, lands and stages Adm
 The mixed package combines 1,600 valid Admissions from `Aegis_Source` with five controlled defect rows from CSV. Both branches retain source provenance before being merged into a single audited landing flow.
 
 ![Aegis SSIS Data Flow](images/ssis/aegis_ssis_data_flow_day3.png)
+
+---
+
+## Azure Data Factory hybrid orchestration
+
+Aegis also implements the Admissions migration through a hybrid Azure Data Factory route:
+
+```text
+ADLS Gen2
+    ↓
+Azure Data Factory
+    ↓
+Self-hosted Integration Runtime
+    ↓
+Local SQL Server
+    ↓
+Raw landing → typed landing → staging validation
+    ↓
+Curated / quarantine
+    ↓
+Audit outcomes and data-quality exceptions
+```
+
+![Aegis ADF hybrid pipeline architecture](diagrams/adf/aegis_adf_hybrid_pipeline_architecture.png)
+
+The published pipeline is:
+
+```text
+PL_Load_Admissions_From_ADLS
+```
+
+Its successful path contains seven activities:
+
+```text
+SCR_Start_Admissions_Batch
+        ↓
+SP_Clear_Admissions_Raw
+        ↓
+CPY_Load_Admissions_To_Raw
+        ↓
+SCR_Promote_Admissions_Raw
+        ↓
+SCR_Process_Admissions
+        ↓
+SCR_Record_Admissions_Outcomes
+        ↓
+SP_Complete_Admissions_Batch
+```
+
+The final published run completed successfully through the live Data Factory service:
+
+![Aegis ADF published pipeline activity run](images/adf/aegis_adf_pipeline_activity_run_success.png)
+
+### Published-run reconciliation
+
+![Aegis ADF Admissions reconciliation](images/adf/aegis_adf_admissions_reconciliation_success.png)
+
+| Control | Result |
+|---|---:|
+| Source rows | 1,605 |
+| Landed rows | 1,605 |
+| Staged rows | 1,605 |
+| Accepted / curated rows | 1,600 |
+| Quarantined rows | 5 |
+| Record outcomes | 1,605 |
+| Data-quality exceptions | 5 |
+| Unexplained rows | 0 |
+
+Final statuses:
+
+```text
+BatchStatus:      COMPLETED_WITH_EXCEPTIONS
+ExecutionStatus:  SUCCEEDED_WITH_EXCEPTIONS
+```
+
+### Failure handling
+
+A reusable child pipeline closes failed batch and package-execution audit records:
+
+```text
+PL_Fail_Admissions_Batch
+```
+
+Failure branches are attached to every downstream activity that can fail after batch registration. A controlled failure test proved that the handler:
+
+- marks both audit records as `FAILED`;
+- stores the ADF error code and failed activity;
+- sets completion timestamps;
+- prevents orphaned `PROCESSING` or `STARTED` records;
+- preserves the first error when invoked repeatedly.
+
+![Aegis ADF failure audit closure](images/adf/aegis_adf_failure_audit_closure.png)
+
+### GitHub-integrated development
+
+ADF Studio is connected to the existing Aegis repository:
+
+```text
+Repository:            aegis
+Collaboration branch:  dev
+Publish branch:        adf_publish
+Root folder:           /src/adf
+```
+
+![Aegis ADF development workflow](diagrams/adf/aegis_adf_development_workflow.png)
+
+ADF Studio is used for visual authoring, validation, Debug execution and publishing. ADF JSON resources are saved to GitHub under `src/adf`, while SQL projects, documentation and diagrams continue through the local VS Code workflow.
+
+Detailed implementation documentation:
+
+```text
+docs/04_ETL/Azure_Data_Factory_Admissions_Orchestration.md
+```
 
 ---
 
@@ -221,32 +334,34 @@ Synthetic legacy PAS
 ├── Aegis_Source.pas.Admission
 └── admission_defects.csv
             │
-            ▼
-PKG_Load_Admission_Mixed.dtsx
-            │
-            ▼
-Aegis_Staging.landing.Admission
-            │
-            ▼
-Aegis_Staging.stg.Admission
-            │
-            ├── valid
-            │      ▼
-            │  Aegis_Staging.curated.Admission
-            │      │
-            │      ▼
-            │  Aegis_Staging.reporting.AdmissionAnalysis
-            │      │
-            │      ▼
-            │  Aegis_Admissions_Analysis
-            │  SSAS Tabular semantic model
-            │      │
-            │      ▼
-            │  SSRS Admissions Activity and Trends
-            │
-            └── invalid
-                   ▼
-               Aegis_Staging.quarantine.Admission
+            ├─────────────────────────────────────┐
+            │                                     │
+            ▼                                     ▼
+PKG_Load_Admission_Mixed.dtsx          ADLS Gen2 admission_mixed.csv
+            │                                     │
+            │                                     ▼
+            │                          PL_Load_Admissions_From_ADLS
+            │                                     │
+            └───────────────┬─────────────────────┘
+                            ▼
+                  Aegis_Staging landing
+                            │
+                            ▼
+                     stg.Admission
+                            │
+             ┌──────────────┴──────────────┐
+             ▼                             ▼
+   curated.Admission              quarantine.Admission
+             │
+             ▼
+ reporting.AdmissionAnalysis
+             │
+             ▼
+ Aegis_Admissions_Analysis
+ SSAS Tabular semantic model
+             │
+             ▼
+ SSRS Admissions Activity and Trends
 
 Operational evidence
 ├── Aegis_Audit.audit.Batch
@@ -259,6 +374,10 @@ Operational evidence
 The core migration principle is:
 
 > Preserve the imperfect legacy source, detect and classify defects in staging, process what is valid, quarantine what is unsafe, and reconcile every outcome.
+
+The orchestration principle is:
+
+> Keep validation and migration logic in version-controlled SQL projects while using SSIS or Azure Data Factory to coordinate repeatable, auditable execution.
 
 The analytical principle is:
 
@@ -275,6 +394,9 @@ The analytical principle is:
 | `Aegis_Audit` | Batch, package, row-outcome and data-quality audit | Implemented and populated |
 | `Aegis_Admissions_Analysis` | SSAS Tabular Admissions semantic model | Implemented, deployed and validated |
 | `Admissions Activity and Trends` | SSRS operational Admissions report | Implemented, deployed and validated |
+| `adf-aegis-dev-ukfi` | Azure Data Factory hybrid Admissions orchestration | Implemented, Git-integrated, published and validated |
+| `staegisdevukfi` | ADLS Gen2 Admissions landing | Implemented and validated |
+| `shir-aegis-dev-ukfi` | Secure bridge from ADF to local SQL Server | Implemented and running |
 | `Aegis_Warehouse` | Broader future analytical warehouse | Deferred |
 | `Aegis_Reporting` | Potential future relational reporting database | Deferred |
 
@@ -283,6 +405,8 @@ The implemented relational databases are managed through SQL Server Database Dev
 The SSAS model is managed through a Visual Studio Analysis Services Tabular project and deployed to the local SQL Server Analysis Services instance.
 
 The SSRS report is managed through a Visual Studio Report Server project and deployed to the local SQL Server Reporting Services web portal.
+
+The ADF implementation is authored visually in ADF Studio, stored as JSON under `src/adf`, published to the live Data Factory service and executed through a self-hosted integration runtime against the same version-controlled SQL processing layer.
 
 ---
 
@@ -314,6 +438,56 @@ Combines the valid and controlled-defect sources into one realistic operational 
 - complete source-to-outcome reconciliation.
 
 Package-level `OnError` handlers automatically close failed batch and package executions with captured SSIS runtime error details, preventing orphaned `PROCESSING` or `STARTED` records.
+
+---
+
+## Implemented Azure Data Factory solution
+
+ADF source-controlled resources are stored under:
+
+```text
+src/adf/
+├── dataset/
+├── factory/
+├── integrationRuntime/
+├── linkedService/
+├── pipeline/
+└── publish_config.json
+```
+
+The implementation contains:
+
+```text
+PL_Load_Admissions_From_ADLS
+PL_Fail_Admissions_Batch
+```
+
+and demonstrates:
+
+- ADLS Gen2 delimited-file ingestion;
+- self-hosted integration runtime connectivity;
+- hybrid Azure-to-local SQL orchestration;
+- parameterised batch registration;
+- raw-table clearing and repeatable re-execution;
+- safe promotion from permissive raw strings to typed landing;
+- reference lookups against `Aegis_Source`;
+- staging validation and classification;
+- curated and quarantine materialisation;
+- row-outcome and DQ-exception audit;
+- actual upstream count propagation into completion audit;
+- reusable failure handling;
+- idempotent failure closure;
+- least-privilege SQL permissions;
+- ADF Git integration using `dev`, `main` and `adf_publish`;
+- published-service execution and monitoring.
+
+The SQL login used by ADF is:
+
+```text
+aegis_adf_loader
+```
+
+Its object-level permissions are represented through post-deployment scripts in all three database projects. No password is stored in Git or documentation.
 
 ---
 
@@ -512,6 +686,9 @@ This proves:
 - SQL Server Integration Services
 - SQL Server Analysis Services Tabular
 - SQL Server Reporting Services
+- Azure Data Factory
+- Azure Data Lake Storage Gen2
+- Self-hosted Integration Runtime
 - Visual Studio 2022 and SSDT
 - Visual Studio Code
 - T-SQL
@@ -534,6 +711,8 @@ aegis/
 │   ├── generated/
 │   ├── generators/
 │   └── private/
+├── diagrams/
+│   └── adf/
 ├── docs/
 │   ├── 00_Project/
 │   ├── 01_Architecture/
@@ -547,6 +726,7 @@ aegis/
 │   ├── 09_Operations/
 │   └── 10_Governance/
 ├── images/
+│   ├── adf/
 │   ├── architecture/
 │   ├── database/
 │   ├── log_shipping/
@@ -560,6 +740,7 @@ aegis/
 │   ├── monitoring/
 │   └── tests/
 ├── src/
+│   ├── adf/
 │   ├── database/
 │   ├── ssas/
 │   │   └── Aegis.Analysis/
@@ -629,6 +810,16 @@ Aegis is intended to demonstrate governance principles as well as technical deli
 - accepted and quarantine physical layers
 - batch, package, row-outcome and data-quality auditing
 - automatic SSIS failure auditing
+- ADLS Gen2 Admissions landing
+- Azure Data Factory hybrid Admissions orchestration
+- self-hosted integration runtime connectivity
+- published seven-stage ADF pipeline
+- reusable ADF failure-handling pipeline
+- controlled ADF failure closure and idempotency validation
+- source-controlled least-privilege ADF permissions
+- ADF GitHub integration under `src/adf`
+- successful published ADF trigger execution
+- ADF reconciliation with 0 unexplained rows
 - realistic mixed Admissions reconciliation
 - Admissions reporting schema and analytical view
 - focused SSAS Tabular Admissions model
@@ -647,12 +838,13 @@ Aegis is intended to demonstrate governance principles as well as technical deli
 - SSRS report documentation and README visual
 - 219 / 219 combined SQL validation checks passed
 
-### Next — governance scope review
+### Next
 
-- review the smallest credible Microsoft Purview portfolio demonstration;
-- identify licensing, tenant and connectivity prerequisites;
-- decide whether implementation adds sufficient portfolio value;
-- keep the current Admissions delivery stable while governance scope is assessed.
+- complete the `v0.6.0` documentation, validation and release;
+- retain the completed Admissions solution as a stable portfolio baseline;
+- select the next focused enhancement based on interview relevance and portfolio value.
+
+Microsoft Purview implementation remains deferred because the required Data Map and Unified Catalog capabilities were not available within the current low-cost development setup.
 
 ### Later roadmap
 
@@ -680,6 +872,7 @@ The later roadmap is deliberately deferred so that the current Admissions scenar
 - [Delivery Plan](docs/00_Project/Delivery_Plan.md)
 - [Solution Architecture](docs/01_Architecture/Solution_Architecture.md)
 - [Interface Inventory](docs/04_ETL/Interface_Inventory.md)
+- [Azure Data Factory Admissions Orchestration](docs/04_ETL/Azure_Data_Factory_Admissions_Orchestration.md)
 - [SSAS Admissions Tabular Model](docs/06_Reporting/SSAS_Admissions_Tabular_Model.md)
 - [SSRS Admissions Operational Report](docs/06_Reporting/SSRS_Admissions_Operational_Report.md)
 - [Synthetic Data Governance](docs/10_Governance/Synthetic_Data_Generation_and_Safety_Rules.md)
@@ -692,4 +885,4 @@ The later roadmap is deliberately deferred so that the current Admissions scenar
 Aegis complements [Atlas](https://github.com/johnmccrae-ukfi/atlas), a Microsoft Fabric enterprise AI intelligence platform.
 
 - **Atlas** demonstrates cloud-native data engineering, real-time analytics, semantic modelling and AI.
-- **Aegis** demonstrates SQL Server, SSIS, SSAS, SSRS, clinical migration, data quality, governance and operational assurance.
+- **Aegis** demonstrates SQL Server, SSIS, SSAS, SSRS, Azure Data Factory, ADLS Gen2, hybrid integration, clinical migration, data quality, governance and operational assurance.

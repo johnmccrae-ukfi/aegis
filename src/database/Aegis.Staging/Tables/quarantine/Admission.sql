@@ -39,6 +39,10 @@ CREATE TABLE [quarantine].[Admission]
     [RecordUpdatedAt]            DATETIME2(0)           NULL,
     [IsDeleted]                  BIT                    NULL,
 
+    [IsCurrent]                  BIT                    NOT NULL
+        CONSTRAINT [DF_quarantine_Admission_IsCurrent]
+        DEFAULT (0),
+
     [QuarantineReasonCode]       VARCHAR(100)           NOT NULL,
     [QuarantineReasonDetail]     NVARCHAR(2000)         NOT NULL,
     [ValidationFailureCount]     INT                    NOT NULL,
@@ -48,8 +52,8 @@ CREATE TABLE [quarantine].[Admission]
         DEFAULT ('OPEN'),
 
     [CorrectedPayload]           NVARCHAR(MAX)          NULL,
-    [CorrectionDetail]          NVARCHAR(2000)         NULL,
-    [CorrectedBy]                NVARCHAR(256)          NULL,
+    [CorrectionDetail]           NVARCHAR(2000)         NULL,
+    [CorrectedBy]                NVARCHAR(256)           NULL,
     [CorrectedAt]                DATETIME2(3)           NULL,
 
     [ReplayRequestReference]     UNIQUEIDENTIFIER       NULL,
@@ -97,6 +101,9 @@ CREATE TABLE [quarantine].[Admission]
 
     CONSTRAINT [CK_quarantine_Admission_SourceRecordIdentifier_NotBlank]
         CHECK (LEN(LTRIM(RTRIM([SourceRecordIdentifier]))) > 0),
+
+    CONSTRAINT [CK_quarantine_Admission_IsCurrent]
+        CHECK ([IsCurrent] IN (0, 1)),
 
     CONSTRAINT [CK_quarantine_Admission_QuarantineReasonCode_NotBlank]
         CHECK (LEN(LTRIM(RTRIM([QuarantineReasonCode]))) > 0),
